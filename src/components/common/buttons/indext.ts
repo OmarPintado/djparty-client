@@ -4,4 +4,5 @@ export { default as SettingsButton } from './SettingsButton';
 export { default as VoteButton } from './VoteButton';
 export { default as MusicOptionsButton } from './MusicOptionsButton';
 export { default as SendMessageButton } from './SendMessageButton';
-export { default as PrivacySelectionButton } from './PrivacySelectionButton';
+export { default as RadioButton } from './RadioButton';
+export { default as PasswordToggleButton } from './PasswordToggleButton';
