@@ -1,11 +1,13 @@
 import './DjPartyApp.css'
-import {LoginRouter} from "./router/LoginRouter.tsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
+//import {LoginRouter} from "./router/LoginRouter.tsx";
+import {RoomHome} from "./pages/RoomHome.tsx";
 
 function DjPartyApp() {
 
     return (
         <>
-            <LoginRouter/>
+            <RoomHome/>
         </>
     )
 }
