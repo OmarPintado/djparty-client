@@ -1,11 +1,11 @@
 import './DjPartyApp.css'
-import {LoginRouter} from "./router/LoginRouter.tsx";
+import { AuthRouter } from './router/AuthRouter'
 
 function DjPartyApp() {
 
     return (
         <>
-            <LoginRouter/>
+            <AuthRouter/>
         </>
     )
 }

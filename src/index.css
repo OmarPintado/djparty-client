@@ -16,3 +16,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.transition-input {
+    transition: max-width 0.3s ease, opacity 0.3s ease;
+}
