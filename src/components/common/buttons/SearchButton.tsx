@@ -1,4 +1,5 @@
 import { IoSearchSharp } from "react-icons/io5";
+import "./css/SearchButton.css";
 
 type SearchButtonProps = {
     onClick: () => void;
@@ -7,7 +8,7 @@ type SearchButtonProps = {
 const SearchButton = ({ onClick }: SearchButtonProps) => {
     return (
         <IoSearchSharp
-            className="text-white text-xl cursor-pointer"
+            className="search-button-icon"
             onClick={onClick}
         />
     );

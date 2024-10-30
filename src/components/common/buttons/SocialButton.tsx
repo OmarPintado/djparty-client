@@ -1,4 +1,5 @@
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
+import "./css/SocialButton.css";
 
 type SocialButtonProps = {
     provider: "google" | "facebook";
@@ -9,18 +10,11 @@ const SocialButton = ({ provider, onClick }: SocialButtonProps) => {
     const isGoogle = provider === "google";
 
     return (
-        <button
-            onClick={onClick}
-            className={`flex items-center text-2xl justify-center w-full py-2 px-4 rounded-lg transition duration-200 text-white hover:opacity-90`}
-        >
+        <button onClick={onClick} className="social-button">
             {isGoogle ? (
-                <>
-                    <FaGoogle className="mr-2" />
-                </>
+                <FaGoogle className="icon-margin" />
             ) : (
-                <>
-                    <FaFacebookF className="mr-2" />
-                </>
+                <FaFacebookF className="icon-margin" />
             )}
         </button>
     );

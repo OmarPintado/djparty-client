@@ -1,4 +1,5 @@
 import React from "react";
+import "./css/RadioButton.css";
 
 type RadioButtonProps = {
     id: string;
@@ -18,15 +19,9 @@ const RadioButton = ({
     onChange,
 }: RadioButtonProps) => {
     return (
-        <div className="flex items-center justify-center mb-2  ">
-            <div
-                className={`rounded-full flex items-center justify-center h-5 w-5 p-0.5 ${
-                    checked ? "bg-primary-gradient" : "bg-white/10"
-                }`}
-            >
-                <div
-                    className={`flex items-center justify-between bg-black  w-full h-full rounded-full `}
-                >
+        <div className="radio-button-container">
+            <div className={`radio-button-circle ${checked ? "checked" : ""}`}>
+                <div className="radio-button-inner-circle">
                     <input
                         type="radio"
                         id={id}
@@ -34,13 +29,11 @@ const RadioButton = ({
                         value={value}
                         checked={checked}
                         onChange={onChange}
-                        className={`appearance-none mx-auto w-2.5 h-2.5 ${
-                            checked ? "bg-blue-600" : "bg-transparent"
-                        } rounded-full cursor-pointer`}
+                        className={`radio-input ${checked ? "checked" : ""}`}
                     />
                 </div>
             </div>
-            <label htmlFor={id} className="ml-2 select-none text-sm cursor-pointer">
+            <label htmlFor={id} className="radio-label">
                 {label}
             </label>
         </div>

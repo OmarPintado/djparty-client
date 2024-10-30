@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { LuEye, LuEyeOff } from "react-icons/lu";
 import PasswordToggleButton from "../buttons/PasswordToggleButton";
+import "./css/InputGroup.css";
 
 type InputGroupProps = {
     inputs: {
@@ -24,9 +24,9 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
     };
 
     return (
-        <div className="flex flex-col gap-2 w-full max-w-80">
+        <div className="input-group-container">
             {inputs.map((input, index) => (
-                <div className="relative" key={input.id}>
+                <div className="input-container" key={input.id}>
                     <input
                         id={input.id}
                         type={
@@ -39,9 +39,11 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
                         placeholder={input.placeholder}
                         value={values[index]}
                         onChange={(e) => onChange(index, e.target.value)}
-                        className={`border outline-none w-full bg-transparent p-4 text-sm text-white placeholder-gray-custom-500 border-gray-custom-500 ${
-                            index === 0 ? "rounded-t-3xl" : ""
-                        } ${index === inputs.length - 1 ? "rounded-b-3xl" : ""}`}
+                        className={`input-field ${
+                            index === 0 ? "rounded-top" : ""
+                        } ${
+                            index === inputs.length - 1 ? "rounded-bottom" : ""
+                        }`}
                     />
                     {input.type === "password" && (
                         <PasswordToggleButton
@@ -54,4 +56,5 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
         </div>
     );
 };
+
 export default InputGroup;

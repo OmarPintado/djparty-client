@@ -1,14 +1,19 @@
 import { Link } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
 import SocialButton from "../components/common/buttons/SocialButton";
+import "./css/LoginPage.css";
 
 export const LoginPage = () => {
     return (
-        <div className="flex flex-col gap-2 items-center max-w-80 w-full    ">
+        <div className="login-page">
             <h2>LoginPage</h2>
             <LoginForm />
-
-            <div className="flex gap-4 items-center mt-4">
+            <div className="divider">
+                <div className="divider-line"></div>
+                <span className="divider-text">Or</span>
+                <div className="divider-line"></div>
+            </div>
+            <div className="social-buttons">
                 <SocialButton
                     provider="facebook"
                     onClick={() => console.log("login facebook")}
@@ -18,12 +23,9 @@ export const LoginPage = () => {
                     onClick={() => console.log("login google")}
                 />
             </div>
-            <p className="text-gray-custom-500">
+            <p className="signup-text">
                 Not have account?{" "}
-                <Link
-                    to={"/signup"}
-                    className="text-blue-500 hover:text-blue-600 transition-all duration-300"
-                >
+                <Link to="/signup" className="signup-link">
                     Sign up
                 </Link>
             </p>

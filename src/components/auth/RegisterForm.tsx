@@ -1,5 +1,7 @@
 import InputGroup from "../common/inputs/InputGroup";
 import MainButton from "../common/buttons/MainButton";
+import "./css/RegisterForm.css"; // Asegúrate de importar los estilos
+
 const dataInputs = [
     {
         id: "1",
@@ -17,9 +19,10 @@ const dataInputs = [
         type: "password",
     },
 ];
+
 const RegisterForm = () => {
     return (
-        <form className="flex flex-col gap-2 items-center max-w-80 w-full    ">
+        <form className="register-form">
             <InputGroup
                 onChange={(index, value) => {
                     console.log(index + ") value: " + value);

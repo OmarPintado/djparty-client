@@ -1,12 +1,10 @@
 import { AiOutlineSend } from "react-icons/ai";
+import "./css/SendMessageButton.css";
 
-const SendMessageButton = ({}) => {
+const SendMessageButton = () => {
     return (
-        <button
-            type="submit"
-            className="flex items-center w-8 h-8 justify-center rounded-sm text-white hover:bg-white/10  transition duration-200"
-        >
-            <AiOutlineSend className="text-xl text-center" />
+        <button type="submit" className="send-message-button">
+            <AiOutlineSend className="send-message-icon" />
         </button>
     );
 };

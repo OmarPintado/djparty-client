@@ -1,5 +1,7 @@
 import MainButton from "../common/buttons/MainButton";
 import InputGroup from "../common/inputs/InputGroup";
+import "./css/LoginForm.css"; 
+
 const dataInputs = [
     {
         id: "1",
@@ -15,7 +17,7 @@ const dataInputs = [
 
 const LoginForm = () => {
     return (
-        <form className="w-full flex items-center flex-col gap-2">
+        <form className="login-form">
             <InputGroup
                 onChange={(index, value) => {
                     console.log(index + ") value: " + value);
