@@ -11,7 +11,7 @@
 }
 
 .input-field {
-    border: 1px solid #a3a3a3 !important;
+    border: 1px solid #777b9b !important;
     outline: none !important;
     background-color: transparent !important;
     width: 100% !important;
@@ -20,9 +20,11 @@
     color: #ffffff !important;
     border-radius: 0 !important;
 }
-
+.input-field-error {
+    border: 1px solid #ca4a4a!important;
+}
 .input-field::placeholder {
-    color: #a3a3a3 !important;
+    color: #777b9b !important;
 }
 
 .input-field.rounded-top {
@@ -33,4 +35,12 @@
 .input-field.rounded-bottom {
     border-bottom-left-radius: 1.5rem !important;
     border-bottom-right-radius: 1.5rem !important;
+}
+.error-message {
+    color: #ca4a4a;
+    position: absolute;
+    font-size: 0.720rem;
+    top: 32px;
+    left: 18px;
+    margin-top: 0.25rem;
 }

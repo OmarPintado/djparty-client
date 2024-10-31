@@ -1,0 +1,17 @@
+.checkbox-container{
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    font-size: 14px ;
+    margin: 10px 0 20px;
+}
+.checkbox-text{
+    font-weight: 600;
+    color: #777B9B!important;
+    padding: 0;
+    margin: 0!important;
+}
+.checkbox-link{
+    text-decoration: none;
+}
