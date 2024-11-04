@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom"; // Asegúrate de tener react-router-dom instalado
+import { Link } from "react-router-dom";
+import "./css/MainButton.css";
 
 type MainButtonProps = {
     text: string;
@@ -7,33 +8,17 @@ type MainButtonProps = {
     link?: string;
 };
 
-const MainButton = ({
-    text,
-    onClick,
-    type = "button",
-    link,
-}: MainButtonProps) => {
-    const buttonContent = (
-        <div className="mx-auto bg-primary-gradient min-w-[12rem] py-3 tracking-wider rounded-2xl text-white font-semibold text-sm px-10 hover:bg-primary-gradient-hover transition duration-500 ease-in-out">
-            {text}
-        </div>
-    );
+const MainButton = ({ text, onClick, type = "button", link }: MainButtonProps) => {
+    const buttonContent = <div className="button-content">{text}</div>;
 
     return (
         <>
             {link ? (
-                <Link
-                    to={link}
-                    className="p-0.5 focus:bg-stroke-gradient outline-none rounded-2xl"
-                >
+                <Link to={link} className="main-button-container">
                     {buttonContent}
                 </Link>
             ) : (
-                <button
-                    type={type}
-                    onClick={onClick}
-                    className="p-0.5 focus:bg-stroke-gradient outline-none rounded-2xl"
-                >
+                <button type={type} onClick={onClick} className="main-button-container">
                     {buttonContent}
                 </button>
             )}

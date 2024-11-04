@@ -1,18 +1,25 @@
 import { useState } from "react";
-import { LuEye, LuEyeOff } from "react-icons/lu";
 import PasswordToggleButton from "../buttons/PasswordToggleButton";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import "./css/InputGroup.css";
 
 type InputGroupProps = {
     inputs: {
         id: string;
+        name: string;
         placeholder: string;
         type?: string;
+        validation?: object;
     }[];
-    values: string[];
-    onChange: (index: number, value: string) => void;
+    register: UseFormRegister<any>;
+    errors: FieldErrors;
 };
 
-const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
+const InputGroup = ({
+    inputs,
+    register,
+    errors,
+}: InputGroupProps) => {
     const [passwordVisibility, setPasswordVisibility] = useState<boolean[]>(
         inputs.map((input) => (input.type === "password" ? false : true))
     );
@@ -24,9 +31,9 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
     };
 
     return (
-        <div className="flex flex-col gap-2 w-full max-w-80">
+        <div className="input-group-container">
             {inputs.map((input, index) => (
-                <div className="relative" key={input.id}>
+                <div className="input-container" key={input.id}>
                     <input
                         id={input.id}
                         type={
@@ -37,12 +44,22 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
                                 : input.type || "text"
                         }
                         placeholder={input.placeholder}
-                        value={values[index]}
-                        onChange={(e) => onChange(index, e.target.value)}
-                        className={`border outline-none w-full bg-transparent p-4 text-sm text-white placeholder-gray-custom-500 border-gray-custom-500 ${
-                            index === 0 ? "rounded-t-3xl" : ""
-                        } ${index === inputs.length - 1 ? "rounded-b-3xl" : ""}`}
+                        {...register(input.name, input.validation)}
+                        className={`input-field ${
+                            index === 0 ? "rounded-top" : ""
+                        } ${
+                            errors[input.name]?.message
+                                ? "input-field-error"
+                                : ""
+                        } ${
+                            index === inputs.length - 1 ? "rounded-bottom" : ""
+                        }`}
                     />
+                    {errors[input.name] && (
+                        <p className="error-message">
+                            {(errors[input.name]?.message as string) || ""}
+                        </p>
+                    )}
                     {input.type === "password" && (
                         <PasswordToggleButton
                             isVisible={passwordVisibility[index]}
@@ -54,4 +71,5 @@ const InputGroup = ({ inputs, values, onChange }: InputGroupProps) => {
         </div>
     );
 };
+
 export default InputGroup;

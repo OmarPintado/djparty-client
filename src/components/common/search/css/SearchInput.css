@@ -1,0 +1,22 @@
+.search-input {
+    border: none;
+    font-size: 0.875rem; 
+    outline: none;
+    background-color: transparent;
+    transition: width 0.3s ease, opacity 0.3s ease; 
+    border-radius: 0.25rem; 
+    caret-color: white;
+    color: white;
+}
+
+.search-input.visible {
+    opacity: 1;
+    width: 100%;
+    max-width: auto;
+}
+
+.search-input.hidden {
+    opacity: 0;
+    width: 0;
+    max-width: 0;
+}

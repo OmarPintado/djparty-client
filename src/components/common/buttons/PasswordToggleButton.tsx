@@ -1,4 +1,5 @@
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import "./css/PasswordToggleButton.css";
 
 interface PasswordToggleButtonProps {
     isVisible: boolean;
@@ -13,7 +14,7 @@ const PasswordToggleButton = ({
         <button
             type="button"
             onClick={onToggle}
-            className="absolute inset-y-0 right-0 text-2xl outline-none focus:text-white flex items-center pr-4 text-gray-custom-500"
+            className="password-toggle-button"
         >
             {isVisible ? <LuEyeOff /> : <LuEye />}
         </button>

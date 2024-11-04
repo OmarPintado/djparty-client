@@ -1,4 +1,5 @@
 import { ChangeEvent, KeyboardEvent, FocusEvent } from "react";
+import "./css/SearchInput.css";
 
 type SearchInputProps = {
     value: string;
@@ -22,11 +23,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         placeholder="Escribe tu búsqueda..."
-        className={`text-sm outline-none bg-transparent transition-input rounded caret-white text-white ${
-            isVisible
-                ? "opacity-100 w-full max-w-auto"
-                : "opacity-0 w-0 max-w-0"
-        }`}
+        className={`search-input ${isVisible ? "visible" : "hidden"}`}
     />
 );
 

@@ -1,27 +1,59 @@
+import { useForm } from "react-hook-form";
 import MainButton from "../common/buttons/MainButton";
 import InputGroup from "../common/inputs/InputGroup";
+import "./css/LoginForm.css";
+
+type FormData = {
+    email: string;
+    password: string;
+};
+
 const dataInputs = [
     {
         id: "1",
+        name: "email",
         placeholder: "Enter your email",
         type: "email",
+        validation: {
+            required: "Email is required",
+            pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Enter a valid email",
+            },
+        },
     },
     {
         id: "2",
+        name: "password",
         placeholder: "Enter your password",
         type: "password",
+        validation: {
+            required: "Password is required",
+            minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+            },
+        },
     },
 ];
 
 const LoginForm = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormData>();
+
+    const onSubmit = (data: FormData) => {
+        console.log("Form Submitted", data);
+    };
+
     return (
-        <form className="w-full flex items-center flex-col gap-2">
+        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <InputGroup
-                onChange={(index, value) => {
-                    console.log(index + ") value: " + value);
-                }}
-                values={[]}
                 inputs={dataInputs}
+                register={register}
+                errors={errors}
             />
             <MainButton text="Login" type="submit" />
         </form>

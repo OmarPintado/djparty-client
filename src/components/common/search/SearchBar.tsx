@@ -1,9 +1,10 @@
-// SearchBar.js
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import SearchInput from "./SearchInput"; // Asegúrate de importar el componente correcto
-import SearchButton from "../buttons/SearchButton"; // Asegúrate de importar el componente correcto
+import SearchInput from "./SearchInput";
+import SearchButton from "../buttons/SearchButton";
+import "./css/SearchBar.css";
+
 type SearchBarProps = {
-    onSearch: (query: string) => void; // Define que onSearch es una función que toma un string y no devuelve nada
+    onSearch: (query: string) => void;
 };
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
@@ -30,15 +31,13 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            onSearch(searchTerm); // Llama a la función de búsqueda al presionar Enter
+            onSearch(searchTerm);
         }
     };
 
     return (
         <div
-            className={`flex items-center justify-end hover:border-white/50 transition-all duration-500  border-2 border-white/20 rounded-xl  p-2 gap-2 bg-transparent shadow-sm ${
-                showInput ? "border-white/50" : " "
-            }`}
+            className={`search-bar ${showInput ? "border-active" : ""}`}
             onClick={() => setShowInput(true)}
         >
             {showInput && (
@@ -50,7 +49,6 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
                     isVisible={showInput}
                 />
             )}
-
             <SearchButton onClick={handleIconClick} />
         </div>
     );

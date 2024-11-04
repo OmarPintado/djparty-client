@@ -1,0 +1,42 @@
+.main-button-container {
+    /* padding: 0.125rem !important; */
+    outline: none !important;
+    overflow: hidden;
+    border: none;
+    border-radius: 1rem !important;
+    transition: background-color 0.5s ease !important;
+    background: linear-gradient(
+        to bottom right,
+        #0278ff,
+        #a535b2,
+        #f4158c
+    ) !important;
+}
+
+.main-button-container:focus {
+    background: linear-gradient(
+        to bottom right,
+        #0278ff,
+        #a535b2,
+        #f4158c
+    ) !important;
+}
+
+.button-content {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-width: 12rem !important;
+    padding: 0.75rem 2.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: white;
+    /* border-radius: 1rem; */
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    transition: background 0.5s ease;
+    cursor: pointer;
+}
+
+.button-content:hover {
+    background: linear-gradient(to bottom right, #0056b3, #8a2d93, #d41178);
+}

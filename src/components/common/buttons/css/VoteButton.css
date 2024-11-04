@@ -1,0 +1,24 @@
+.vote-button {
+    all:unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    width: 2rem; 
+    height: 2rem; 
+    border-radius: 0.125rem; 
+    transition: color 0.5s, background-color 0.5s;
+    color: rgba(255, 255, 255, 0.4); 
+}
+
+.vote-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+.vote-button.active {
+    color: white;
+}
+
+.vote-button:hover.active {
+    color: rgba(255, 255, 255, 0.4); 
+}

@@ -1,32 +1,25 @@
-import { Link } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
-import SocialButton from "../components/common/buttons/SocialButton";
+import "./css/LoginPage.css";
+import Divider from "../components/common/divider/Divider";
+import SocialButtonGroup from "../components/common/buttons/SocialButtonGroup";
+import AuthPrompt from "../components/common/prompts/AuthPromp";
 
 export const LoginPage = () => {
     return (
-        <div className="flex flex-col gap-2 items-center max-w-80 w-full    ">
-            <h2>LoginPage</h2>
-            <LoginForm />
-
-            <div className="flex gap-4 items-center mt-4">
-                <SocialButton
-                    provider="facebook"
-                    onClick={() => console.log("login facebook")}
-                />
-                <SocialButton
-                    provider="google"
-                    onClick={() => console.log("login google")}
-                />
-            </div>
-            <p className="text-gray-custom-500">
-                Not have account?{" "}
-                <Link
-                    to={"/signup"}
-                    className="text-blue-500 hover:text-blue-600 transition-all duration-300"
-                >
-                    Sign up
-                </Link>
+        <div className="login-page">
+            <h2>Login</h2>
+            <p>
+                Enter your information below or login with a social media
+                account
             </p>
+            <LoginForm />
+            <Divider />
+            <SocialButtonGroup />
+            <AuthPrompt
+                linkPath="/signup"
+                linkText="Sign up"
+                text="Not have account?"
+            />
         </div>
     );
 };
