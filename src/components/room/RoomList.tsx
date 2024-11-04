@@ -1,5 +1,5 @@
 import React from 'react';
-import CardItem from '../common/CardItem';  // Importando el componente
+import CardItem from '../common/CardItem';
 
 const rooms = [
   { 
@@ -11,49 +11,92 @@ const rooms = [
       { label: 'Compartir', action: () => alert('Compartir Awakening') },
       { label: 'Editar', action: () => alert('Editar Awakening') }
     ],
-    number: 1,  // Número de orden
-    showAddButton: true,  // Mostrar el botón "+"
-    onAddClick: () => alert('Agregar Awakening a la lista')  // Acción del botón "+"
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
   },
   { 
     image: '/maracumango.jpg', 
-    title: 'Hiraeth', 
-    subtitle: 'Lastveek',
+    title: 'Awakening ashsassshhhhhhahssssshasahs', 
+    subtitle: 'Ashal S',
     options: [
-      { label: 'Eliminar', action: () => alert('Eliminar Hiraeth') },
-      { label: 'Compartir', action: () => alert('Compartir Hiraeth') }
+      { label: 'Eliminar', action: () => alert('Eliminar Awakening') },
+      { label: 'Compartir', action: () => alert('Compartir Awakening') },
+      { label: 'Editar', action: () => alert('Editar Awakening') }
     ],
-    number: 2  // Solo número, sin botón "+"
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
   },
   { 
     image: '/maracumango.jpg', 
-    title: 'Dreamers', 
-    subtitle: 'Fernando Ferreyra sajsjakjskajskajskajksajksjaksjksajakjsak',
+    title: 'Awakening ashsassshhhhhhahssssshasahs', 
+    subtitle: 'Ashal S',
     options: [
-      { label: 'Eliminar', action: () => alert('Eliminar Dreamers') },
-      { label: 'Agregar a favoritos', action: () => alert('Agregar Dreamers a favoritos') }
-    ]
-    // Sin número ni botón "+"
-  }
+      { label: 'Eliminar', action: () => alert('Eliminar Awakening') },
+      { label: 'Compartir', action: () => alert('Compartir Awakening') },
+      { label: 'Editar', action: () => alert('Editar Awakening') }
+    ],
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
+  },
+  { 
+    image: '/maracumango.jpg', 
+    title: 'Awakening ashsassshhhhhhahssssshasahs', 
+    subtitle: 'Ashal S',
+    options: [
+      { label: 'Eliminar', action: () => alert('Eliminar Awakening') },
+      { label: 'Compartir', action: () => alert('Compartir Awakening') },
+      { label: 'Editar', action: () => alert('Editar Awakening') }
+    ],
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
+  },
+  { 
+    image: '/maracumango.jpg', 
+    title: 'Awakening ashsassshhhhhhahssssshasahs', 
+    subtitle: 'Ashal S',
+    options: [
+      { label: 'Eliminar', action: () => alert('Eliminar Awakening') },
+      { label: 'Compartir', action: () => alert('Compartir Awakening') },
+      { label: 'Editar', action: () => alert('Editar Awakening') }
+    ],
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
+  },
+  { 
+    image: '/maracumango.jpg', 
+    title: 'Awakening ashsassshhhhhhahssssshasahs', 
+    subtitle: 'Ashal S',
+    options: [
+      { label: 'Eliminar', action: () => alert('Eliminar Awakening') },
+      { label: 'Compartir', action: () => alert('Compartir Awakening') },
+      { label: 'Editar', action: () => alert('Editar Awakening') }
+    ],
+    number: 1,
+    showAddButton: true,
+    onAddClick: () => alert('Agregar Awakening a la lista')
+  },
+  // Agrega más objetos para otros elementos
 ];
 
 const RoomList: React.FC = () => (
-  <div className="container">
-    <div className="d-flex flex-column">
-      {rooms.map((room, index) => (
-        <div className="mb-3" key={index}>
-          <CardItem 
-            image={room.image}
-            title={room.title}
-            subtitle={room.subtitle}
-            options={room.options}  
-            number={room.number}  
-            showAddButton={room.showAddButton}  
-            onAddClick={room.onAddClick}  
-          />
-        </div>
-      ))}
-    </div>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    {rooms.map((room, index) => (
+      <CardItem 
+        key={index}
+        image={room.image}
+        title={room.title}
+        subtitle={room.subtitle}
+        options={room.options}
+        number={room.number}
+        showAddButton={room.showAddButton}
+        onAddClick={room.onAddClick}
+      />
+    ))}
   </div>
 );
 

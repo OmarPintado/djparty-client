@@ -1,4 +1,3 @@
-// src/components/common/CardItem.tsx
 import React from 'react';
 import { Card, Dropdown, Button } from 'react-bootstrap';
 
@@ -7,9 +6,9 @@ interface CardItemProps {
   title: string;
   subtitle: string;
   options: { label: string, action: () => void }[];
-  number?: number; //opcional
-  showAddButton?: boolean; //opcional
-  onAddClick?: () => void;  //opcional
+  number?: number; // Opcional
+  showAddButton?: boolean; // Opcional
+  onAddClick?: () => void; // Opcional
 }
 
 const CardItem: React.FC<CardItemProps> = ({ 
@@ -21,58 +20,39 @@ const CardItem: React.FC<CardItemProps> = ({
   showAddButton = false, 
   onAddClick 
 }) => (
-  <Card className="mb-3" style={{ maxWidth: '100%' }}>  
-    <div className="d-flex align-items-center" style={{ maxWidth: '100%' }}>
-      {/* Condicional para mostrar el número */}
+  <Card style={{ maxWidth: '100%', background: '#1b1b1b', color: 'white', border: 'none', borderRadius: '10px', marginBottom: '15px', padding: '10px' }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {number !== undefined && (
-        <div style={{ width: '30px', textAlign: 'center' }}>
+        <div style={{ width: '30px', textAlign: 'center', color: '#888' }}>
           <span>{number}</span>
         </div>
       )}
-
-      <div className="flex-shrink-0" style={{ width: '60px' }}> 
-        <Card.Img src={image} className="img-fluid rounded-start" alt={title} />
+      <div style={{ width: '60px', flexShrink: 0 }}>
+        <Card.Img src={image} style={{ borderRadius: '8px', width: '100%' }} alt={title} />
       </div>
-
-      <div className="flex-grow-1 ms-3" style={{ maxWidth: '45%' }}>  
-        <Card.Body className="d-flex flex-column">
-          <Card.Title style={{ 
-            whiteSpace: 'nowrap', 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis' 
-          }}>
+      <div style={{ flexGrow: 1, marginLeft: '15px', maxWidth: '45%' }}>
+        <Card.Body style={{ padding: 0 }}>
+          <Card.Title style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '5px' }}>
             {title}
           </Card.Title>
-          <Card.Text style={{ 
-            whiteSpace: 'nowrap', 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis' 
-          }}>
+          <Card.Text style={{ fontSize: '14px', color: '#aaa', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {subtitle}
           </Card.Text>
         </Card.Body>
       </div>
-
-      <div className="d-flex ms-auto" style={{ alignItems: 'center' }}> 
-        {/* Condicional para mostrar el botón "+" */}
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
         {showAddButton && onAddClick && (
           <Button 
-            variant="outline-success" 
-            size="sm" 
-            className="me-2"
             onClick={onAddClick}
-            style={{ minWidth: '36px' }} 
+            style={{ backgroundColor: '#0f9b0f', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px' }}
           >
             +
           </Button>
         )}
-
-        {/* Dropdown de opciones */}
         <Dropdown>
-          <Dropdown.Toggle variant="outline-secondary" size="sm">
+          <Dropdown.Toggle style={{ background: 'transparent', border: 'none', color: '#fff', padding: 0, fontSize: '18px' }}>
             ...
           </Dropdown.Toggle>
-
           <Dropdown.Menu>
             {options.map((option, index) => (
               <Dropdown.Item key={index} onClick={option.action}>
