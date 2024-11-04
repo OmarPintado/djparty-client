@@ -14,12 +14,7 @@ type InputGroupProps = {
     register: UseFormRegister<any>;
     errors: FieldErrors;
 };
-
-const InputGroup = ({
-    inputs,
-    register,
-    errors,
-}: InputGroupProps) => {
+const InputGroup = ({ inputs, register, errors }: InputGroupProps) => {
     const [passwordVisibility, setPasswordVisibility] = useState<boolean[]>(
         inputs.map((input) => (input.type === "password" ? false : true))
     );
