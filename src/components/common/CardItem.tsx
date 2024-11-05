@@ -5,7 +5,7 @@ interface CardItemProps {
   image: string;
   title: string;
   subtitle: string;
-  options: { label: string, action: () => void }[];
+  options?: { label: string, action: () => void }[]; // Opcional
   number?: number; // Opcional
   showAddButton?: boolean; // Opcional
   onAddClick?: () => void; // Opcional
@@ -15,7 +15,7 @@ const CardItem: React.FC<CardItemProps> = ({
   image, 
   title, 
   subtitle, 
-  options, 
+  options = [], 
   number, 
   showAddButton = false, 
   onAddClick 
@@ -49,18 +49,20 @@ const CardItem: React.FC<CardItemProps> = ({
             +
           </Button>
         )}
-        <Dropdown>
-          <Dropdown.Toggle style={{ background: 'transparent', border: 'none', color: '#fff', padding: 0, fontSize: '18px' }}>
-            ...
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {options.map((option, index) => (
-              <Dropdown.Item key={index} onClick={option.action}>
-                {option.label}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
+        {options && options.length > 0 && (
+          <Dropdown>
+            <Dropdown.Toggle style={{ background: 'transparent', border: 'none', color: '#fff', padding: 0, fontSize: '18px' }}>
+              ...
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {options.map((option, index) => (
+                <Dropdown.Item key={index} onClick={option.action}>
+                  {option.label}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
       </div>
     </div>
   </Card>

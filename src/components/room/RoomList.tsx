@@ -80,7 +80,6 @@ const rooms = [
     showAddButton: true,
     onAddClick: () => alert('Agregar Awakening a la lista')
   },
-  // Agrega más objetos para otros elementos
 ];
 
 const RoomList: React.FC = () => (
