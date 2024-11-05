@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import RegisterForm from "../components/auth/RegisterForm";
 import "./css/SignUpPage.css";
 import Divider from "../components/common/divider/Divider";

@@ -21,7 +21,7 @@
     border-radius: 0 !important;
 }
 .input-field-error {
-    border: 1px solid #ca4a4a!important;
+    border: 1px solid #ca4a4a !important;
 }
 .input-field::placeholder {
     color: #777b9b !important;
@@ -39,7 +39,7 @@
 .error-message {
     color: #ca4a4a;
     position: absolute;
-    font-size: 0.720rem;
+    font-size: 0.72rem;
     top: 32px;
     left: 18px;
     margin-top: 0.25rem;
