@@ -16,7 +16,7 @@ export const LoginPage = () => {
             <Divider />
             <SocialButtonGroup />
             <AuthPrompt
-                linkPath="/signup"
+                linkPath="/auth/signup"
                 linkText="Sign up"
                 text="Not have account?"
             />
