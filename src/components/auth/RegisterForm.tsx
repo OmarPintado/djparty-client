@@ -3,6 +3,7 @@ import MainButton from "../common/buttons/MainButton";
 import InputGroup from "../common/inputs/InputGroup";
 import "./css/RegisterForm.css";
 import { RegisterData } from "../../types";
+import { useRegisterUser } from "../../hooks/useAuth";
 
 const RegisterForm = () => {
     const {
@@ -10,9 +11,10 @@ const RegisterForm = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterData>();
+    const { mutate } = useRegisterUser();
 
     const onSubmit = (data: RegisterData) => {
-        console.log("Form Submitted", data);
+        mutate(data);
     };
 
     const dataInputs = [

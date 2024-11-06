@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import MainButton from "../common/buttons/MainButton";
 import InputGroup from "../common/inputs/InputGroup";
 import "./css/LoginForm.css";
+import { authenticateUser, registerUser } from "../../services/authService";
+import { useAuthenticationUser, useRegisterUser } from "../../hooks/useAuth";
 
 type FormData = {
     email: string;
@@ -43,9 +45,9 @@ const LoginForm = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>();
-
+    const { mutate } = useAuthenticationUser();
     const onSubmit = (data: FormData) => {
-        console.log("Form Submitted", data);
+        mutate(data);
     };
 
     return (

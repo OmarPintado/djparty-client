@@ -16,7 +16,7 @@ const SignUpPage = () => {
             <Divider />
             <SocialButtonGroup />
             <AuthPrompt
-                linkPath="/login"
+                linkPath="/auth/login"
                 linkText="Login"
                 text="Already have an account?"
             />
