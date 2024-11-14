@@ -3,8 +3,10 @@ import { RegisterData ,LoginData, User} from "../types";
 import { clientApi } from "./api.";
 
 export const registerUser = async (userData: RegisterData) => {
-    try{       
+    console.log('userData',userData);
+    try{      
         const { data } = await clientApi.post<string>("/auth/register", userData);
+        console.log('data',data);
         return data;
     }catch(error){
         if(isAxiosError(error)&&error.response){

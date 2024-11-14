@@ -2,6 +2,9 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import MainInput from "../common/inputs/MainInput";
 import "./css/CreateRoomForm.css";
 import MainButton from "../common/buttons/MainButton";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContextProvider";
+import { createRoom } from "../../services/roomServices";
 
 type InputConfig = {
     name: string;
@@ -24,14 +27,6 @@ const inputConfigs: InputConfig[] = [
         },
     },
     {
-        name: "date",
-        type: "date",
-        placeholder: "Select a date",
-        validation: {
-            required: "Date is required",
-        },
-    },
-    {
         name: "description",
         type: "text",
         placeholder: "Enter room description",
@@ -51,9 +46,26 @@ const CreateRoomForm = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<FieldValues>();
+    const { user } = useContext(UserContext); // Obtén el usuario del contexto
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log("Room Created:", data);
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        if (!user || !user.id) {
+            console.error("User is not logged in");
+            return;
+        }
+
+        const roomData = {
+            created_by: user.id,
+            name: data.name,
+            description: data.description,
+        };
+
+        try {
+            const room = await createRoom(roomData);
+            console.log("Room Created:", room);
+        } catch (error) {
+            console.error("Failed to create room:", error);
+        }
     };
 
     return (

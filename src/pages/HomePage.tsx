@@ -6,6 +6,7 @@ import RoomList from '../components/room/RoomList';
 import MainButton from '../components/common/buttons/MainButton';
 import RoomListRow from '../components/room/RoomListRow';
 import SearchBar from '../components/common/search/SearchBar';
+import useHomePage from './hook/useHomePage';
 
 
 const popularRooms = [
@@ -57,10 +58,7 @@ const popularRooms = [
 ];
 
 export const HomePage: React.FC = () => {
-    const handleSearch = (query: string) => {
-        console.log("Realizando búsqueda con el término:", query);
-        // Aquí puedes realizar la búsqueda o actualizar el estado de resultados
-    };
+    const { handleSearch, handleCreateRoomClick } = useHomePage();
 
     return (
         <div className="home-container">
@@ -76,7 +74,7 @@ export const HomePage: React.FC = () => {
 
             {/* Botón de Crear Room */}
             <div className="home-create-room">
-                <MainButton text="Create Room" type="submit" />
+                <MainButton text="Create Room" type="submit" onClick={handleCreateRoomClick} />
             </div>
 
             {/* Sección de Popular Rooms */}

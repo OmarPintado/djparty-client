@@ -1,4 +1,3 @@
-import MainInput from "../components/common/inputs/MainInput";
 import CreateRoomForm from "../components/room/CreateRoomForm";
 
 const CreateRoom = () => {
