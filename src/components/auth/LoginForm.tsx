@@ -2,58 +2,46 @@ import { useForm } from "react-hook-form";
 import MainButton from "../common/buttons/MainButton";
 import InputGroup from "../common/inputs/InputGroup";
 import "./css/LoginForm.css";
-import { authenticateUser, registerUser } from "../../services/authService";
-import { useAuthenticationUser, useRegisterUser } from "../../hooks/useAuth";
-
-type FormData = {
-    email: string;
-    password: string;
-};
-
-const dataInputs = [
-    {
-        id: "1",
-        name: "email",
-        placeholder: "Enter your email",
-        type: "email",
-        validation: {
-            required: "Email is required",
-            pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "Enter a valid email",
-            },
-        },
-    },
-    {
-        id: "2",
-        name: "password",
-        placeholder: "Enter your password",
-        type: "password",
-        validation: {
-            required: "Password is required",
-            minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
-            },
-        },
-    },
-];
+import { useAuthenticationUser } from "../../hooks/useAuth";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContextProvider";
+import { useNavigate } from "react-router-dom";
+import { dataInputsLogin } from "./formInputsConfig";
+import { LoginData } from "../../types";
 
 const LoginForm = () => {
     const {
+        reset,
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+    } = useForm<LoginData>();
+    const navigate = useNavigate();
+    const { setToastMessage, login } = useContext(UserContext);
     const { mutate } = useAuthenticationUser();
-    const onSubmit = (data: FormData) => {
-        mutate(data);
+    const onSubmit = (data: LoginData) => {
+        mutate(data, {
+            onSuccess: (user) => {
+                reset();
+                console.log(user)
+                login({
+                    id: user.id,
+                    fullName: user.fullName || "Full Name Prueba",
+                    email: user.email,
+                    token:user.token
+                });
+                navigate("/");
+            },
+            onError: (error) => {
+                setToastMessage(`Error de registro: ${error.message}`);
+            },
+        });
     };
 
     return (
         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
             <InputGroup
-                inputs={dataInputs}
+                inputs={dataInputsLogin}
                 register={register}
                 errors={errors}
             />

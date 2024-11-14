@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import { LoginPage } from "../pages/LoginPage.tsx";
+import  Login  from "../pages/AuthPages/Login.tsx";
 import AuthLayout from "../components/layout/AuthLayout.tsx";
 import MainLayout from "../components/layout/MainLayout.tsx";
-import SignUpPage from "../pages/SignUpPage.tsx";
-
+import SignUp from "../pages/AuthPages/SignUp.tsx";
 import CreateRoom from "../pages/CreateRoom.tsx";
+import Perfil from "../pages/Perfil.tsx";
 //import RoomHome from "../pages/RoomPages/RoomHome.tsx";
 import { HomePage } from "../pages/HomePage.tsx";
 
@@ -14,11 +14,13 @@ export const AuthRouter = () => {
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
+
+                <Route path="perfil" element={<Perfil />} />
             </Route>
 
             <Route path="auth" element={<AuthLayout />}>
-                <Route path="login" element={<LoginPage />} />
-                <Route path="signup" element={<SignUpPage />} />
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<SignUp />} />
             </Route>
         </Routes>
     );
