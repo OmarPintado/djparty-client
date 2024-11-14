@@ -4,65 +4,38 @@ import InputGroup from "../common/inputs/InputGroup";
 import "./css/RegisterForm.css";
 import { RegisterData } from "../../types";
 import { useRegisterUser } from "../../hooks/useAuth";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContextProvider";
+import { useNavigate } from "react-router-dom";
+import { dataInputsRegister } from "./formInputsConfig";
 
 const RegisterForm = () => {
+    const { setToastMessage } = useContext(UserContext);
     const {
+        reset,
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterData>();
     const { mutate } = useRegisterUser();
-
+    const navigate = useNavigate();
     const onSubmit = (data: RegisterData) => {
-        mutate(data);
+        mutate(data, {
+            onSuccess: () => {
+                reset();
+                navigate('/auth/login')
+                setToastMessage("Usuario registrado exitosamente");
+            },
+            onError: (error) => {
+                setToastMessage(`Error de registro: ${error.message}`);
+            },
+        });
     };
-
-    const dataInputs = [
-        {
-            id: "1",
-            name: "fullName",
-            placeholder: "Enter your full name",
-            type: "text",
-            validation: {
-                required: "Full Name is required",
-                minLength: {
-                    value: 8,
-                    message: "Full name must be at least 8 characters",
-                },
-            },
-        },
-        {
-            id: "2",
-            name: "email",
-            placeholder: "Enter your email",
-            type: "email",
-            validation: {
-                required: "Email is required",
-                pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Enter a valid email",
-                },
-            },
-        },
-        {
-            id: "3",
-            name: "password",
-            placeholder: "Enter your password",
-            type: "password",
-            validation: {
-                required: "Password is required",
-                minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                },
-            },
-        },
-    ];
 
     return (
         <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
             <InputGroup
-                inputs={dataInputs}
+                inputs={dataInputsRegister}
                 register={register}
                 errors={errors}
             />
