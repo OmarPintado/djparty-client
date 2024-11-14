@@ -1,0 +1,42 @@
+.menu {
+    position: relative;
+}
+
+.menu-icon {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.menu-options {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #333;
+    width: 200px;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu-option {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+    border-radius: 4px;
+}
+
+.menu-option:hover {
+    background-color: #444;
+}
+
+.menu-option-icon {
+    margin-right: 10px;
+}

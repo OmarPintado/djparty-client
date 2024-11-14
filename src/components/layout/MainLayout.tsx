@@ -1,4 +1,5 @@
 import { useContext } from "react";
+//import Menu from "../menu/Menu";
 import "./css/MainLayout.css";
 import { Navigate, Outlet } from "react-router-dom";
 import { UserContext } from "../../context/UserContextProvider";
@@ -9,10 +10,12 @@ const MainLayout = () => {
     if (!user?.id) return <Navigate to="/auth/login" replace />;
     return (
         <>
-            <Header/>
-            <main className="main-layout">
-                <Outlet />
-            </main>
+            <Header />
+            <div className="main-layout">
+                <main className="content">
+                    <Outlet />
+                </main>
+            </div>
         </>
     );
 };

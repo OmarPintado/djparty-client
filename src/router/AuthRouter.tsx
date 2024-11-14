@@ -3,16 +3,16 @@ import  Login  from "../pages/AuthPages/Login.tsx";
 import AuthLayout from "../components/layout/AuthLayout.tsx";
 import MainLayout from "../components/layout/MainLayout.tsx";
 import SignUp from "../pages/AuthPages/SignUp.tsx";
-
 import CreateRoom from "../pages/CreateRoom.tsx";
-import RoomHome from "../pages/RoomPages/RoomHome.tsx";
 import Perfil from "../pages/Perfil.tsx";
+//import RoomHome from "../pages/RoomPages/RoomHome.tsx";
+import { HomePage } from "../pages/HomePage.tsx";
 
 export const AuthRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<MainLayout />}>
-                <Route index element={<RoomHome />} />
+                <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
 
                 <Route path="perfil" element={<Perfil />} />
