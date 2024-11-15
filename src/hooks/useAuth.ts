@@ -5,7 +5,7 @@ import { GoogleAuthOptions, LoginData, RegisterData, User, UserData } from "../t
 import { useEffect } from "react";
 
 export const useRegisterUser = () => {
-    return useMutation<string, Error, RegisterData|RegisterDataGoogle >({
+    return useMutation<string, Error, RegisterData | RegisterDataGoogle>({
         mutationFn: AuthService.registerUser,
     });
 };

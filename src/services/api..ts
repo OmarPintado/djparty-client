@@ -4,18 +4,15 @@ export const clientApi = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
-    timeout: 10000 
 });
 
 clientApi.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('AUTH_TOKEN'); 
-        console.log('Token:', token);
         config.headers = config.headers || {};
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-        }
-        console.log('Request Config:', config);  
+        } 
         return config;
     },
     (error) => {

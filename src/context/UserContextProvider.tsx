@@ -1,17 +1,15 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { User } from "../types";
+import { ToastPropsType, User } from "../types";
 
 export interface UserContextType {
     user: User | undefined;
-    setUser: (data:User)=>void;
+    setUser: (data: User) => void;
     login: (data: User) => void;
     logOut: () => void;
-    toastMessage: string;
+    toastProps: ToastPropsType;
     showToast: boolean;
-    setToastMessage: (value: string) => void;
+    setToastProps: (data: ToastPropsType) => void;
     setShowToast: (value: boolean) => void;
-    toastTitle: string;
-    setToastTitle: (value: string) => void;
 }
 
 const initialState: UserContextType = {
@@ -19,19 +17,22 @@ const initialState: UserContextType = {
     login: () => null,
     setUser: () => null,
     logOut: () => null,
-    toastMessage: "",
+    toastProps: {
+        message: "",
+        class: "",
+    },
     showToast: false,
-    setToastMessage: () => null,
+    setToastProps: () => null,
     setShowToast: () => null,
-    toastTitle: "",
-    setToastTitle: () => null,
 };
 
 export const UserContext = createContext<UserContextType>(initialState);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-    const [toastMessage, setToastMessage] = useState<string>("");
-    const [toastTitle, setToastTitle] = useState<string>("");
+    const [toastProps, setToastProps] = useState<ToastPropsType>({
+        message: "",
+        class: "",
+    });
     const [showToast, setShowToast] = useState<boolean>(false);
     const [user, setUser] = useState<User | undefined>(
         JSON.parse(localStorage.getItem("user") || "null") || undefined
@@ -42,10 +43,16 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("AUTH_TOKEN", data.token);
     };
     useEffect(() => {
-        if (toastMessage != "") {
+        if (toastProps.message != "") {
             setShowToast(true);
+            setTimeout(() => {
+                setToastProps({
+                    message: "",
+                    class: "",
+                });
+            }, 3510);
         }
-    }, [toastMessage]);
+    }, [toastProps.message]);
     const logOut = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("AUTH_TOKEN");
@@ -56,12 +63,10 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         logOut,
         setUser,
         login,
-        toastMessage,
+        toastProps,
         showToast,
-        setToastMessage,
+        setToastProps,
         setShowToast,
-        toastTitle,
-        setToastTitle,
     };
 
     return (

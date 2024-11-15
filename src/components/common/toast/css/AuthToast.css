@@ -1,0 +1,10 @@
+.toast-body-custom.error {
+    background-color: #c43737 !important;
+}
+.toast-body-custom.success {
+    background-color: #249c24 !important;
+}
+.toast-body-custom{
+    color: white;
+    font-weight: 600;
+}

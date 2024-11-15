@@ -2,10 +2,10 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useContext } from "react";
 import { UserContext } from "../../../context/UserContextProvider";
+import "./css/AuthToast.css";
 
 function AuthToast() {
-    const { toastTitle, toastMessage, showToast, setShowToast } =
-        useContext(UserContext);
+    const { toastProps, showToast, setShowToast } = useContext(UserContext);
     return (
         <ToastContainer
             className="p-3"
@@ -24,10 +24,12 @@ function AuthToast() {
                         className="rounded me-2"
                         alt=""
                     />
-                    <strong className="me-auto">{toastTitle}</strong>
+                    <strong className="me-auto">{toastProps.message}</strong>
                     <small>just now</small>
                 </Toast.Header>
-                <Toast.Body>{toastMessage}</Toast.Body>
+                <Toast.Body className={`toast-body-custom ${toastProps.class}`}>
+                    {toastProps.message}
+                </Toast.Body>
             </Toast>
         </ToastContainer>
     );

@@ -58,3 +58,7 @@ export type MusicRoom = {
 
     userMusicRooms: UserMusicRoom[];
 }
+export type ToastPropsType = {
+    message:string,
+    class:string
+}
