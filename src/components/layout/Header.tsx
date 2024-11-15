@@ -50,7 +50,7 @@ const Header = () => {
                             <img src="/djparty.svg" alt="Logo" />
                         </Link>
                     </Navbar.Brand>
-                    <Navbar.Brand className="text-white fs-2 fw-semibold"> 
+                    <Navbar.Brand className="text-custom fs-2 fw-semibold "> 
                         Hello Faisal!
                     </Navbar.Brand>
                    

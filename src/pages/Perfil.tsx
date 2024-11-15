@@ -1,8 +1,7 @@
+import PerfilComponent from "../components/perfil/PerfilComponent";
 
 const Perfil = () => {
-  return (
-    <div>Perfil</div>
-  )
-}
+    return <PerfilComponent />;
+};
 
-export default Perfil
+export default Perfil;

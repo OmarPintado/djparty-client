@@ -15,7 +15,13 @@ export type User = {
     fullName: string;
     email: string;
     token:string;
+    profileImage?:string;
   };
+export type UserView={
+    email: string,
+    fullName:string,
+    profileImage: string, 
+};
 
 export type UserData = {
     user: {

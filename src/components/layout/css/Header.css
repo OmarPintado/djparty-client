@@ -5,6 +5,16 @@
     background-color: #090c11;
     color: #ffffff;
 }
+.text-custom {
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    background-clip:text;
+    color: transparent;
+}
+.text-custom:hover{
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    background-clip:text;
+    color: transparent; 
+}
 .header .nav {
     width: 100%;
     margin: 0 auto;
@@ -39,8 +49,8 @@
 .btn-close {
     color: white !important;
 }
-#offcanvasNavbarDropdown-expand-md::after{
-    content: '';
+#offcanvasNavbarDropdown-expand-md::after {
+    content: "";
     display: none;
 }
 .header .searchContainer {
@@ -49,7 +59,7 @@
     margin-left: 0;
     column-gap: 2rem;
     justify-content: flex-end;
-    align-items:center;
+    align-items: center;
 }
 @media screen and (min-width: 800px) {
     .header .searchContainer {

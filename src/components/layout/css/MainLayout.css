@@ -1,7 +1,11 @@
 .main-layout {
-    min-height: 100vh;
     background-color: #090c11;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
+}
+.content{
+    max-width: 1200px;
+    width: 100%;
 }

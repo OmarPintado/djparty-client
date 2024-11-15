@@ -3,6 +3,7 @@ import { User } from "../types";
 
 export interface UserContextType {
     user: User | undefined;
+    setUser: (data:User)=>void;
     login: (data: User) => void;
     logOut: () => void;
     toastMessage: string;
@@ -14,8 +15,9 @@ export interface UserContextType {
 }
 
 const initialState: UserContextType = {
-    user: JSON.parse(localStorage.getItem("user") || "null") || undefined,
+    user: JSON.parse(localStorage.getItem("user") || "null"),
     login: () => null,
+    setUser: () => null,
     logOut: () => null,
     toastMessage: "",
     showToast: false,
@@ -52,6 +54,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     const state = {
         user,
         logOut,
+        setUser,
         login,
         toastMessage,
         showToast,
