@@ -7,6 +7,7 @@ import CreateRoom from "../pages/CreateRoom.tsx";
 import Perfil from "../pages/Perfil.tsx";
 import { HomePage } from "../pages/HomePage.tsx";
 import RoomHome from "../pages/RoomPages/RoomHome.tsx";
+import RoomUsers from "../pages/RoomPages/RoomUsers.tsx";
 
 export const AuthRouter = () => {
     return (
@@ -16,6 +17,7 @@ export const AuthRouter = () => {
                 <Route path="create-room" element={<CreateRoom />} />
                 <Route path="perfil" element={<Perfil />} />
                 <Route path="room-home/:roomId" element={<RoomHome />} />
+                <Route path="room-home/:roomId/users" element={<RoomUsers />} />
             </Route>
 
             <Route path="auth" element={<AuthLayout />}>

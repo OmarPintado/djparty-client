@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import RoomList from "../../components/room/RoomList";
 import { Container } from "react-bootstrap";
 import SearchInput from "../../components/common/inputs/InputSearch";
-import './css/RoomHome.css';
-import { useParams } from 'react-router-dom';
-
+import "./css/RoomHome.css";
+import { Link, useParams } from "react-router-dom";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams();
-    const [backgroundImage, setBackgroundImage] = useState<string | null>('/maracumango.jpg');
+    const [backgroundImage, setBackgroundImage] = useState<string | null>(
+        "/maracumango.jpg"
+    );
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -21,20 +22,20 @@ export const RoomHome: React.FC = () => {
     const handleSearchClick = (query: string) => {
         console.log("Buscando:", query);
     };
-    
 
     return (
         <div className="room-home-container">
-            <div 
-                className="room-home-header" 
+            <Link to={"users"}>View Users</Link>
+            <div
+                className="room-home-header"
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             >
                 <div className="room-home-header-overlay">
                     <h1 className="room-home-title">Room {roomId}</h1>
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageUpload} 
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
                         className="room-home-file-input"
                     />
                 </div>
