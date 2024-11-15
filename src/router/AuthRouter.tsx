@@ -14,7 +14,6 @@ export const AuthRouter = () => {
             <Route path="/" element={<MainLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
-
                 <Route path="perfil" element={<Perfil />} />
             </Route>
 

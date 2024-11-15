@@ -12,10 +12,11 @@ import { UserContext } from "../../context/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { MusicRoom } from "../../types";
 import { useLocation } from "react-router-dom";
+import { IoSettingsSharp } from "react-icons/io5";
 
 const Header = () => {
     const [expand] = useState("md");
-    const [searchQuery, setSearchQuery] = useState<string>("");
+    /*const [searchQuery, setSearchQuery] = useState<string>("");
     const location = useLocation();
     const { data, isError, isLoading } = useQuery<MusicRoom[], Error>({
         queryKey: ["searchByName", searchQuery],
@@ -34,7 +35,7 @@ const Header = () => {
         if (isError) {
             console.error("Error al buscar salas de música.");
         }
-    }, [data, isError]);
+    }, [data, isError]);*/
     const { logOut } = useContext(UserContext);
     return (
         <header className="header">
@@ -44,11 +45,15 @@ const Header = () => {
                 className="bg-body-tertiary nav w-100"
             >
                 <Container fluid>
-                    <Navbar.Brand>
+                    <Navbar.Brand className="m-0">
                         <Link to={"/"} className="logo">
                             <img src="/djparty.svg" alt="Logo" />
                         </Link>
                     </Navbar.Brand>
+                    <Navbar.Brand className="text-white fs-2 fw-semibold"> 
+                        Hello Faisal!
+                    </Navbar.Brand>
+                   
                     <Navbar.Toggle
                         aria-controls={`offcanvasNavbar-expand-${expand}`}
                     />
@@ -67,19 +72,19 @@ const Header = () => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <div className="searchContainer">
-                                {location.pathname === "/" && (
+                                {/*location.pathname === "/" && (
                                     <SearchInput
                                         onSearch={(value) =>
                                             setSearchQuery(value)
                                         }
                                     />
-                                )}
+                                )*/}
                                 <Nav className="">
                                     <Nav.Link href="/" className="text-white">
                                         Home
                                     </Nav.Link>
                                     <NavDropdown
-                                        title="Full Name"
+                                        title={<IoSettingsSharp className="home-icon fs-3" />}
                                         className="menu-options"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >

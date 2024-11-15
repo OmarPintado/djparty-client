@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
     background-color: #090c11;
     color: #ffffff;
 }
@@ -39,6 +38,10 @@
 }
 .btn-close {
     color: white !important;
+}
+#offcanvasNavbarDropdown-expand-md::after{
+    content: '';
+    display: none;
 }
 .header .searchContainer {
     display: flex;
