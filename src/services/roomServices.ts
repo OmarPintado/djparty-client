@@ -17,3 +17,18 @@ export const createMusicRoom = async (roomData: {
         throw new Error("Error desconocido");
     }
 };
+
+export const getPopularRooms = async (): Promise<MusicRoom[]> => {
+    try {
+        const { data } = await clientApi.get<MusicRoom[]>('/music-room/popular-rooms?page=1&limit=10');
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            console.error("Error de respuesta:", error.response.data);
+            throw new Error(error.response.data.error);
+        }
+        console.error("Error desconocido:", error);
+        throw new Error("Error desconocido");
+    }
+};
+

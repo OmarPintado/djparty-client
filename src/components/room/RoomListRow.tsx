@@ -1,5 +1,5 @@
 import React from 'react';
-import CardItem from '../common/CardItem';
+import CardItem from '../common/Card/CardItem';
 import './css/RoomListRow.css';
 
 

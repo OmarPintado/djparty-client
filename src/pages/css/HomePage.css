@@ -4,6 +4,8 @@
     margin: 0 auto;
     padding: 20px;
     color: white;
+    min-height: 100vh;
+    background-color: #000; 
 }
 
 .home-header {
