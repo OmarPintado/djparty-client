@@ -1,0 +1,9 @@
+.create-room-container{
+    padding: 50px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.create-room-container h1{
+    color: rgba(255, 255, 255, 0.671);
+}

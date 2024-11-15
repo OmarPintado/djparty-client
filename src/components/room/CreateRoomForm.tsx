@@ -84,7 +84,7 @@ const CreateRoomForm = () => {
                     error={errors[inputConfig.name]?.message as string}
                 />
             ))}
-            <MainButton text="Create Room" type="submit" />
+            <MainButton text="Create Room"  type="submit" />
         </form>
     );
 };
