@@ -4,7 +4,8 @@ import "./css/CreateRoomForm.css";
 import MainButton from "../common/buttons/MainButton";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContextProvider";
-import { createRoom } from "../../services/roomServices";
+import { createMusicRoom } from "../../services/roomServices";
+import { useNavigate } from "react-router-dom";
 
 type InputConfig = {
     name: string;
@@ -46,7 +47,8 @@ const CreateRoomForm = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<FieldValues>();
-    const { user } = useContext(UserContext); // Obtén el usuario del contexto
+    const { user } = useContext(UserContext); 
+    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         if (!user || !user.id) {
@@ -61,8 +63,9 @@ const CreateRoomForm = () => {
         };
 
         try {
-            const room = await createRoom(roomData);
+            const room = await createMusicRoom(roomData);
             console.log("Room Created:", room);
+            navigate(`/room-home/${room.id}`);
         } catch (error) {
             console.error("Failed to create room:", error);
         }

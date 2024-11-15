@@ -1,13 +1,16 @@
+import './css/HomePage.css'; 
+import { Container} from "react-bootstrap";
+import RoomList from '../components/room/RoomList';
+import MainButton from '../components/common/buttons/MainButton';
+import RoomListRow from '../components/room/RoomListRow';
+import SearchBar from '../components/common/search/SearchBar';
+import useHomePage from './hook/useHomePage';
 import React, { useEffect, useState } from "react";
 import "./css/HomePage.css";
-import { Container } from "react-bootstrap";
-import RoomList from "../components/room/RoomList";
-import MainButton from "../components/common/buttons/MainButton";
-import RoomListRow from "../components/room/RoomListRow";
-import SearchBar from "../components/common/search/SearchBar";
 import { MusicRoom } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import * as RoomService from "../services/roomService";
+
 
 const popularRooms = [
     {
@@ -70,11 +73,14 @@ const popularRooms = [
 ];
 
 export const HomePage: React.FC = () => {
-    const handleSearch = (query: string) => {
+
+    const { handleCreateRoomClick } = useHomePage();
+
+    const handleSearchH = (query: string) => {
         setSearchQuery(query);
     };
     const [searchQuery, setSearchQuery] = useState<string>("");
-    const { data, isError, isLoading } = useQuery<MusicRoom[], Error>({
+    const { data, isError } = useQuery<MusicRoom[], Error>({
         queryKey: ["searchByName", searchQuery],
         queryFn: () => RoomService.searchByName(searchQuery),
         retry: 1,
@@ -107,7 +113,7 @@ export const HomePage: React.FC = () => {
             {/* Sección de All Rooms */}
             <Container>
                 <h3>Rooms List</h3>
-                <SearchBar onSearch={handleSearch} />
+                <SearchBar onSearch={handleSearchH} />
                 <RoomList />
             </Container>
         </div>

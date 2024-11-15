@@ -3,9 +3,11 @@ import RoomList from "../../components/room/RoomList";
 import { Container } from "react-bootstrap";
 import SearchInput from "../../components/common/inputs/InputSearch";
 import './css/RoomHome.css';
+import { useParams } from 'react-router-dom';
 
 
 export const RoomHome: React.FC = () => {
+    const { roomId } = useParams();
     const [backgroundImage, setBackgroundImage] = useState<string | null>('/maracumango.jpg');
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,7 @@ export const RoomHome: React.FC = () => {
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             >
                 <div className="room-home-header-overlay">
-                    <h1 className="room-home-title">Room HAPPY</h1>
+                    <h1 className="room-home-title">Room {roomId}</h1>
                     <input 
                         type="file" 
                         accept="image/*" 

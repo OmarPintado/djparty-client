@@ -1,12 +1,19 @@
+import { isAxiosError } from "axios";
+import { MusicRoom } from "../types";
 import { clientApi } from "./api.";
 
-
-export const createRoom = async (roomData: object) => {
+export const createMusicRoom = async (roomData: {
+    created_by: string;
+    name: string;
+    description: string;
+}): Promise<MusicRoom> => {
     try {
-        const response = await clientApi.post('/music-room/create', roomData);
-        return response.data;
+        const { data } = await clientApi.post<MusicRoom>('/music-room/create', roomData);
+        return data;
     } catch (error) {
-        console.error("Error creating room:", error);
-        throw error;
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+        throw new Error("Error desconocido");
     }
 };
