@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import RoomList from "../../components/room/RoomList";
 import { Container } from "react-bootstrap";
 import SearchInput from "../../components/common/inputs/InputSearch";
-import "./css/RoomHome.css";
+import "./css/RoomPreview.css";
 import { Link, useParams } from "react-router-dom";
 
-export const RoomHome: React.FC = () => {
+const RoomPreview = () => {
     const { roomId } = useParams();
     const [backgroundImage, setBackgroundImage] = useState<string | null>(
         "/maracumango.jpg"
@@ -24,28 +24,23 @@ export const RoomHome: React.FC = () => {
     };
 
     return (
-        <div className="room-home-container">
-            <Link to={"users"}>View Users</Link>
+        <div className="room-preview-container">
             <div
-                className="room-home-header"
+                className="room-preview-header"
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             >
-                <div className="room-home-header-overlay">
-                    <h1 className="room-home-title">Room {roomId}</h1>
+                <div className="room-preview-header-overlay">
+                    <h1 className="room-preview-title">Room {roomId}</h1>
                     <input
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="room-home-file-input"
+                        className="room-preview-file-input"
                     />
                 </div>
             </div>
-            <Container>
-                <SearchInput onSearch={handleSearchClick} />
-                <RoomList rooms={[]}/>
-            </Container>
         </div>
     );
 };
 
-export default RoomHome;
+export default RoomPreview;

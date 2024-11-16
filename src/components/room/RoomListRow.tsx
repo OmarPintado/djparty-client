@@ -1,6 +1,7 @@
 import React from 'react';
 import CardItem from '../common/Card/CardItem';
 import './css/RoomListRow.css';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Room {
@@ -15,6 +16,7 @@ interface ListRoomRowProps {
 }
 
 const RoomListRow: React.FC<ListRoomRowProps> = ({ rooms }) => {
+    const navigate = useNavigate()
     return (
         <div className="room-list-row">
             {rooms.map((room, index) => (
