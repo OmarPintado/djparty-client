@@ -19,18 +19,18 @@ export const registerUserGoogle = async (token: string): Promise<User> => {
       return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.error);
+        throw new Error(error.response.data);
       }
       throw new Error("Error desconocido");
     }
   };
 export const authenticateUser = async (formData: LoginData): Promise<User> => {
     try {
-    const { data } = await clientApi.post<User>("/auth/login", formData);
-    return data;
+        const { data } = await clientApi.post<User>("/auth/login", formData);
+        return data;
     } catch (error) {
-    if (isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.error);
+        if (isAxiosError(error) && error.response) {
+        throw new Error(error.response.data.message);
     }
     throw new Error("Error desconocido");
     }

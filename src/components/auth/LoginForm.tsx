@@ -34,8 +34,9 @@ const LoginForm = () => {
                 navigate("/");
             },
             onError: (error) => {
+                console.log(error);
                 setToastProps({
-                    message: `Error de registro: ${error.message}`,
+                    message: ` ${error.message}`,
                     class: "error",
                 });
             },
