@@ -24,9 +24,9 @@ const RoomListRow: React.FC<RoomListRowProps> = ({ rooms }) => {
 
   return (
     <div className="room-list-row">
-      {rooms.map((room, index) => (
+      {rooms.map((room,key) => (
         <CardItem
-          key={index}
+          key={key}
           image={room.image}
           title={room.title}
           subtitle={room.subtitle}

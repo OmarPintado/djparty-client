@@ -64,6 +64,7 @@ export const HomePage: React.FC = () => {
                 <h3>Popular Rooms</h3>
                 {popularRooms ? (
                     <RoomListRow rooms={popularRooms.map(room => ({
+                        id: room.id,
                         image: "/music-art.jpg",  
                         title: room.name, 
                         subtitle: room.description, 
@@ -80,6 +81,7 @@ export const HomePage: React.FC = () => {
                 <SearchBar onSearch={(query) => setSearchQuery(query)} />
                 {searchResults ? (
                     <RoomList rooms={searchResults.map(room => ({
+                        id: room.id,
                         image: "/music-art.jpg", 
                         title: room.name,
                         subtitle: room.description,

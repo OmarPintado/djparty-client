@@ -5,7 +5,6 @@ const useHomePage = () => {
 
     const handleSearch = (query: string) => {
         console.log("Realizando búsqueda con el término:", query);
-        // Aquí puedes realizar la búsqueda o actualizar el estado de resultados
     };
 
     const handleCreateRoomClick = () => {
