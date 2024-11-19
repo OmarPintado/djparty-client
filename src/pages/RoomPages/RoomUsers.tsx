@@ -37,7 +37,7 @@ export const RoomUsers: React.FC = () => {
             </div>
             <Container>
                 <SearchInput onSearch={handleSearchClick} />
-                <RoomList />
+                <RoomList rooms={[]} />
             </Container>
         </div>
     );
