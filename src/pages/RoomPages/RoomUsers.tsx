@@ -1,46 +1,28 @@
-import React, { useState } from 'react';
-import RoomList from "../../components/room/RoomList";
-import { Container } from "react-bootstrap";
-import SearchInput from "../../components/common/inputs/InputSearch";
-import './css/RoomUsers.css';
+import React from "react";
+import { User } from "../../services/socketService";
 
-export const RoomUsers: React.FC = () => {
-    const [backgroundImage, setBackgroundImage] = useState<string | null>('/maracumango.jpg');
+interface RoomUserProps {
+    users: User[];
+}
 
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setBackgroundImage(imageUrl);
-        }
-    };
-
-    const handleSearchClick = (query: string) => {
-        console.log("Buscando:", query);
-    };
-
+const RoomUser: React.FC<RoomUserProps> = ({ users }) => {
     return (
-        <div className="room-users-container">
-            <div 
-                className="room-users-header" 
-                style={{ backgroundImage: `url(${backgroundImage})` }}
-            >
-                <div className="room-users-header-overlay">
-                    <h1 className="room-users-title">Room HAPPY</h1>
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageUpload} 
-                        className="room-users-file-input"
-                    />
-                </div>
-            </div>
-            <Container>
-                <SearchInput onSearch={handleSearchClick} />
-                <RoomList rooms={[]} />
-            </Container>
+        <div>
+            <h3>Usuarios en la sala</h3>
+            {users.length > 0 ? (
+                <ul>
+                    {users.map((user) => (
+                        <li key={user.id}>
+                            {user.fullName} {user.isActive ? "(Activo)" : "(Inactivo)"}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No hay usuarios en esta sala.</p>
+            )}
         </div>
     );
 };
 
-export default RoomUsers;
+
+export default RoomUser;
