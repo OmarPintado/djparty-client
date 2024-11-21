@@ -2,24 +2,49 @@ import LoginForm from "../../components/auth/LoginForm";
 import "../css/LoginPage.css";
 import Divider from "../../components/common/divider/Divider";
 import AuthPrompt from "../../components/common/prompts/AuthPromp";
-import { clientApi } from "../../services/api.";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContextProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import GoogleAuthButton from "../../components/common/buttons/GoogleAuthButton";
+import { openGoogleAuthPopup, useGoogleAuth } from "../../hooks/useAuth";
+import { GoogleUser } from "../../types";
+import { Spinner } from "react-bootstrap";
 
 const Login = () => {
-    const handleClick = async () => {
-        console.log("google backend inicio");
+    const {
+        user: userDataContext,
+        setToastProps,
+        login,
+    } = useContext(UserContext);
+
+    const { mutate, isPending } = useGoogleAuth();
+    const navigate = useNavigate();
+
+    const onSubmit = (data: GoogleUser) => {
+        mutate(data, {
+            onSuccess: (data) => {
+                login(data);
+                navigate("/");
+            },
+            onError: (error) => {
+                setToastProps({
+                    message: `${error.message}`,
+                    class: "error",
+                });
+            },
+        });
+    };
+    const openGoogleAuth = async () => {
         try {
-            const { data } = await clientApi.get("/auth/google");
-            console.log("DATA " + data);
-            console.log("google backend fin");
+            const { user } = await openGoogleAuthPopup();
+            console.log(user.email);
+            onSubmit(user);
         } catch (error) {
-            console.log("error: ", error);
+            console.log(error);
         }
     };
-    const { user } = useContext(UserContext);
-    if (user?.id) return <Navigate to="/" replace />;
+
+    if (userDataContext?.id) return <Navigate to="/" replace />;
     return (
         <div className="login-page">
             <h2 className="form-title">Login</h2>
@@ -27,10 +52,22 @@ const Login = () => {
                 Enter your information below or login with a social media
                 account
             </p>
-            <LoginForm />
-            <Divider />
-            <button onClick={() => handleClick()}>Register with gogole</button>
-
+            {!isPending ? (
+                <>
+                    <LoginForm />
+                    <Divider />
+                    <GoogleAuthButton
+                        onClick={openGoogleAuth}
+                        text="Login with Google"
+                    />
+                </>
+            ) : (
+                <div className="spinner">
+                    <Spinner animation="border" variant="primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+            )}
             <AuthPrompt
                 linkPath="/auth/signup"
                 linkText="Sign up"
@@ -39,4 +76,4 @@ const Login = () => {
         </div>
     );
 };
-export default Login
+export default Login;

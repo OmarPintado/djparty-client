@@ -62,3 +62,16 @@ export type ToastPropsType = {
     message:string,
     class:string
 }
+
+export type GoogleUser = {
+    email: string;
+    firstName: string;
+    lastName: string;
+    picture: string;
+    accessToken: string;
+}
+
+export type GoogleAuthResponse = {
+    message: string;
+    user: GoogleUser;
+}

@@ -3,41 +3,44 @@ import RegisterForm from "../../components/auth/RegisterForm";
 import "../css/SignUpPage.css";
 import Divider from "../../components/common/divider/Divider";
 import AuthPrompt from "../../components/common/prompts/AuthPromp";
-import { useGoogleAuth, useRegisterUser } from "../../hooks/useAuth";
-import { RegisterDataGoogle, UserData } from "../../types";
 import { UserContext } from "../../context/UserContextProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import GoogleAuthButton from "../../components/common/buttons/GoogleAuthButton";
+import { openGoogleAuthPopup, useGoogleAuth } from "../../hooks/useAuth";
+import { GoogleUser } from "../../types";
+import { Spinner } from "react-bootstrap";
 
 const SignUp = () => {
-    const { mutate } = useRegisterUser();
-    const { setToastProps } = useContext(UserContext);
+    const { user: userDataContext, setToastProps ,login} = useContext(UserContext);
 
-    const handleAuthSuccess = (userData: UserData) => {
-        const { user } = userData;
-        console.log("Datos del usuario:", userData);
-        const register: RegisterDataGoogle = {
-            email: user.email,
-            fullName: user.firstName + " " + user.lastName,
-        };
-        mutate(register, {
-            onSuccess: () => {
-                setToastProps({
-                    message: "Usuario registrado exitosamente",
-                    class: "success",
-                });
+    const { mutate, isPending } = useGoogleAuth();
+    const navigate = useNavigate();
+
+    const onSubmit = (data: GoogleUser) => {
+        mutate(data, {
+            onSuccess: (data) => {
+                login(data);
+                navigate("/");
             },
             onError: (error) => {
                 setToastProps({
-                    message: error.message,
+                    message: `${error.message}`,
                     class: "error",
                 });
             },
         });
     };
+    const openGoogleAuth = async () => {
+        try {
+            const { user } = await openGoogleAuthPopup();
+            console.log(user.email);
+             onSubmit(user);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    const { openGoogleAuth } = useGoogleAuth(handleAuthSuccess);
-    const { user } = useContext(UserContext);
-    if (user?.id) return <Navigate to="/" replace />;
+    if (userDataContext?.id) return <Navigate to="/" replace />;
     return (
         <div className="signup-page">
             <h2 className="form-title">Register</h2>
@@ -45,9 +48,22 @@ const SignUp = () => {
                 Enter your information below or register with a social media
                 account
             </p>
-            <RegisterForm />
-            <Divider />
-            <button onClick={openGoogleAuth}>Register with Google</button>
+            {!isPending ? (
+                <>
+                    <RegisterForm />
+                    <Divider />
+                    <GoogleAuthButton
+                        onClick={() => openGoogleAuth()}
+                        text="Register with Google"
+                    />
+                </>
+            ) : (
+                <div className="spinner">
+                    <Spinner animation="border" variant="primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+            )}
             <AuthPrompt
                 linkPath="/auth/login"
                 linkText="Login"
