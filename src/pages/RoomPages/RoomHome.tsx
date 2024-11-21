@@ -1,62 +1,18 @@
-import React, { useEffect, useState } from "react";
-import RoomList from "../../components/room/RoomList";
-import { Container } from "react-bootstrap";
-import SearchInput from "../../components/common/inputs/InputSearch";
-import { Link, useParams } from "react-router-dom";
-import {
-    initializeSocket,
-    getSongRequests,
-    getUsersByRoom,
-    handleSocketError,
-    disconnectSocket,
-    SongRequest,
-    User,
-} from "../../services/socketService";
+// RoomHome.tsx
+import React, { useState } from "react";
+import { Container, Tabs, Tab } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+
+import RoomPlayList from "./RoomPlayList";
+import RoomUser from "./RoomUsers";
+import RoomChat from "./RoomChat";
 import "./css/RoomHome.css";
+import { useSocket } from "../../context/SocketContextProvider";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams();
+    const { songRequests, users, sendMessage } = useSocket();
     const [backgroundImage, setBackgroundImage] = useState<string | null>("/maracumango.jpg");
-    const [songRequests, setSongRequests] = useState<SongRequest[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
-
-    useEffect(() => {
-        const token = localStorage.getItem("AUTH_TOKEN");
-
-        if (!token) {
-            console.error("No se encontró el token de autenticación.");
-            return;
-        }
-
-        if (!roomId) {
-            console.error("No se encontró el ID de la sala.");
-            return;
-        }
-
-        const socket = initializeSocket(roomId, token);
-
-        // Obtener la lista de canciones
-        getSongRequests((data) => {
-            console.log("Lista de canciones recibida:", data);
-            setSongRequests(data);
-        });
-
-        // Obtener la lista de usuarios
-        getUsersByRoom((data) => {
-            console.log("Lista de usuarios recibida:", data);
-            setUsers(data);
-        });
-
-        // Manejo de errores
-        handleSocketError((error) => {
-            console.error("Socket error:", error);
-        });
-
-        // Limpieza al desmontar el componente
-        return () => {
-            disconnectSocket();
-        };
-    }, [roomId]);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -66,13 +22,8 @@ export const RoomHome: React.FC = () => {
         }
     };
 
-    const handleSearchClick = (query: string) => {
-        console.log("Buscando:", query);
-    };
-
     return (
         <div className="room-home-container">
-            <Link to={`users`}>View Users</Link>
             <div
                 className="room-home-header"
                 style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -88,25 +39,17 @@ export const RoomHome: React.FC = () => {
                 </div>
             </div>
             <Container>
-                <SearchInput onSearch={handleSearchClick} />
-
-                {/* Mostrar la lista de solicitudes de canciones */}
-                <h3>Song Requests</h3>
-                <RoomList
-                    rooms={songRequests.map((songRequest) => ({
-                        id: songRequest.id,
-                        image: "/music-art.jpg",
-                        title: songRequest.title,
-                        subtitle: songRequest.artist,
-                        options: [
-                            { label: "Votar", action: () => console.log(`Votar: ${songRequest.id}`) },
-                            { label: "Seleccionar", action: () => console.log(`Seleccionar: ${songRequest.id}`) },
-                        ],
-                        number: 1,
-                        showAddButton: false,
-                        onAddClick: () => console.log(`Agregar ${songRequest.title}`),
-                    }))}
-                />
+                <Tabs defaultActiveKey="playlist" id="room-tabs" className="mb-3">
+                    <Tab eventKey="playlist" title="Playlist">
+                        <RoomPlayList songRequests={songRequests} />
+                    </Tab>
+                    <Tab eventKey="users" title="Usuarios">
+                        <RoomUser users={users} />
+                    </Tab>
+                    <Tab eventKey="chat" title="Chat">
+                        <RoomChat roomId={roomId || ""} />
+                    </Tab>
+                </Tabs>
             </Container>
         </div>
     );

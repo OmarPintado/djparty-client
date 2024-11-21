@@ -56,6 +56,27 @@ export const getUsersByRoom = (onSuccess: (data: User[]) => void): void => {
     initializedSocket.on("GETUSERSBYROOM", onSuccess);
 };
 
+// Enviar un mensaje a la sala
+export const sendMessageToRoom = (message: any, onResponse: (response: any) => void): void => {
+    const initializedSocket = ensureSocketInitialized();
+    initializedSocket.emit("SENDMESSAGEROOM", message);
+    initializedSocket.on("SENDMESSAGEROOM", onResponse);
+};
+
+// Votar una solicitud de canción
+export const voteSongRequest = (songRequestId: string, onResponse: (response: string) => void): void => {
+    const initializedSocket = ensureSocketInitialized();
+    initializedSocket.emit("VOTESONGREQUEST", { song_request_id: songRequestId });
+    initializedSocket.on("VOTESONGREQUEST", onResponse);
+};
+
+// Seleccionar una solicitud de canción
+export const selectSongRequest = (songRequestId: string, onResponse: (response: any) => void): void => {
+    const initializedSocket = ensureSocketInitialized();
+    initializedSocket.emit("SELECTEDSONGREQUEST", { song_request_id: songRequestId });
+    initializedSocket.on("SELECTEDSONGREQUEST", onResponse);
+};
+
 // Envía un evento personalizado al servidor.
 export const emitEvent = (event: string, data?: any): void => {
     const initializedSocket = ensureSocketInitialized();
