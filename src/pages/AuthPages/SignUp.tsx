@@ -10,7 +10,7 @@ import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
     const { mutate } = useRegisterUser();
-    const { setToastMessage, setShowToast } = useContext(UserContext);
+    const { setToastProps } = useContext(UserContext);
 
     const handleAuthSuccess = (userData: UserData) => {
         const { user } = userData;
@@ -21,12 +21,16 @@ const SignUp = () => {
         };
         mutate(register, {
             onSuccess: () => {
-                setToastMessage("Usuario registrado exitosamente");
-                setShowToast(true);
+                setToastProps({
+                    message: "Usuario registrado exitosamente",
+                    class: "success",
+                });
             },
             onError: (error) => {
-                setToastMessage(`Error de registro: ${error.message}`);
-                setShowToast(true);
+                setToastProps({
+                    message: error.message,
+                    class: "error",
+                });
             },
         });
     };
@@ -44,7 +48,6 @@ const SignUp = () => {
             <RegisterForm />
             <Divider />
             <button onClick={openGoogleAuth}>Register with Google</button>
-
             <AuthPrompt
                 linkPath="/auth/login"
                 linkText="Login"

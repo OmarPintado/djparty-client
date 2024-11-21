@@ -5,7 +5,7 @@ import { UserContext } from "../../../context/UserContextProvider";
 import "./css/AuthToast.css";
 
 function AuthToast() {
-    const { toastProps, showToast, setShowToast } = useContext(UserContext);
+    const { toastProps, showToast, setToastProps } = useContext(UserContext);
     return (
         <ToastContainer
             className="p-3"
@@ -13,7 +13,7 @@ function AuthToast() {
             style={{ zIndex: 1 }}
         >
             <Toast
-                onClose={() => setShowToast(false)}
+                onClose={() => setToastProps({ message: "", class: "" })}
                 show={showToast}
                 delay={3000}
                 autohide

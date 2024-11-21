@@ -58,6 +58,7 @@ const RegisterForm = () => {
                     </Spinner>
                 </div>
             )}
+
         </form>
     );
 };

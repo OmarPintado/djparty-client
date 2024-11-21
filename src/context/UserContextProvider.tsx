@@ -9,7 +9,6 @@ export interface UserContextType {
     toastProps: ToastPropsType;
     showToast: boolean;
     setToastProps: (data: ToastPropsType) => void;
-    setShowToast: (value: boolean) => void;
 }
 
 const initialState: UserContextType = {
@@ -23,7 +22,6 @@ const initialState: UserContextType = {
     },
     showToast: false,
     setToastProps: () => null,
-    setShowToast: () => null,
 };
 
 export const UserContext = createContext<UserContextType>(initialState);
@@ -51,6 +49,8 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
                     class: "",
                 });
             }, 3510);
+        } else {
+            setShowToast(false);
         }
     }, [toastProps.message]);
     const logOut = () => {
@@ -66,7 +66,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         toastProps,
         showToast,
         setToastProps,
-        setShowToast,
     };
 
     return (
