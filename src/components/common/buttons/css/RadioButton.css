@@ -17,7 +17,7 @@
 }
 
 .radio-button-circle.checked {
-    background: linear-gradient(to bottom right, #0278FF, #A535B2, #F4158C);
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
 }
 
 .radio-button-inner-circle {
@@ -41,12 +41,19 @@
 }
 
 .radio-input.checked {
-    background-color: #0278FF;
+    background-color: #0278ff;
 }
 
 .radio-label {
     margin-left: 0.5rem;
     font-size: 0.875rem;
+    text-transform: capitalize;
     cursor: pointer;
     user-select: none;
+}
+
+@media screen and (min-width: 480px) {
+    .radio-label {
+        font-size: 1.1rem;
+    }
 }

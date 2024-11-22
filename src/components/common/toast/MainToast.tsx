@@ -2,9 +2,9 @@ import ToastContainer from "react-bootstrap/ToastContainer";
 import Toast from "react-bootstrap/Toast";
 import { useContext } from "react";
 import { UserContext } from "../../../context/UserContextProvider";
-import "./css/AuthToast.css";
+import "./css/MainToast.css";
 
-function AuthToast() {
+function MainToast() {
     const { toastProps, showToast, setToastProps } = useContext(UserContext);
     return (
         <ToastContainer
@@ -35,4 +35,4 @@ function AuthToast() {
     );
 }
 
-export default AuthToast;
+export default MainToast;

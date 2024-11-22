@@ -36,7 +36,7 @@ const Header = () => {
             console.error("Error al buscar salas de música.");
         }
     }, [data, isError]);*/
-    const { logOut } = useContext(UserContext);
+    const { logOut, user } = useContext(UserContext);
     return (
         <header className="header">
             <Navbar
@@ -44,16 +44,16 @@ const Header = () => {
                 expand={expand}
                 className="bg-body-tertiary nav w-100"
             >
-                <Container fluid>
+                <Container fluid className="align-items-center justify-content-center">
                     <Navbar.Brand className="m-0">
-                        <Link to={"/"} className="logo">
+                        <Link to={"/"} className="logo m-0 me-md-1">
                             <img src="/djparty.svg" alt="Logo" />
                         </Link>
                     </Navbar.Brand>
-                    <Navbar.Brand className="text-custom fs-2 fw-semibold "> 
-                        Hello Faisal!
+                    <Navbar.Brand className="text-custom fs-2 fw-semibold ">
+                        Hello <span className="text-capitalize">{user?.fullName} !</span>
                     </Navbar.Brand>
-                   
+
                     <Navbar.Toggle
                         aria-controls={`offcanvasNavbar-expand-${expand}`}
                     />
@@ -84,7 +84,9 @@ const Header = () => {
                                         Home
                                     </Nav.Link>
                                     <NavDropdown
-                                        title={<IoSettingsSharp className="home-icon fs-3" />}
+                                        title={
+                                            <IoSettingsSharp className="home-icon fs-3" />
+                                        }
                                         className="menu-options"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >

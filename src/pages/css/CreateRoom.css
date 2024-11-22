@@ -1,9 +1,14 @@
-.create-room-container{
-    padding: 50px 25px;
+.create-room-container {
+    padding: 15px 10px;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-.create-room-container h1{
+.create-room-container h1 {
     color: rgba(255, 255, 255, 0.671);
+}
+@media screen and (min-width: 480px) {
+    .create-room-container {
+        padding: 50px 25px;
+    }
 }

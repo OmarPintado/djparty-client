@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import "./css/AuthLayout.css";
-import AuthToast from "../common/toast/AuthToast";
+import AuthToast from "../common/toast/MainToast";
 
 const AuthLayout = () => {
     return (

@@ -15,12 +15,12 @@ export type User = {
     fullName: string;
     email: string;
     token:string;
-    profileImage?:string;
+    url_profile?:string;
   };
 export type UserView={
     email: string,
     fullName:string,
-    profileImage: string, 
+    url_profile: string, 
 };
 
 export type UserData = {

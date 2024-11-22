@@ -30,10 +30,6 @@ export const openGoogleAuthPopup = async(): Promise<GoogleAuthResponse>  => {
     );
     const data:GoogleAuthResponse  = await new Promise((resolve) => {
         const receiveMessage = (event: MessageEvent) => {
-            if (event.origin !== import.meta.env.VITE_BASE_URL) {
-                console.warn("Origen no confiable:", event.origin);
-                return;
-            }
             resolve(event.data);
             window.removeEventListener("message", receiveMessage);
         };

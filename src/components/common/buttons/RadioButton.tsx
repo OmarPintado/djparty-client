@@ -1,40 +1,39 @@
-import React from "react";
 import "./css/RadioButton.css";
+import { UseFormRegister } from "react-hook-form";
 
 type RadioButtonProps = {
     id: string;
     name: string;
-    value: string;
     checked: boolean;
-    label: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    value: boolean;
+    fnOnChange: () => void;
+    register: UseFormRegister<any>;
 };
 
 const RadioButton = ({
     id,
     name,
     value,
+    fnOnChange,
+    register,
     checked,
-    label,
-    onChange,
 }: RadioButtonProps) => {
     return (
-        <div className="radio-button-container">
+        <div className="radio-button-container cursor-pointer"  onClick={() => fnOnChange()}>
             <div className={`radio-button-circle ${checked ? "checked" : ""}`}>
                 <div className="radio-button-inner-circle">
                     <input
+                        {...register(name)}
                         type="radio"
                         id={id}
+                        value={value.toString()}
                         name={name}
-                        value={value}
-                        checked={checked}
-                        onChange={onChange}
                         className={`radio-input ${checked ? "checked" : ""}`}
                     />
                 </div>
             </div>
-            <label htmlFor={id} className="radio-label">
-                {label}
+            <label htmlFor={id} className="radio-label text-white">
+                {id}
             </label>
         </div>
     );

@@ -23,6 +23,7 @@ const MainInput = ({
     return (
         <div className={`transparent-input-container ${className}`}>
             <input
+                style={{ colorScheme: "dark" }}
                 type={type}
                 placeholder={placeholder}
                 className={`transparent-input ${error ? "input-error" : ""}`}

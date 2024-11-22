@@ -8,7 +8,7 @@ export const registerUser = async (userData: RegisterData): Promise<string> => {
     return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.error);
+      throw new Error(error.response.data.message);
     }
     throw new Error("Error desconocido");
   }

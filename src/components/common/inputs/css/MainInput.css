@@ -39,3 +39,6 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
 }
+.transparent-input-container .error-message{
+    top:34px;
+}
