@@ -1,25 +1,29 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import CardItem from '../common/Card/CardItem';
 import './css/RoomListRow.css';
+import { UserContext } from '../../context/UserContextProvider';
 
-interface Room {
-  id: string; 
+export interface RoomPreview {
+  id: string;
   image: string;
   title: string;
   subtitle: string;
-  options: { label: string; action: () => void }[];
+  is_private: boolean;
+  usercount: number | undefined;
+  options?: { label: string; action: () => void }[]; 
+  number?: number;  
+  showAddButton?: boolean;  
+  onAddClick?: () => void;  
 }
 
 interface RoomListRowProps {
-  rooms: Room[];
+  rooms: RoomPreview[];
 }
 
 const RoomListRow: React.FC<RoomListRowProps> = ({ rooms }) => {
-  const navigate = useNavigate();
-
-  const handleCardClick = (roomId: string) => {
-    navigate(`/room-home/${roomId}`);
+  const {setRoomPreview} = useContext(UserContext);
+  const handleCardClick = (room:RoomPreview) => {
+    setRoomPreview(room)
   };
 
   return (
@@ -33,7 +37,7 @@ const RoomListRow: React.FC<RoomListRowProps> = ({ rooms }) => {
           options={room.options}
           showAddButton={false}
           number={undefined}
-          onClick={() => handleCardClick(room.id)} // Pasar onClick con roomId
+          onClick={() => handleCardClick(room)} // Pasar onClick con roomId
         />
       ))}
     </div>

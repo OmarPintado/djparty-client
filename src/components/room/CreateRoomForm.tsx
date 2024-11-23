@@ -99,7 +99,7 @@ const CreateRoomForm = () => {
             name: data.name,
             description: data.description,
             start_date: startDateFormat,
-            is_private: Boolean(data.is_private),
+            is_private:isPrivate
         };
         console.log(roomData);
         try {

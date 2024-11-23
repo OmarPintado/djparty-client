@@ -1,47 +1,36 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import CardItem from '../common/Card/CardItem';
+import React, { useContext } from "react";
+import CardItem from "../common/Card/CardItem";
+import { UserContext } from "../../context/UserContextProvider";
+import { RoomPreview } from "./RoomListRow";
 
-
-interface Room {
-  id: string; 
-  image: string;
-  title: string;
-  subtitle: string;
-  options: { label: string; action: () => void }[];
-  number: number;
-  showAddButton: boolean;
-  onAddClick: () => void;
-}
 
 interface RoomListProps {
-  rooms: Room[];
+    rooms: RoomPreview[];
 }
 
 export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
-  const navigate = useNavigate();
+    const { setRoomPreview } = useContext(UserContext);
+    const handleCardClick = (room: RoomPreview) => {
+        setRoomPreview(room);
+    };
 
-  const handleCardClick = (roomId: string) => {
-    navigate(`/room-home/${roomId}`);
-  };
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-      {rooms.map((room, index) => (
-        <CardItem 
-          key={index}
-          image={room.image}
-          title={room.title}
-          subtitle={room.subtitle}
-          options={room.options}
-          number={room.number}
-          showAddButton={room.showAddButton}
-          onAddClick={room.onAddClick}
-          onClick={() => handleCardClick(room.id)}
-        />
-      ))}
-    </div>
-  );
+    return (
+        <div style={{marginTop:"20p", display: "flex", flexDirection: "column", gap: "15px" }}>
+            {rooms.map((room, index) => (
+                <CardItem
+                    key={index}
+                    image={room.image}
+                    title={room.title}
+                    subtitle={room.subtitle}
+                    options={room.options}
+                    number={room.number}
+                    showAddButton={room.showAddButton}
+                    onAddClick={room.onAddClick}
+                    onClick={() => handleCardClick(room)}
+                />
+            ))}
+        </div>
+    );
 };
 
 export default RoomList;

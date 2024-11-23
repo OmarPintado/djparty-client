@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Tabs, Tab } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
@@ -8,11 +8,16 @@ import RoomChat from "./RoomChat";
 import "./css/RoomHome.css";
 import { useSocket } from "../../context/SocketContextProvider";
 import MainButton from "../../components/common/buttons/MainButton";
+import { useIsInRoom } from "../../hooks/useRoom";
+import MainSpinner from "../../components/common/spinner/MainSpinner";
+import AccessDeniedPage from "../AuthPages/AccessDeniedPage";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams();
     const { songRequests, users, sendMessage } = useSocket();
-    const [backgroundImage, setBackgroundImage] = useState<string | null>("/maracumango.jpg");
+    const [backgroundImage, setBackgroundImage] = useState<string | null>(
+        "/maracumango.jpg"
+    );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -29,17 +34,17 @@ export const RoomHome: React.FC = () => {
             if (!roomId) {
                 throw new Error("Room ID is missing");
             }
-    
+
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             if (!user || !user.id) {
                 throw new Error("User is not authenticated");
             }
-    
+
             const token = localStorage.getItem("AUTH_TOKEN");
             if (!token) {
                 throw new Error("Authorization token is missing");
             }
-    
+
             const response = await fetch(
                 `http://localhost:3000/music-room/change-room-state/${roomId}`,
                 {
@@ -53,24 +58,28 @@ export const RoomHome: React.FC = () => {
                     }),
                 }
             );
-    
+
             // Aquí comprobamos si el backend envía texto en lugar de JSON
             const contentType = response.headers.get("content-type");
-    
+
             if (!response.ok) {
                 const errorDetails =
                     contentType && contentType.includes("application/json")
                         ? await response.json()
                         : await response.text(); // Si es texto, lo manejamos
                 console.error("Error del servidor:", errorDetails);
-                throw new Error(errorDetails.message || errorDetails || "Failed to activate the room");
+                throw new Error(
+                    errorDetails.message ||
+                        errorDetails ||
+                        "Failed to activate the room"
+                );
             }
-    
+
             const result =
                 contentType && contentType.includes("application/json")
                     ? await response.json()
                     : await response.text();
-    
+
             console.log("Room activated successfully:", result);
             setSuccessMessage(
                 typeof result === "string"
@@ -82,8 +91,15 @@ export const RoomHome: React.FC = () => {
             setErrorMessage(error.message || "Failed to activate the room");
         }
     };
-    
-
+    const {
+        data: isInRoom,
+        isError,
+        isLoading,
+    } = useIsInRoom(roomId, {
+        enabled: !!roomId,
+    });
+    if (isLoading) return <MainSpinner/>;
+    if (!isInRoom) return <AccessDeniedPage/>;
     return (
         <div className="room-home-container">
             <div
@@ -102,9 +118,17 @@ export const RoomHome: React.FC = () => {
             </div>
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
             {successMessage && <p className="text-success">{successMessage}</p>}
-            <MainButton text="Activate Room" type="button" onClick={handleActivateRoom} />
+            <MainButton
+                text="Activate Room"
+                type="button"
+                onClick={handleActivateRoom}
+            />
             <Container>
-                <Tabs defaultActiveKey="playlist" id="room-tabs" className="mb-3">
+                <Tabs
+                    defaultActiveKey="playlist"
+                    id="room-tabs"
+                    className="mb-3"
+                >
                     <Tab eventKey="playlist" title="Playlist">
                         <RoomPlayList songRequests={songRequests} />
                     </Tab>

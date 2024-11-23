@@ -10,7 +10,7 @@ function MainToast() {
         <ToastContainer
             className="p-3"
             position="top-end"
-            style={{ zIndex: 1 }}
+            style={{ zIndex:9999 }}
         >
             <Toast
                 onClose={() => setToastProps({ message: "", class: "" })}

@@ -1,30 +1,35 @@
-import './css/HomePage.css'; 
+import "./css/HomePage.css";
 import { Container } from "react-bootstrap";
-import RoomListRow from '../components/room/RoomListRow';
-import MainButton from '../components/common/buttons/MainButton';
-import SearchBar from '../components/common/search/SearchBar';
-import useHomePage from './hook/useHomePage';
+import RoomListRow from "../components/room/RoomListRow";
+import MainButton from "../components/common/buttons/MainButton";
+import SearchBar from "../components/common/search/SearchBar";
+import useHomePage from "./hook/useHomePage";
 import React, { useEffect, useState } from "react";
 import { MusicRoom } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import * as RoomService from "../services/roomService";
 import * as RoomServices from "../services/roomServices";
-import RoomList from '../components/room/RoomList';
+import RoomList from "../components/room/RoomList";
+import RoomPreview from "./RoomPages/RoomPreview";
 
 export const HomePage: React.FC = () => {
     const { handleCreateRoomClick } = useHomePage();
     const [searchQuery, setSearchQuery] = useState<string>("");
-
     // Consulta para obtener las rooms populares
-    const { data: popularRooms, isError: popularRoomsError } = useQuery<MusicRoom[], Error>({
+    const { data: popularRooms, isError: popularRoomsError } = useQuery<
+        MusicRoom[],
+        Error
+    >({
         queryKey: ["popularRooms"],
         queryFn: RoomServices.getPopularRooms,
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-
     // Consulta para buscar rooms por nombre
-    const { data: searchResults, isError: searchError } = useQuery<MusicRoom[], Error>({
+    const { data: searchResults, isError: searchError } = useQuery<
+        MusicRoom[],
+        Error
+    >({
         queryKey: ["searchByName", searchQuery],
         queryFn: () => RoomService.searchByName(searchQuery),
         enabled: searchQuery.length > 0,
@@ -42,34 +47,40 @@ export const HomePage: React.FC = () => {
         if (popularRoomsError) {
             console.error("Error al cargar salas populares.");
         }
-        
     }, [searchResults, searchError, popularRoomsError]);
 
     useEffect(() => {
         if (popularRooms) {
             console.log("Estructura de popularRooms:", popularRooms);
         }
-        
     }, [popularRooms]);
-    
+
     return (
         <div className="home-container">
             {/* Botón de Crear Room */}
             <div className="home-create-room">
-                <MainButton text="Create Room" type="submit" onClick={handleCreateRoomClick} />
+                <MainButton
+                    text="Create Room"
+                    type="submit"
+                    onClick={handleCreateRoomClick}
+                />
             </div>
 
             {/* Sección de Popular Rooms */}
             <Container className="home-section">
                 <h3>Popular Rooms</h3>
                 {popularRooms ? (
-                    <RoomListRow rooms={popularRooms.map(room => ({
-                        id: room.id,
-                        image: "/music-art.jpg",  
-                        title: room.name, 
-                        subtitle: room.description, 
-                        options: [] 
-                    }))} />
+                    <RoomListRow
+                        rooms={popularRooms.map((room) => ({
+                            id: room.id,
+                            image: "/music-art.jpg",
+                            title: room.name,
+                            subtitle: room.description,
+                            options: [],
+                            usercount: room.usercount,
+                            is_private: room.is_private,
+                        }))}
+                    />
                 ) : (
                     <p>Cargando salas populares...</p>
                 )}
@@ -80,24 +91,41 @@ export const HomePage: React.FC = () => {
                 <h3>Rooms List</h3>
                 <SearchBar onSearch={(query) => setSearchQuery(query)} />
                 {searchResults ? (
-                    <RoomList rooms={searchResults.map(room => ({
-                        id: room.id,
-                        image: "/music-art.jpg", 
-                        title: room.name,
-                        subtitle: room.description,
-                        options: [
-                            { label: "Eliminar", action: () => alert(`Eliminar ${room.name}`) },
-                            { label: "Compartir", action: () => alert(`Compartir ${room.name}`) },
-                            { label: "Editar", action: () => alert(`Editar ${room.name}`) }
-                        ],
-                        number: 1,
-                        showAddButton: true,
-                        onAddClick: () => alert(`Agregar ${room.name} a la lista`)
-                    }))} />
+                    <RoomList                        
+                        rooms={searchResults.map((room) => ({
+                            id: room.id,
+                            image: "/music-art.jpg",
+                            title: room.name,
+                            subtitle: room.description,
+                            options: [
+                                {
+                                    label: "Eliminar",
+                                    action: () =>
+                                        alert(`Eliminar ${room.name}`),
+                                },
+                                {
+                                    label: "Compartir",
+                                    action: () =>
+                                        alert(`Compartir ${room.name}`),
+                                },
+                                {
+                                    label: "Editar",
+                                    action: () => alert(`Editar ${room.name}`),
+                                },
+                            ],
+                            is_private: room.is_private,
+                            usercount: room.usercount,
+                            number: 1,
+                            showAddButton: true,
+                            onAddClick: () =>
+                                alert(`Agregar ${room.name} a la lista`),
+                        }))}
+                    />
                 ) : (
                     <p>Escriba algo para buscar salas de música...</p>
                 )}
             </Container>
+            {<RoomPreview />}
         </div>
     );
 };
