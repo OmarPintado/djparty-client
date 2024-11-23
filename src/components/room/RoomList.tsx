@@ -4,7 +4,7 @@ import CardItem from '../common/Card/CardItem';
 
 
 interface Room {
-  id: string; // Asegúrate de que Room tiene un id único
+  id: string; 
   image: string;
   title: string;
   subtitle: string;
@@ -37,7 +37,7 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
           number={room.number}
           showAddButton={room.showAddButton}
           onAddClick={room.onAddClick}
-          onClick={() => handleCardClick(room.id)} // Pasa onClick con roomId
+          onClick={() => handleCardClick(room.id)}
         />
       ))}
     </div>

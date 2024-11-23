@@ -52,9 +52,12 @@ const inputConfigs: InputConfig[] = [
         validation: {
             required: "Start date is required",
             validate: (value: string) => {
-                const selectedDate = new Date(value);
+                const [year, month, day] = value.split("-").map(Number); 
+                const selectedDate = new Date(year, month - 1, day); 
+                //const selectedDate = new Date(value);
                 const currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
+                console.log(selectedDate, currentDate);
                 if (selectedDate < currentDate) {
                     return "Start date cannot be in the past";
                 }
@@ -89,12 +92,13 @@ const CreateRoomForm = () => {
             return;
         }
 
-        const formattedDate = startDate.toISOString().split("T")[0];
+        const startDateFormat = new Date(data.start_date).toISOString().split("T")[0];
+
         const roomData = {
             created_by: user.id,
             name: data.name,
             description: data.description,
-            start_date: formattedDate,
+            start_date: startDateFormat,
             is_private: Boolean(data.is_private),
         };
         console.log(roomData);

@@ -42,7 +42,6 @@ export const initializeSocket = (roomId: string, token: string): Socket => {
 
 
 // Obtiene la lista de canciones solicitadas en la sala.
-
 export const getSongRequests = (onSuccess: (data: SongRequest[]) => void): void => {
     const initializedSocket = ensureSocketInitialized();
     initializedSocket.emit("GETSONGREQUESTLIST");

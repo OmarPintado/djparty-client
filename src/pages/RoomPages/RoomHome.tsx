@@ -8,6 +8,7 @@ import RoomUser from "./RoomUsers";
 import RoomChat from "./RoomChat";
 import "./css/RoomHome.css";
 import { useSocket } from "../../context/SocketContextProvider";
+import MainButton from "../../components/common/buttons/MainButton";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams();
@@ -38,6 +39,7 @@ export const RoomHome: React.FC = () => {
                     />
                 </div>
             </div>
+            <MainButton text="Activate Room" type="submit" />
             <Container>
                 <Tabs defaultActiveKey="playlist" id="room-tabs" className="mb-3">
                     <Tab eventKey="playlist" title="Playlist">
