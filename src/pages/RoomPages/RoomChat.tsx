@@ -1,17 +1,24 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import MainInput from "../../components/common/inputs/MainInput";
+import MainButton from "../../components/common/buttons/MainButton";
 
 interface RoomChatProps {
     roomId: string;
 }
 
-const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
-    const [message, setMessage] = useState<string>("");
-    const [messages, setMessages] = useState<string[]>([]);
+interface ChatForm {
+    message: string;
+}
 
-    const handleSendMessage = () => {
-        if (message.trim()) {
-            setMessages([...messages, message]);
-            setMessage("");
+const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
+    const [messages, setMessages] = useState<string[]>([]);
+    const { register, handleSubmit, reset } = useForm<ChatForm>();
+
+    const handleSendMessage = (data: ChatForm) => {
+        if (data.message.trim()) {
+            setMessages([...messages, data.message]);
+            reset(); // Limpia el input después de enviar
         }
     };
 
@@ -23,13 +30,17 @@ const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
                     <p key={index}>{msg}</p>
                 ))}
             </div>
-            <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Escribe un mensaje..."
-            />
-            <button onClick={handleSendMessage}>Enviar</button>
+            {/* Formulario manejado con react-hook-form */}
+            <form onSubmit={handleSubmit(handleSendMessage)}>
+                <MainInput
+                    type="text"
+                    name="message"
+                    placeholder="Escribe un mensaje..."
+                    register={register}
+                    validation={{ required: "El mensaje no puede estar vacío" }}
+                />
+                <MainButton text="Send" type="submit" />
+            </form>
         </div>
     );
 };

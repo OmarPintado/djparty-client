@@ -44,7 +44,7 @@ const RoomPlayList: React.FC<RoomPlayListProps> = ({ songRequests }) => {
         throw new Error("Error al buscar canciones");
       }
       const results = await response.json();
-      setSearchResults(results || []); // Asegúrate de que la estructura sea válida
+      setSearchResults(results || []);
       console.log("Search results:", results);
     } catch (error) {
       console.error("Error searching songs:", error);
