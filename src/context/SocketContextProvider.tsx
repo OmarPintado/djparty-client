@@ -26,10 +26,13 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const [songRequests, setSongRequests] = useState<SongRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const location = useLocation();
+    //const { roomId } = useParams();
     const roomId = location.pathname.split("/")[2];
     const token = localStorage.getItem("AUTH_TOKEN");
 
     useEffect(() => {
+        console.log("Room ID:", roomId);
+        console.log("Token:", token);
         if (!token || !roomId) {
             console.error("No se puede inicializar el socket. Faltan datos requeridos.");
             return;
@@ -37,13 +40,23 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
         const socket = initializeSocket(roomId, token);
 
-        getSongRequests(setSongRequests);
+        //getSongRequests(setSongRequests);
+        getSongRequests((data: SongRequest[]) => {
+            console.log("Canciones recibidas del socket:", data);
+            setSongRequests(data);
+        });
+        
         getUsersByRoom(setUsers);
 
         return () => {
             disconnectSocket();
         };
     }, [roomId, token]);
+
+    useEffect(() => {
+        console.log("Estado songRequests actualizado:", songRequests);
+    }, [songRequests]);
+    
 
     const sendMessage = (message: string) => {
         sendMessageToRoom(message, (response) => {

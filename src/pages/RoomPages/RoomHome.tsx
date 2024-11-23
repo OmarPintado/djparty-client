@@ -11,7 +11,7 @@ import MainButton from "../../components/common/buttons/MainButton";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams();
-    const { songRequests, users, sendMessage } = useSocket();
+    const { songRequests, users } = useSocket();
     const [backgroundImage, setBackgroundImage] = useState<string | null>("/maracumango.jpg");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
