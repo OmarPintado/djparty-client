@@ -4,7 +4,6 @@
     color: white;
     border: none;
     border-radius: 10px;
-    margin-bottom: 15px;
     padding: 10px;
     cursor: pointer;
   }
@@ -44,9 +43,8 @@
   }
   
   .card-item-body {
+    overflow: hidden;
     flex-grow: 1;
-    margin-left: 15px;
-    max-width: 45%;
     padding: 0;
   }
   
@@ -55,7 +53,9 @@
     align-items: center;
     margin-left: auto;
   }
-  
+  .card-body{
+    padding: 6px 5px;
+  }
   .add-button {
     background-color: #0f9b0f;
     border: none;

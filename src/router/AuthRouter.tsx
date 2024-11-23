@@ -8,7 +8,6 @@ import Perfil from "../pages/Perfil.tsx";
 import { HomePage } from "../pages/HomePage.tsx";
 import RoomHome from "../pages/RoomPages/RoomHome.tsx";
 import RoomUsers from "../pages/RoomPages/RoomUsers.tsx";
-import RoomPreview from "../pages/RoomPages/RoomPreview.tsx";
 
 export const AuthRouter = () => {
     return (
@@ -17,7 +16,6 @@ export const AuthRouter = () => {
                 <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
                 <Route path="perfil" element={<Perfil />} />
-                <Route path="room-preview/:roomId" element={<RoomPreview />} />
                 <Route path="room-home/:roomId" element={<RoomHome />} />
                 <Route path="room-home/:roomId/users" element={<RoomUsers />} />
             </Route>

@@ -47,7 +47,13 @@ export type UserMusicRoom ={
     user: User;
     room: MusicRoom;
 }
-
+export type JoinRoomProps  ={
+    music_room_id:string;
+    user_id:string
+}
+export type IsInRoom = {
+    isInRoom:boolean
+}
 export type MusicRoom = {
     id: string;
     name: string;
@@ -55,14 +61,16 @@ export type MusicRoom = {
     created_by: string;
     is_private: boolean;
     user:User;
-
+    usercount:number;
     userMusicRooms: UserMusicRoom[];
 }
 export type ToastPropsType = {
     message:string,
     class:string
 }
-
+export type JoinRoomResponse = {
+    message:string
+}
 export type GoogleUser = {
     email: string;
     firstName: string;
