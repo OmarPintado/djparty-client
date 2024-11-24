@@ -22,9 +22,9 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
         <BrowserRouter>
-          <SocketProvider>
+          
             <DjPartyApp />
-          </SocketProvider>
+          
         </BrowserRouter>
       </UserContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />

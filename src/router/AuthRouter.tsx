@@ -8,6 +8,7 @@ import Perfil from "../pages/Perfil.tsx";
 import { HomePage } from "../pages/HomePage.tsx";
 import RoomHome from "../pages/RoomPages/RoomHome.tsx";
 import RoomUsers from "../pages/RoomPages/RoomUsers.tsx";
+import { SocketProvider } from "../context/SocketContextProvider.tsx";
 
 export const AuthRouter = () => {
     return (
@@ -16,8 +17,10 @@ export const AuthRouter = () => {
                 <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
                 <Route path="perfil" element={<Perfil />} />
-                <Route path="room-home/:roomId" element={<RoomHome />} />
-                <Route path="room-home/:roomId/users" element={<RoomUsers />} />
+            
+                <Route path="room-home/:roomId" element={<SocketProvider><RoomHome /></SocketProvider>} />
+                <Route path="room-home/:roomId/users" element={<SocketProvider><RoomUsers /></SocketProvider>} />
+            
             </Route>
 
             <Route path="auth" element={<AuthLayout />}>
