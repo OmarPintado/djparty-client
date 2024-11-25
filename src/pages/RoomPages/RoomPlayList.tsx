@@ -4,17 +4,18 @@ import { useSocket } from "../../context/SocketContextProvider"; // Accedemos al
 import { useParams } from "react-router-dom"; // Importamos useParams
 import SearchBar from "../../components/common/search/SearchBar";
 import { searchSongs, addSongToRoom } from "../../services/musicService";
-import { getSongRequests } from "../../services/socketService"; // Asegúrate de tener esto importado
+import { getSongRequests, voteSongRequest } from "../../services/socketService"; // Asegúrate de tener esto importado
 import "./css/RoomPlayList.css";
 
 const RoomPlayList: React.FC = () => {
     const { roomId } = useParams<{ roomId: string }>(); // Extraemos roomId de los parámetros de la URL
-    const { songRequests, setSongRequests } = useSocket(); // Usamos el contexto para obtener y actualizar las canciones
+    const { songRequests, setSongRequests, selectSong } = useSocket(); // Usamos el contexto para obtener y actualizar las canciones
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [isSubmittingById, setIsSubmittingById] = useState<Record<string, boolean>>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(null); // Estado para la canción actual
 
     // Realiza la búsqueda de canciones
     const handleSearchSongs = async () => {
@@ -83,10 +84,53 @@ const RoomPlayList: React.FC = () => {
         }
     };
 
+    // Maneja la selección de una canción y la reproduce
+    const handleSelectSong = (songId: string) => {
+        console.log("Seleccionando canción:", songId);
+        if (!roomId) {
+            setErrorMessage("roomId no está definido.");
+            return;
+        }
+        selectSong(songId, (response) => {
+            console.log("RESPUESTA recibida al seleccionar canción:", response);
+            if (response && response.spotify_url) {
+                setCurrentPlayingSong(response.spotify_url);
+            } else {
+                console.error("No se recibió una URL válida para reproducir.");
+                setErrorMessage("No se pudo reproducir la canción. URL no válida.");
+            }
+        });
+    };
+    const handleVoteSong = (songId: string) => {
+        console.log("Votando por canción:", songId);
+        if (!roomId) {
+            setErrorMessage("roomId no está definido.");
+            return;
+        }
+        voteSongRequest(songId, (response) => {
+            console.log("Respuesta recibida al votar por la canción:", response);
+            console.log("songId:", songId);
+             // Extrae el ID de la canción de la respuesta
+    const responseSongId = response?.song_request_id;
+
+    if (responseSongId === songId) {
+        console.log("El voto se registró correctamente.");
+    } else {
+        console.error("Error al registrar el voto.");
+        setErrorMessage("Error al registrar el voto.");
+    }
+        });
+    };
+
     // Ver el estado de los resultados de búsqueda
     useEffect(() => {
         console.log("Resultados de búsqueda actualizados:", searchResults);
     }, [searchResults]);
+
+    //ver el estado de las solicitudes de canciones
+    useEffect(() => {
+        console.log("Estado de la cancion solicitada:", currentPlayingSong);
+    }, [currentPlayingSong]);
 
     return (
         <div>
@@ -135,11 +179,11 @@ const RoomPlayList: React.FC = () => {
                         options: [
                             {
                                 label: "Votar",
-                                action: () => console.log(`Votar: ${songRequest.id}`),
+                                action: () => handleVoteSong(songRequest.id),
                             },
                             {
                                 label: "Seleccionar",
-                                action: () => console.log(`Seleccionar: ${songRequest.id}`),
+                                action: () => handleSelectSong(songRequest.id),
                             },
                         ],
                         number: index + 1,
@@ -148,6 +192,15 @@ const RoomPlayList: React.FC = () => {
                 />
             ) : (
                 <p>No hay canciones solicitadas para esta sala.</p>
+            )}
+
+            {currentPlayingSong && (
+                <div>
+                    <h4>Reproduciendo:</h4>
+                    <audio controls autoPlay src={currentPlayingSong}>
+                        Tu navegador no soporta el reproductor de audio.
+                    </audio>
+                </div>
             )}
         </div>
     );

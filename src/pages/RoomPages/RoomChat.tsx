@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import MainInput from "../../components/common/inputs/MainInput";
 import MainButton from "../../components/common/buttons/MainButton";
+import "./css/RoomChat.css";
 
 interface RoomChatProps {
     roomId: string;
@@ -25,12 +26,11 @@ const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
     return (
         <div>
             <h3>Chat</h3>
-            <div style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+            <div className="chat-container">
                 {messages.map((msg, index) => (
                     <p key={index}>{msg}</p>
                 ))}
             </div>
-            {/* Formulario manejado con react-hook-form */}
             <form onSubmit={handleSubmit(handleSendMessage)}>
                 <MainInput
                     type="text"

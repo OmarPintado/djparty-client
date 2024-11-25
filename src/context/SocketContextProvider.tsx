@@ -78,8 +78,13 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
 
     const selectSong = (songRequestId: string, onResponse: (response: any) => void) => {
-        selectSongRequest(songRequestId, onResponse);
+        selectSongRequest(songRequestId, (response) => {
+            console.log("Respuesta recibida del servidor para SELECTEDSONGREQUEST:", response);
+            onResponse(response); 
+        });
     };
+    
+    
 
     return (
         <SocketContext.Provider value={{ songRequests, setSongRequests, users, sendMessage, voteSong, selectSong }}>

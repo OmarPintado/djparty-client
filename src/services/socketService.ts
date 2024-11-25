@@ -74,9 +74,10 @@ export const voteSongRequest = (songRequestId: string, onResponse: (response: st
 // Seleccionar una solicitud de canción
 export const selectSongRequest = (songRequestId: string, onResponse: (response: any) => void): void => {
     const initializedSocket = ensureSocketInitialized();
-    initializedSocket.emit("SELECTEDSONGREQUEST", { song_request_id: songRequestId });
+    initializedSocket.emit("SELECTEDSONGREQUEST", songRequestId); 
     initializedSocket.on("SELECTEDSONGREQUEST", onResponse);
 };
+
 
 // Envía un evento personalizado al servidor.
 export const emitEvent = (event: string, data?: any): void => {
