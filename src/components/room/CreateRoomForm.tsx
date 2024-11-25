@@ -52,8 +52,8 @@ const inputConfigs: InputConfig[] = [
         validation: {
             required: "Start date is required",
             validate: (value: string) => {
-                const [year, month, day] = value.split("-").map(Number); 
-                const selectedDate = new Date(year, month - 1, day); 
+                const [year, month, day] = value.split("-").map(Number);
+                const selectedDate = new Date(year, month - 1, day);
                 //const selectedDate = new Date(value);
                 const currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
@@ -92,14 +92,17 @@ const CreateRoomForm = () => {
             return;
         }
 
-        const startDateFormat = new Date(data.start_date).toISOString().split("T")[0];
+        const startDateFormat = new Date(data.start_date)
+            .toISOString()
+            .split("T")[0];
 
         const roomData = {
             created_by: user.id,
             name: data.name,
             description: data.description,
             start_date: startDateFormat,
-            is_private:isPrivate
+            is_private: isPrivate,
+            password: data.password,
         };
         console.log(roomData);
         try {
@@ -137,6 +140,7 @@ const CreateRoomForm = () => {
                     />
                 </div>
             ))}
+
             <div className="form-fields">
                 <label
                     className="text-white fw-semibold"
@@ -163,6 +167,36 @@ const CreateRoomForm = () => {
                     />
                 </div>
             </div>
+            {isPrivate && (
+                <div className="form-fields">
+                    <label
+                        className="text-white fw-semibold"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
+                    <MainInput
+                        type="password"
+                        placeholder="Enter a secure password"
+                        name="password"
+                        register={register}
+                        validation={{
+                            required: "Password is required",
+                            minLength: {
+                                value: 8,
+                                message:
+                                    "Password must be at least 8 characters",
+                            },
+                            pattern: {
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                message:
+                                    "Password must include uppercase, lowercase, a number, and a special character",
+                            },
+                        }}
+                        error={errors.password?.message as string}
+                    />
+                </div>
+            )}
             <MainButton text="Create Room" type="submit" />
         </form>
     );

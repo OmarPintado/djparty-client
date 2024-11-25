@@ -50,6 +50,7 @@ export type UserMusicRoom ={
 export type JoinRoomProps  ={
     music_room_id:string;
     user_id:string
+    password?:string
 }
 export type IsInRoom = {
     isInRoom:boolean

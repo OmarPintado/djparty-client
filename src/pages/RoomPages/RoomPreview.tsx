@@ -1,19 +1,49 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import "./css/RoomPreview.css";
 import { UserContext } from "../../context/UserContextProvider";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useIsInRoom, useJoinRoom } from "../../hooks/useRoom";
 import { Link, useNavigate } from "react-router-dom";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const RoomPreview = () => {
     const { roomPreview, setToastProps, setRoomPreview, user } =
         useContext(UserContext);
     const navigate = useNavigate();
-    const { mutate, isPending } = useJoinRoom();
-
+    const { mutate: mutateJoin, isPending: isPendingJoin } = useJoinRoom();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const onSubmitPassword: SubmitHandler<FieldValues> = (data) => {
+        mutateJoin(
+            {
+                user_id: user?.id!,
+                music_room_id: roomPreview?.id!,
+                password: data.password,
+            },
+            {
+                onSuccess: (data) => {
+                    setRoomPreview(null);
+                    setToastProps({
+                        message: data.message,
+                        class: "success",
+                    });
+                    navigate(`room-home/${roomPreview?.id}`);
+                },
+                onError: (error) => {
+                    setToastProps({
+                        message: `${error.message}`,
+                        class: "error",
+                    });
+                },
+            }
+        );
+    };
     const handleJoin = (roomId: string) => {
-        mutate(
+        mutateJoin(
             {
                 user_id: user?.id!,
                 music_room_id: roomId,
@@ -39,18 +69,9 @@ const RoomPreview = () => {
         );
     };
 
-    const {
-        data: isInRoom,
-        isLoading,
-    } = useIsInRoom(roomPreview?.id, {
+    const { data: isInRoom, isLoading } = useIsInRoom(roomPreview?.id, {
         enabled: !!roomPreview,
     });
-
-    useEffect(() => {
-        if (roomPreview != null && isInRoom !== undefined) {
-            console.log("IS IN ROOM:", isInRoom);
-        }
-    }, [roomPreview, isInRoom]);
 
     if (!roomPreview) return null;
 
@@ -75,7 +96,7 @@ const RoomPreview = () => {
                     </div>
                 </div>
                 <div className="modal-body">
-                    {isPending || isLoading ? (
+                    {isPendingJoin || isLoading ? (
                         <div className="modal-spinner">
                             <MainSpinner />
                         </div>
@@ -92,9 +113,43 @@ const RoomPreview = () => {
                             .
                         </p>
                     ) : roomPreview.is_private ? (
-                        <button className="modal-button">
-                            Solicitar Acceso
-                        </button>
+                        <div className="modal-private-access">
+                            <p>
+                                Esta sala es privada. Ingresa la contraseña para
+                                unirte:
+                            </p>
+                            <form onSubmit={handleSubmit(onSubmitPassword)}>
+                                <div className="modal-fields">
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        className="modal-input"
+                                        {...register("password", {
+                                            required:
+                                                "El password es obligatorio",
+                                            minLength: {
+                                                value: 8,
+                                                message:
+                                                    "El password debe tener al menos 8 caracteres",
+                                            },
+                                            pattern: {
+                                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                                message:
+                                                    "El password debe incluir mayúsculas, minúsculas, un número y un carácter especial",
+                                            },
+                                        })}
+                                    />
+                                    {errors.password && (
+                                        <p className="error-message">
+                                            {errors.password.message as string}
+                                        </p>
+                                    )}
+                                </div>
+                                <button type="submit" className="modal-button">
+                                    Unirse a la Sala
+                                </button>
+                            </form>
+                        </div>
                     ) : (
                         <button
                             className="modal-button"
