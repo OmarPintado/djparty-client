@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import MainInput from "../../components/common/inputs/MainInput";
 import MainButton from "../../components/common/buttons/MainButton";
+import { useSocket } from "../../context/SocketContextProvider"; // Importa el contexto del socket
 import "./css/RoomChat.css";
 
 interface RoomChatProps {
@@ -15,11 +16,24 @@ interface ChatForm {
 const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
     const [messages, setMessages] = useState<string[]>([]);
     const { register, handleSubmit, reset } = useForm<ChatForm>();
+    const { socket, sendMessage } = useSocket(); 
+
+    // Escucha los mensajes recibidos a través del socket
+    useEffect(() => {
+        const handleReceiveMessage = (message: string) => {
+            setMessages((prevMessages) => [...prevMessages, message]);
+        };
+        socket?.on("SENDMESSAGEROOM", handleReceiveMessage);
+        return () => {
+            socket?.off("SENDMESSAGEROOM", handleReceiveMessage);
+        };
+    }, [socket]);
 
     const handleSendMessage = (data: ChatForm) => {
         if (data.message.trim()) {
-            setMessages([...messages, data.message]);
-            reset(); // Limpia el input después de enviar
+            sendMessage(JSON.stringify({ roomId, message: data.message }));
+            setMessages([...messages, `Tú: ${data.message}`]);
+            reset();
         }
     };
 

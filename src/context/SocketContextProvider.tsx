@@ -14,9 +14,9 @@ import {
 
 interface SocketContextType {
     songRequests: SongRequest[];
-    setSongRequests: React.Dispatch<React.SetStateAction<SongRequest[]>>; // Exponemos setSongRequests
+    setSongRequests: React.Dispatch<React.SetStateAction<SongRequest[]>>;
     users: User[];
-    sendMessage: (message: string) => void;
+    sendMessage: (data: { roomId: string; message: string }) => void;
     voteSong: (songRequestId: string, onResponse: (response: string) => void) => void;
     selectSong: (songRequestId: string, onResponse: (response: any) => void) => void;
 }
@@ -31,24 +31,18 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const token = localStorage.getItem("AUTH_TOKEN");
 
     useEffect(() => {
-        console.log("Room ID:", roomId);
-        console.log("Token:", token);
         if (!token || !roomId) {
             console.error("No se puede inicializar el socket. Faltan datos requeridos.");
             return;
         }
 
-        const socket = initializeSocket(roomId, token);
+        initializeSocket(roomId, token);
 
-        // Recibe las solicitudes de canciones y las almacena en el estado
         getSongRequests((data: SongRequest[]) => {
-            console.log("Canciones recibidas del socket:", data);
             setSongRequests(data);
         });
 
-        // Recibe los usuarios conectados y los almacena en el estado
         getUsersByRoom((data: User[]) => {
-            console.log("Usuarios recibidos del socket:", data);
             setUsers(data);
         });
 
@@ -67,8 +61,8 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         console.log("Estado users actualizado:", users);
     }, [users]);
 
-    const sendMessage = (message: string) => {
-        sendMessageToRoom(message, (response) => {
+    const sendMessage = (data: { roomId: string; message: string }) => {
+        sendMessageToRoom(data, (response) => {
             console.log("Mensaje enviado a la sala:", response);
         });
     };

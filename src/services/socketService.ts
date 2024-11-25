@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 
 export interface SongRequest {
     id: string;
+    imagine: string;
     title: string;
     artist: string;
 }
@@ -11,7 +12,7 @@ export interface User {
     id: string;
     fullName: string;
     isActive: boolean;
-    //current_room: string,
+    avatar: string;
     
 }
 
@@ -58,9 +59,9 @@ export const getUsersByRoom = (onSuccess: (data: User[]) => void): void => {
 };
 
 // Enviar un mensaje a la sala
-export const sendMessageToRoom = (message: any, onResponse: (response: any) => void): void => {
+export const sendMessageToRoom = (data: { roomId: string; message: string }, onResponse: (response: any) => void): void => {
     const initializedSocket = ensureSocketInitialized();
-    initializedSocket.emit("SENDMESSAGEROOM", message);
+    initializedSocket.emit("SENDMESSAGEROOM", data);
     initializedSocket.on("SENDMESSAGEROOM", onResponse);
 };
 
