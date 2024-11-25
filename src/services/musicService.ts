@@ -13,18 +13,6 @@ export const executeGenreSeed = async () => {
     }
 };
 
-// Servicio para buscar canciones
-export const searchSong = async (songName: string) => {
-    try {
-        const { data } = await clientApi.get(`/spotify/search?q=${songName}`);
-        return data;
-    } catch (error) {
-        if(isAxiosError(error)&&error.response){
-            throw new Error("Error al buscar la canción");
-        }
-    }
-};
-
 // Servicio para crear una solicitud de canción
 export const songRequest = async (userId: string, musicRoomId: string, songId: string) => {
     try {
@@ -41,3 +29,33 @@ export const songRequest = async (userId: string, musicRoomId: string, songId: s
     }
 };
 
+// Servicio para buscar canciones
+export const searchSongs = async (query: string): Promise<any[]> => {
+    try {
+        const { data } = await clientApi.get(`/spotify/search?q=${encodeURIComponent(query)}`);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message || "Error al buscar canciones");
+        }
+        throw new Error("Error desconocido");
+    }
+};
+
+export const addSongToRoom = async (songData: {
+    spotify_track_id: string;
+    name: string;
+    album: any;
+    artists: any[];
+    user_id: string;
+    music_room_id: string;
+}): Promise<void> => {
+    try {
+        await clientApi.post('/song/send-song-request', songData);
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message || "Error al agregar canción");
+        }
+        throw new Error("Error desconocido");
+    }
+};

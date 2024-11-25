@@ -12,20 +12,56 @@ import { useIsInRoom } from "../../hooks/useRoom";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
 import AccessDeniedPage from "../AuthPages/AccessDeniedPage";
 
+interface RoomDetails {
+    id: string;
+    name: string;
+    description: string;
+    created_by: string;
+    start_date: string;
+    is_private: boolean;
+    [key: string]: any; // Extensión para otros datos dinámicos
+}
+
 export const RoomHome: React.FC = () => {
-    const { roomId } = useParams();
+    const { roomId } = useParams<{ roomId: string }>();
     const { songRequests, users } = useSocket();
-    const [backgroundImage, setBackgroundImage] = useState<string | null>(
-        "/maracumango.jpg"
-    );
+    const [backgroundImage, setBackgroundImage] = useState<string | null>("/maracumango.jpg");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null); // Estado para los detalles de la room
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setBackgroundImage(imageUrl);
+        }
+    };
+
+    // Llama al endpoint para obtener los detalles de la room
+    const fetchRoomDetails = async () => {
+        if (!roomId) {
+            setErrorMessage("Room ID is missing");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/music-room/${roomId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al obtener los detalles de la room.");
+            }
+
+            const data: RoomDetails = await response.json();
+            console.log("Detalles de la room:", data);
+            setRoomDetails(data);
+        } catch (error: any) {
+            console.error("Error al obtener los detalles de la room:", error.message);
+            setErrorMessage(error.message || "No se pudieron cargar los detalles de la room.");
         }
     };
 
@@ -59,19 +95,16 @@ export const RoomHome: React.FC = () => {
                 }
             );
 
-            // Aquí comprobamos si el backend envía texto en lugar de JSON
             const contentType = response.headers.get("content-type");
 
             if (!response.ok) {
                 const errorDetails =
                     contentType && contentType.includes("application/json")
                         ? await response.json()
-                        : await response.text(); // Si es texto, lo manejamos
+                        : await response.text();
                 console.error("Error del servidor:", errorDetails);
                 throw new Error(
-                    errorDetails.message ||
-                        errorDetails ||
-                        "Failed to activate the room"
+                    errorDetails.message || errorDetails || "Failed to activate the room"
                 );
             }
 
@@ -91,15 +124,18 @@ export const RoomHome: React.FC = () => {
             setErrorMessage(error.message || "Failed to activate the room");
         }
     };
-    const {
-        data: isInRoom,
-        isError,
-        isLoading,
-    } = useIsInRoom(roomId, {
+
+    // Llama a fetchRoomDetails cuando el componente se monta
+    useEffect(() => {
+        fetchRoomDetails();
+    }, [roomId]);
+
+    const { data: isInRoom, isLoading } = useIsInRoom(roomId, {
         enabled: !!roomId,
     });
-    if (isLoading) return <MainSpinner/>;
-    if (!isInRoom) return <AccessDeniedPage/>;
+
+    if (isLoading) return <MainSpinner />;
+    if (!isInRoom) return <AccessDeniedPage />;
     return (
         <div className="room-home-container">
             <div
@@ -107,7 +143,12 @@ export const RoomHome: React.FC = () => {
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             >
                 <div className="room-home-header-overlay">
-                    <h1 className="room-home-title">Room {roomId}</h1>
+                    <h1 className="room-home-title">
+                        Room {roomDetails?.name || roomId}
+                    </h1>
+                    <p className="room-home-description">
+                        {roomDetails?.description || "Sin descripción disponible"}
+                    </p>
                     <input
                         type="file"
                         accept="image/*"

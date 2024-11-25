@@ -14,6 +14,7 @@ import {
 
 interface SocketContextType {
     songRequests: SongRequest[];
+    setSongRequests: React.Dispatch<React.SetStateAction<SongRequest[]>>; // Exponemos setSongRequests
     users: User[];
     sendMessage: (message: string) => void;
     voteSong: (songRequestId: string, onResponse: (response: string) => void) => void;
@@ -26,7 +27,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const [songRequests, setSongRequests] = useState<SongRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const location = useLocation();
-    //const { roomId } = useParams();
     const roomId = location.pathname.split("/")[2];
     const token = localStorage.getItem("AUTH_TOKEN");
 
@@ -40,23 +40,32 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
         const socket = initializeSocket(roomId, token);
 
-        //getSongRequests(setSongRequests);
+        // Recibe las solicitudes de canciones y las almacena en el estado
         getSongRequests((data: SongRequest[]) => {
             console.log("Canciones recibidas del socket:", data);
             setSongRequests(data);
         });
-        
-        getUsersByRoom(setUsers);
+
+        // Recibe los usuarios conectados y los almacena en el estado
+        getUsersByRoom((data: User[]) => {
+            console.log("Usuarios recibidos del socket:", data);
+            setUsers(data);
+        });
 
         return () => {
             disconnectSocket();
         };
     }, [roomId, token]);
 
+    // Debugging: Observa los cambios en songRequests
     useEffect(() => {
         console.log("Estado songRequests actualizado:", songRequests);
     }, [songRequests]);
-    
+
+    // Debugging: Observa los cambios en users
+    useEffect(() => {
+        console.log("Estado users actualizado:", users);
+    }, [users]);
 
     const sendMessage = (message: string) => {
         sendMessageToRoom(message, (response) => {
@@ -73,7 +82,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
 
     return (
-        <SocketContext.Provider value={{ songRequests, users, sendMessage, voteSong, selectSong }}>
+        <SocketContext.Provider value={{ songRequests, setSongRequests, users, sendMessage, voteSong, selectSong }}>
             {children}
         </SocketContext.Provider>
     );

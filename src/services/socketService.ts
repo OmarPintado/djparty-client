@@ -11,6 +11,8 @@ export interface User {
     id: string;
     fullName: string;
     isActive: boolean;
+    //current_room: string,
+    
 }
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3000";
