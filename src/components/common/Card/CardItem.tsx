@@ -23,7 +23,13 @@ const CardItem: React.FC<CardItemProps> = ({
   onAddClick,
   onClick, 
 }) => (
-  <Card className="card-item" onClick={onClick}>
+  <Card className="card-item" onClick={()=>{
+    if(!onAddClick&& onClick){
+        onClick();
+    }else if (onAddClick&&!onClick){
+        onAddClick();
+    }
+    }}>
     <div className="card-item-content">
       {number !== undefined && (
         <div className="card-item-number">
