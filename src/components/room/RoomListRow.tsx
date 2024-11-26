@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import CardItem from "../common/Card/CardItem";
 import "./css/RoomListRow.css";
 

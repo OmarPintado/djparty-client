@@ -1,10 +1,7 @@
 import React from "react";
 import RoomList from "../../components/room/RoomList";
-import { User } from "../../services/socketService"; 
+import { RoomUserProps } from "../../services/socketService";
 
-interface RoomUserProps {
-  users: User[]; 
-}
 
 const RoomUser: React.FC<RoomUserProps> = ({ users }) => {
   return (

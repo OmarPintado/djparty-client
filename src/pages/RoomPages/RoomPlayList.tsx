@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react";
 import RoomList from "../../components/room/RoomList";
-import { useSocket } from "../../context/SocketContextProvider"; 
-import { useParams } from "react-router-dom"; 
+import { useSocket } from "../../context/SocketContextProvider";
+import { useParams } from "react-router-dom";
 import SearchBar from "../../components/common/search/SearchBar";
-import { searchSongs, addSongToRoom } from "../../services/musicService";
-import { getSongRequests, SongRequest, voteSongRequest } from "../../services/socketService"; 
+import { searchSongs } from "../../services/musicService";
+import {
+    getSongRequests,
+    SongRequest,
+    voteSongRequest,
+} from "../../services/socketService";
 import "./css/RoomPlayList.css";
+import MainSpinner from "../../components/common/spinner/MainSpinner";
 
 interface RoomPlayListProps {
     songRequests: SongRequest[];
 }
 
 const RoomPlayList: React.FC<RoomPlayListProps> = () => {
-    const { roomId } = useParams<{ roomId: string }>(); 
-    const { songRequests, setSongRequests, selectSong } = useSocket(); 
+    const { roomId } = useParams<{ roomId: string }>();
+    const { songRequests, setSongRequests, selectSong } = useSocket();
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [isSubmittingById, setIsSubmittingById] = useState<Record<string, boolean>>({});
+    const [isSubmittingById, setIsSubmittingById] = useState<
+        Record<string, boolean>
+    >({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(null);
+    const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(
+        null
+    );
 
     // Realiza la búsqueda de canciones
     const handleSearchSongs = async () => {
@@ -35,7 +44,10 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             setSearchResults(results || []);
         } catch (error: any) {
             console.error("Error al buscar canciones:", error.message);
-            setErrorMessage(error.message || "Error al buscar canciones. Intenta nuevamente.");
+            setErrorMessage(
+                error.message ||
+                    "Error al buscar canciones. Intenta nuevamente."
+            );
         } finally {
             setIsSearching(false);
         }
@@ -48,7 +60,10 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             return;
         }
 
-        setIsSubmittingById((prev) => ({ ...prev, [song.spotify_track_id]: true }));
+        setIsSubmittingById((prev) => ({
+            ...prev,
+            [song.spotify_track_id]: true,
+        }));
         try {
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             const userId = user?.id;
@@ -67,11 +82,13 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             };
 
             getSongRequests((data: SongRequest[]) => {
-                setSongRequests(data); 
+                setSongRequests(data);
             });
         } catch (error: any) {
             console.error("Error al agregar canción:", error.message);
-            setErrorMessage(error.message || "Error al agregar canción. Intenta nuevamente.");
+            setErrorMessage(
+                error.message || "Error al agregar canción. Intenta nuevamente."
+            );
         } finally {
             setIsSubmittingById((prev) => ({
                 ...prev,
@@ -90,24 +107,26 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             if (response && response.spotify_url) {
                 setCurrentPlayingSong(response.spotify_url);
             } else {
-                setErrorMessage("No se pudo reproducir la canción. URL no válida.");
+                setErrorMessage(
+                    "No se pudo reproducir la canción. URL no válida."
+                );
             }
         });
     };
+
     const handleVoteSong = (songId: string) => {
         if (!roomId) {
             setErrorMessage("roomId no está definido.");
             return;
         }
         voteSongRequest(songId, (response) => {
+            const responseSongId = response?.song_request_id;
 
-    const responseSongId = response?.song_request_id;
-
-    if (responseSongId === songId) {
-        console.log("El voto se registró correctamente.");
-    } else {
-        setErrorMessage("Error al registrar el voto.");
-    }
+            if (responseSongId === songId) {
+                console.log("El voto se registró correctamente.");
+            } else {
+                setErrorMessage("Error al registrar el voto.");
+            }
         });
     };
 
@@ -127,28 +146,37 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             />
             {errorMessage && <p className="text-danger">{errorMessage}</p>}
 
-            {searchResults.length > 0 && (
-                <>
-                    <h3>Resultados de búsqueda</h3>
-                    <div className="search-results-container">
-                        <RoomList
-                            rooms={searchResults.map((song, index) => ({
-                                id: song.spotify_track_id,
-                                image: song.album?.image || "/music-art.jpg",
-                                title: song.name || "No title",
-                                subtitle:
-                                    song.artists?.map((artist: any) => artist.name).join(", ") ||
-                                    "Unknown Artist",
-                                options: [],
-                                number: index + 1,
-                                showAddButton: true,
-                                onAddClick: () => handleAddSongRequest(song),
-                                is_private: false,
-                                usercount: 1, 
-                            }))}
-                        />
-                    </div>
-                </>
+            {isSearching ? (
+                <div className="m-auto">
+                    <MainSpinner />
+                </div>
+            ) : (
+                searchResults.length > 0 && (
+                    <>
+                        <h3>Resultados de búsqueda</h3>
+                        <div className="search-results-container">
+                            <RoomList
+                                rooms={searchResults.map((song, index) => ({
+                                    id: song.spotify_track_id,
+                                    image:
+                                        song.album?.image || "/music-art.jpg",
+                                    title: song.name || "No title",
+                                    subtitle:
+                                        song.artists
+                                            ?.map((artist: any) => artist.name)
+                                            .join(", ") || "Unknown Artist",
+                                    options: [],
+                                    number: index + 1,
+                                    showAddButton: true,
+                                    onAddClick: () =>
+                                        handleAddSongRequest(song),
+                                    is_private: false,
+                                    usercount: 1,
+                                }))}
+                            />
+                        </div>
+                    </>
+                )
             )}
 
             <h3>Solicitudes de canciones</h3>
@@ -175,7 +203,7 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                         number: index + 1,
                         showAddButton: false,
                         is_private: false,
-                        usercount: 1, 
+                        usercount: 1,
                     }))}
                 />
             ) : (

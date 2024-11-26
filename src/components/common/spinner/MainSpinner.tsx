@@ -1,5 +1,5 @@
 import { Spinner } from "react-bootstrap";
-
+import "./css/MainSpinner.css"
 const MainSpinner = () => {
     return (
         <div className="modal-spinner">
