@@ -1,0 +1,14 @@
+.google-button{
+    border-radius: 25px;
+    padding: 10px 25px;
+    border: none;
+    font-weight: 600;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    transition: all 300ms ease-in-out;
+}
+.google-button:hover{
+    background-color: rgb(204, 204, 204);
+    
+}

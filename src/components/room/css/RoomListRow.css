@@ -1,0 +1,25 @@
+.room-list-row {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.room-list-row::-webkit-scrollbar {
+    height: 8px;
+}
+
+.room-list-row::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.room-list-row::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.room-list-row > div {
+    min-width: 180px;
+    max-width: 180px;
+    flex-shrink: 0;
+}

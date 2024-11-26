@@ -1,0 +1,16 @@
+.signup-text {
+    font-size: 14px;
+    color: #777b9b;
+    margin: 14px 0;
+}
+
+.signup-link {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 600;
+}
+
+.signup-link:hover {
+    color: #2563eb;
+}

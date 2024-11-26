@@ -1,15 +1,38 @@
 :root {
-  font-family: 'Roboto', system-ui, sans-serif;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: "Roboto", system-ui, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.transition-input {
+    transition: max-width 0.3s ease, opacity 0.3s ease;
+}
+.form-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 0.5em;
+    text-align: center;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  }
-
+/* Estilo para las descripciones */
+.form-description {
+    font-size: 1em;
+    color: #b0b3b8;
+    margin-bottom: 1.5em;
+    text-align: center;
+    line-height: 1.6;
+}

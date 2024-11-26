@@ -1,0 +1,11 @@
+.search-input {
+    border: none;
+    font-size: 0.875rem; 
+    outline: none;
+    background-color: transparent;
+    border-radius: 0.25rem; 
+    caret-color: white;
+    color: white;
+    width: 100%;
+}
+

@@ -1,0 +1,128 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #090c11;
+    color: #ffffff;
+}
+.text-custom {
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    background-clip:text;
+    color: transparent;
+}
+.text-custom:hover{
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    background-clip:text;
+    color: transparent; 
+}
+.header .nav {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #090c11 !important;
+    color: #ffffff !important;
+}
+.dropdown-toggle.nav-link {
+    color: white !important;
+    padding: 0;
+}
+.btn-close,
+.navbar-toggler {
+    filter: invert(1) !important;
+}
+.dropdown-menu {
+    left: unset !important;
+    right: 0 !important;
+    top: 110% !important;
+}
+.dropdown-toggle.nav-link:hover {
+    background: #090c11 !important;
+}
+.navbar-toggler {
+    fill: white !important;
+    border: none !important;
+}
+.btn-close {
+    color: white !important;
+}
+#offcanvasNavbarDropdown-expand-md::after {
+    content: "";
+    display: none;
+}
+.header .searchContainer {
+    display: flex;
+    width: 100%;
+    margin-left: 0;
+    column-gap: 2rem;
+    justify-content: flex-end;
+    align-items: center;
+}
+@media screen and (min-width: 800px) {
+    .header .searchContainer {
+        column-gap: 4rem;
+    }
+}
+@media screen and (min-width: 900px) {
+    .header .searchContainer {
+        column-gap: 6rem;
+    }
+}
+@media screen and (min-width: 1000px) {
+    .header .searchContainer {
+        column-gap: 8rem;
+    }
+}
+@media screen and (min-width: 1100px) {
+    .header .searchContainer {
+        column-gap: 10rem;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .header .searchContainer {
+        column-gap: 15rem;
+    }
+}
+.header .navbar-toggler-icon {
+    color: white !important;
+}
+.header .container-fluid {
+    padding: 0;
+}
+.menu-options button,
+.menu-options a {
+    background-color: transparent;
+    border: none;
+    text-decoration: none;
+    text-align: left;
+    display: block;
+    padding: 0px 10px;
+    cursor: pointer;
+    color: #000000;
+    min-height: max-content;
+    min-width: 100%;
+}
+.header .navbar-nav {
+    align-items: center !important;
+}
+.menu-options button:hover,
+.menu-options a:hover {
+    background-color: #f1f1f1 !important;
+}
+.offcanvas {
+    background: #090c11 !important;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.logo img {
+    width: 40px;
+}
