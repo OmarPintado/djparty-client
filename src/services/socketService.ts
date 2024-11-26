@@ -25,7 +25,7 @@ export interface MessageData{
     time:string
 }
 export interface RoomUserProps {
-  users: User[]; 
+  users?: User[]; 
 }
 export interface VoteSongResponse{
     song_request_id :string

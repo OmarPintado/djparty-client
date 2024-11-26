@@ -1,9 +1,11 @@
 import React from "react";
 import RoomList from "../../components/room/RoomList";
 import { RoomUserProps } from "../../services/socketService";
+import { useSocket } from "../../context/SocketContextProvider";
 
 
-const RoomUser: React.FC<RoomUserProps> = ({ users }) => {
+const RoomUser: React.FC<RoomUserProps> = () => {
+    const {users} = useSocket();
   return (
     <div>
       <h3>Usuarios Conectados en la Sala</h3>
