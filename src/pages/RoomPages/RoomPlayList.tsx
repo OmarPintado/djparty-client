@@ -22,7 +22,7 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [isSubmittingById, setIsSubmittingById] = useState<
+    const [, setIsSubmittingById] = useState<
         Record<string, boolean>
     >({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -72,14 +72,14 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                 throw new Error("Faltan datos requeridos (user_id).");
             }
 
-            const payload = {
+            /*const payload = {
                 spotify_track_id: song.spotify_track_id,
                 name: song.name,
                 album: song.album,
                 artists: song.artists,
                 user_id: userId,
                 music_room_id: roomId,
-            };
+            };*/
 
             getSongRequests((data: SongRequest[]) => {
                 setSongRequests(data);

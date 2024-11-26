@@ -18,7 +18,6 @@ export const RoomHome: React.FC = () => {
     const { data: isInRoom, isLoading } = useIsInRoom(roomId, {
         enabled: !!roomId,
     });
-
     const { songRequests, users } = useSocket();
     const [backgroundImage, setBackgroundImage] = useState<string | null>(
         "/maracumango.jpg"
@@ -34,7 +33,6 @@ export const RoomHome: React.FC = () => {
             setBackgroundImage(imageUrl);
         }
     };
-
     // Obtener detalles de la sala usando roomServices
     const fetchRoomDetails = async () => {
         if (!roomId) {
@@ -79,62 +77,60 @@ export const RoomHome: React.FC = () => {
     useEffect(() => {
         fetchRoomDetails();
     }, [roomId]);
-
-    if (isLoading)
+    if (isLoading) return <MainSpinner />;
+    if (isInRoom && !isLoading)
         return (
-            <div className="spinner-center">
-                <MainSpinner />;
+            <div className="room-home-container">
+                <div
+                    className="room-home-header"
+                    style={{ backgroundImage: `url(${backgroundImage})` }}
+                >
+                    <div className="room-home-header-overlay">
+                        <h1 className="room-home-title">
+                            Room {roomDetails?.name || roomId}
+                        </h1>
+                        <p className="room-home-description">
+                            {roomDetails?.description ||
+                                "Sin descripción disponible"}
+                        </p>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="room-home-file-input"
+                        />
+                    </div>
+                </div>
+                {errorMessage && <p className="text-danger">{errorMessage}</p>}
+                {successMessage && (
+                    <p className="text-success">{successMessage}</p>
+                )}
+                <MainButton
+                    text="Activate Room"
+                    type="button"
+                    onClick={handleActivateRoom}
+                />
+                <Container>
+                    <Tabs
+                        defaultActiveKey="playlist"
+                        id="room-tabs"
+                        className="mb-3"
+                    >
+                        <Tab eventKey="playlist" title="Playlist">
+                            <RoomPlayList songRequests={songRequests} />
+                        </Tab>
+                        <Tab eventKey="users" title="Usuarios">
+                            <RoomUser users={users} />
+                        </Tab>
+                        <Tab eventKey="chat" title="Chat">
+                            <RoomChat roomId={roomId || ""} />
+                        </Tab>
+                    </Tabs>
+                </Container>
             </div>
         );
-    if (!isInRoom) return <AccessDeniedPage />;
-    return (
-        <div className="room-home-container">
-            <div
-                className="room-home-header"
-                style={{ backgroundImage: `url(${backgroundImage})` }}
-            >
-                <div className="room-home-header-overlay">
-                    <h1 className="room-home-title">
-                        Room {roomDetails?.name || roomId}
-                    </h1>
-                    <p className="room-home-description">
-                        {roomDetails?.description ||
-                            "Sin descripción disponible"}
-                    </p>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="room-home-file-input"
-                    />
-                </div>
-            </div>
-            {errorMessage && <p className="text-danger">{errorMessage}</p>}
-            {successMessage && <p className="text-success">{successMessage}</p>}
-            <MainButton
-                text="Activate Room"
-                type="button"
-                onClick={handleActivateRoom}
-            />
-            <Container>
-                <Tabs
-                    defaultActiveKey="playlist"
-                    id="room-tabs"
-                    className="mb-3"
-                >
-                    <Tab eventKey="playlist" title="Playlist">
-                        <RoomPlayList songRequests={songRequests} />
-                    </Tab>
-                    <Tab eventKey="users" title="Usuarios">
-                        <RoomUser users={users} />
-                    </Tab>
-                    <Tab eventKey="chat" title="Chat">
-                        <RoomChat roomId={roomId || ""} />
-                    </Tab>
-                </Tabs>
-            </Container>
-        </div>
-    );
+    if (!isInRoom&&!isLoading) return <AccessDeniedPage />;
+    return <MainSpinner />;
 };
 
 export default RoomHome;
