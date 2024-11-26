@@ -1,6 +1,5 @@
 import "./css/HomePage.css";
 import { Container } from "react-bootstrap";
-import RoomListRow from "../components/room/RoomListRow";
 import MainButton from "../components/common/buttons/MainButton";
 import SearchBar from "../components/common/search/SearchBar";
 import useHomePage from "./hook/useHomePage";
@@ -11,7 +10,6 @@ import * as RoomService from "../services/roomService";
 import * as RoomServices from "../services/roomServices";
 import RoomList from "../components/room/RoomList";
 import RoomPreview from "./RoomPages/RoomPreview";
-import { clientApi } from "../services/api.";
 import { UserContext } from "../context/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 import RoomShortList from "../components/room/RoomShortList";
@@ -31,7 +29,7 @@ export const HomePage: React.FC = () => {
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-    const { data: myRooms, isError: myRoomsError } = useQuery<
+    const { data: myRooms } = useQuery<
         MusicRoom[],
         Error
     >({
@@ -73,7 +71,6 @@ export const HomePage: React.FC = () => {
 
     return (
         <div className="home-container">
-            {/* Botón de Crear Room */}
             <div className="home-create-room">
                 <MainButton
                     text="Create Room"
@@ -103,7 +100,6 @@ export const HomePage: React.FC = () => {
                     )}
                 </Container>
             )}
-            {/* Sección de Popular Rooms */}
             <Container className="home-section">
                 <h3>Popular Rooms</h3>
                 {popularRooms ? (
@@ -123,7 +119,6 @@ export const HomePage: React.FC = () => {
                 )}
             </Container>
 
-            {/* Sección de All Rooms */}
             <Container>
                 <h3>Rooms List</h3>
                 <SearchBar onSearch={(query) => setSearchQuery(query)} />

@@ -1,15 +1,116 @@
-.chat-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    height: 300px; 
-    overflow-y: scroll; 
-    background-color: #1e1e1e; 
-    color: #ffffff; 
-    border-radius: 5px; 
+.chat p{
+    margin: 0;
 }
-
-/* Estilo para cada mensaje individual */
+.form-chat {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.chat {
+    padding: 10px;
+    height: 300px;
+    z-index: 20;
+    position: relative;
+    overflow-y: scroll;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    overflow-x: hidden;
+    flex-direction: column;
+}
+.chat-container {
+    padding: 5px;
+    margin-bottom: 10px;
+    position: relative;
+    height: 300px;
+    overflow-y: scroll;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    outline: 2px solid transparent;
+    outline-offset: -3px;
+    box-shadow: 0 0 0 3px
+        linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+}
+.chat-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    padding: 2px;
+    border-radius: 5px;
+    background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
+    -webkit-mask: linear-gradient(black, black) content-box,
+        linear-gradient(black, black);
+    mask: linear-gradient(black, black) content-box,
+        linear-gradient(black, black);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
 .chat-message {
     margin: 5px 0;
+    max-width: 95%;
+    min-width: 150px;
+    padding: 8px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+.message-username {
+    font-weight: bold;
+    color: #ccc;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.message-time {
+    font-size: 10px;
+    line-height: .5;
+    text-align: right;
+    color: #f3f1f1;
+}
+
+.my-message {
+    align-self: flex-end;
+    background-color: #4caf50;
+    text-align: right;
+}
+
+.other-message {
+    align-self: flex-start;
+    background-color: #555555;
+    text-align: left;
+}
+
+.message-username {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #ec7514;
+}
+.message{
+    text-align: left;
+}
+.my-message .message-username{
+    display: none;
+}
+
+.chat::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

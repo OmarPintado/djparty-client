@@ -10,14 +10,18 @@ import {
     sendMessageToRoom,
     voteSongRequest,
     selectSongRequest,
+    VoteSongResponse,
+    MessageData,
 } from "../services/socketService";
+import { Socket } from "socket.io-client";
 
 interface SocketContextType {
+    socket?:Socket;
     songRequests: SongRequest[];
     setSongRequests: React.Dispatch<React.SetStateAction<SongRequest[]>>;
     users: User[];
-    sendMessage: (data: { roomId: string; message: string }) => void;
-    voteSong: (songRequestId: string, onResponse: (response: string) => void) => void;
+    sendMessage: (data: MessageData) => void;
+    voteSong: (songRequestId: string, onResponse: (response: VoteSongResponse) => void) => void;
     selectSong: (songRequestId: string, onResponse: (response: any) => void) => void;
 }
 
@@ -29,14 +33,14 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const location = useLocation();
     const roomId = location.pathname.split("/")[2];
     const token = localStorage.getItem("AUTH_TOKEN");
-
+    const [socket,setSocket] = useState<Socket>();
     useEffect(() => {
         if (!token || !roomId) {
             console.error("No se puede inicializar el socket. Faltan datos requeridos.");
             return;
         }
 
-        initializeSocket(roomId, token);
+        setSocket(initializeSocket(roomId, token));
 
         getSongRequests((data: SongRequest[]) => {
             setSongRequests(data);
@@ -61,13 +65,13 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         console.log("Estado users actualizado:", users);
     }, [users]);
 
-    const sendMessage = (data: { roomId: string; message: string }) => {
+    const sendMessage = (data:MessageData) => {
         sendMessageToRoom(data, (response) => {
             console.log("Mensaje enviado a la sala:", response);
         });
     };
 
-    const voteSong = (songRequestId: string, onResponse: (response: string) => void) => {
+    const voteSong = (songRequestId: string, onResponse: (response: VoteSongResponse) => void) => {
         voteSongRequest(songRequestId, onResponse);
     };
 
@@ -81,7 +85,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
 
     return (
-        <SocketContext.Provider value={{ songRequests, setSongRequests, users, sendMessage, voteSong, selectSong }}>
+        <SocketContext.Provider value={{ songRequests,socket, setSongRequests, users, sendMessage, voteSong, selectSong }}>
             {children}
         </SocketContext.Provider>
     );

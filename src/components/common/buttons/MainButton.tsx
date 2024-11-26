@@ -6,19 +6,33 @@ type MainButtonProps = {
     onClick?: () => void;
     type?: "button" | "submit";
     link?: string;
+    className?: string;
 };
 
-const MainButton = ({ text, onClick, type = "button", link }: MainButtonProps) => {
+const MainButton = ({
+    text,
+    onClick,
+    type = "button",
+    link,
+    className,
+}: MainButtonProps) => {
     const buttonContent = <div className="button-content">{text}</div>;
 
     return (
         <>
             {link ? (
-                <Link to={link} className="main-button-container">
+                <Link
+                    to={link}
+                    className={`main-button-container ${className}`}
+                >
                     {buttonContent}
                 </Link>
             ) : (
-                <button type={type} onClick={onClick} className="main-button-container">
+                <button
+                    type={type}
+                    onClick={onClick}
+                    className={`main-button-container ${className}`}
+                >
                     {buttonContent}
                 </button>
             )}

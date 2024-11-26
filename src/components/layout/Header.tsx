@@ -1,17 +1,12 @@
 import "./css/Header.css";
-import SearchInput from "../common/inputs/InputSearch";
-import * as RoomService from "../../services/roomService";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContextProvider";
-import { useQuery } from "@tanstack/react-query";
-import { MusicRoom } from "../../types";
-import { useLocation } from "react-router-dom";
 import { IoSettingsSharp } from "react-icons/io5";
 
 const Header = () => {

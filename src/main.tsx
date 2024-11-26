@@ -6,7 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserContextProvider } from "./context/UserContextProvider.tsx";
-import { SocketProvider } from "./context/SocketContextProvider.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {

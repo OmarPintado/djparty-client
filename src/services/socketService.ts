@@ -3,11 +3,13 @@ import { io, Socket } from "socket.io-client";
 
 export interface SongRequest {
     id: string;
-    imagine: string;
+    image: string;
     title: string;
-    artist: string;
+    artists:  Artist[]
 }
-
+export interface Artist{
+    artist:string
+}
 export interface User {
     id: string;
     fullName: string;
@@ -15,7 +17,25 @@ export interface User {
     avatar: string;
     
 }
-
+export interface MessageData{
+    roomId:string,
+    message: string,
+    userName: string
+    userId:string,
+    time:string
+}
+export interface RoomUserProps {
+  users: User[]; 
+}
+export interface VoteSongResponse{
+    song_request_id :string
+}
+export const getCurrentTime = () => {
+    const date = new Date();
+    const hours = date.getHours().toString().padStart(2, '0'); 
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+};
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3000";
 
 let socket: Socket | null = null;
@@ -59,14 +79,14 @@ export const getUsersByRoom = (onSuccess: (data: User[]) => void): void => {
 };
 
 // Enviar un mensaje a la sala
-export const sendMessageToRoom = (data: { roomId: string; message: string }, onResponse: (response: any) => void): void => {
+export const sendMessageToRoom = (data: MessageData, onResponse: (response: MessageData) => void): void => {
     const initializedSocket = ensureSocketInitialized();
     initializedSocket.emit("SENDMESSAGEROOM", data);
     initializedSocket.on("SENDMESSAGEROOM", onResponse);
 };
 
 // Votar una solicitud de canción
-export const voteSongRequest = (songRequestId: string, onResponse: (response: string) => void): void => {
+export const voteSongRequest = (songRequestId: string, onResponse: (response: VoteSongResponse) => void): void => {
     const initializedSocket = ensureSocketInitialized();
     initializedSocket.emit("VOTESONGREQUEST", { song_request_id: songRequestId });
     initializedSocket.on("VOTESONGREQUEST", onResponse);
