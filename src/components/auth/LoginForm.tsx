@@ -24,7 +24,6 @@ const LoginForm = () => {
         mutate(data, {
             onSuccess: (user) => {
                 reset();
-                console.log(user);
                 login({
                     id: user.id,
                     fullName: user.fullName || "Full Name Prueba",
@@ -34,7 +33,6 @@ const LoginForm = () => {
                 navigate("/");
             },
             onError: (error) => {
-                console.log(error);
                 setToastProps({
                     message: ` ${error.message}`,
                     class: "error",

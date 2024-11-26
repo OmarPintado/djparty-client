@@ -18,10 +18,26 @@ const RoomPreview = () => {
         formState: { errors },
     } = useForm();
     const onSubmitPassword: SubmitHandler<FieldValues> = (data) => {
+        if (!user?.id) {
+            setToastProps({
+                message: "El usuario no está definido.",
+                class: "error",
+            });
+            return;
+        }
+    
+        if (!roomPreview?.id) {
+            setToastProps({
+                message: "La sala no está definida.",
+                class: "error",
+            });
+            return;
+        }
+        
         mutateJoin(
             {
-                user_id: user?.id!,
-                music_room_id: roomPreview?.id!,
+                user_id: user?.id,
+                music_room_id: roomPreview?.id,
                 password: data.password,
             },
             {
@@ -43,9 +59,16 @@ const RoomPreview = () => {
         );
     };
     const handleJoin = (roomId: string) => {
+        if (!user?.id) {
+            setToastProps({
+                message: "El usuario no está definido.",
+                class: "error",
+            });
+            return;
+        }
         mutateJoin(
             {
-                user_id: user?.id!,
+                user_id: user?.id,
                 music_room_id: roomId,
             },
             {

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import RoomList from "../../components/room/RoomList";
 import { User } from "../../services/socketService"; 
-//import "./css/RoomUser.css";
 
 interface RoomUserProps {
   users: User[]; 
@@ -15,12 +14,14 @@ const RoomUser: React.FC<RoomUserProps> = ({ users }) => {
         <RoomList
           rooms={users.map((user, index) => ({
             id: user.id,
-            image: user.avatar || "/maracumango.jpg", 
+            image: user.avatar || "/user.jpg", 
             title: user.fullName || "Usuario sin nombre", 
             subtitle: user.isActive ? "Activo" : "Inactivo", 
             options: [], 
             number: index + 1, 
-            showAddButton: false, 
+            showAddButton: false,
+            is_private: false,
+            usercount: 1, 
           }))}
         />
       ) : (

@@ -57,7 +57,6 @@ const inputConfigs: InputConfig[] = [
                 //const selectedDate = new Date(value);
                 const currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
-                console.log(selectedDate, currentDate);
                 if (selectedDate < currentDate) {
                     return "Start date cannot be in the past";
                 }

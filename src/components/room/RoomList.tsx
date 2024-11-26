@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import CardItem from "../common/Card/CardItem";
-import { UserContext } from "../../context/UserContextProvider";
 import { RoomPreview } from "./RoomListRow";
 
 
@@ -9,11 +8,6 @@ interface RoomListProps {
 }
 
 export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
-    const { setRoomPreview } = useContext(UserContext);
-    const handleCardClick = (room: RoomPreview) => {
-        setRoomPreview(room);
-    };
-
     return (
         <div style={{marginTop:"20p", display: "flex", flexDirection: "column", gap: "15px" }}>
             {rooms.map((room, index) => (
@@ -26,7 +20,6 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
                     number={room.number}
                     showAddButton={room.showAddButton}
                     onAddClick={room.onAddClick}
-                    onClick={() => handleCardClick(room)}
                 />
             ))}
         </div>

@@ -47,3 +47,29 @@ export const getMyRooms = async (id_user:string): Promise<MusicRoom[]> => {
         throw new Error("Error desconocido");
     }
 };
+// Obtener los detalles de una sala específica
+export const getRoomDetails = async (roomId: string): Promise<MusicRoom> => {
+    try {
+        const { data } = await clientApi.get<MusicRoom>(`/music-room/${roomId}`);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message || "Error al obtener detalles de la sala");
+        }
+        throw new Error("Error desconocido");
+    }
+};
+
+// Activar una sala
+export const activateRoom = async (roomId: string, userId: string): Promise<void> => {
+    try {
+        await clientApi.post(`/music-room/change-room-state/${roomId}`, {
+            user_id: userId,
+        });
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message || "Error al activar la sala");
+        }
+        throw new Error("Error desconocido");
+    }
+};

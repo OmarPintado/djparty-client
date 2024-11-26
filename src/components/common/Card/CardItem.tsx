@@ -10,7 +10,6 @@ interface CardItemProps {
   number?: number; 
   showAddButton?: boolean; 
   onAddClick?: () => void; 
-  onClick?: () => void;
 }
 
 const CardItem: React.FC<CardItemProps> = ({ 
@@ -21,15 +20,8 @@ const CardItem: React.FC<CardItemProps> = ({
   number, 
   showAddButton = false, 
   onAddClick,
-  onClick, 
 }) => (
-  <Card className="card-item" onClick={()=>{
-    if(!onAddClick&& onClick){
-        onClick();
-    }else if (onAddClick&&!onClick){
-        onAddClick();
-    }
-    }}>
+  <Card className="card-item" >
     <div className="card-item-content">
       {number !== undefined && (
         <div className="card-item-number">

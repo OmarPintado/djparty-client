@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Tabs, Tab } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-
 import RoomPlayList from "./RoomPlayList";
 import RoomUser from "./RoomUsers";
 import RoomChat from "./RoomChat";
@@ -11,16 +10,8 @@ import MainButton from "../../components/common/buttons/MainButton";
 import { useIsInRoom } from "../../hooks/useRoom";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
 import AccessDeniedPage from "../AuthPages/AccessDeniedPage";
-
-interface RoomDetails {
-    id: string;
-    name: string;
-    description: string;
-    created_by: string;
-    start_date: string;
-    is_private: boolean;
-    [key: string]: any; // Extensión para otros datos dinámicos
-}
+import { getRoomDetails, activateRoom } from "../../services/roomServices";
+import { MusicRoom } from "../../types";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams<{ roomId: string }>();
@@ -34,7 +25,7 @@ export const RoomHome: React.FC = () => {
     );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null); // Estado para los detalles de la room
+    const [roomDetails, setRoomDetails] = useState<MusicRoom | null>(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -44,7 +35,7 @@ export const RoomHome: React.FC = () => {
         }
     };
 
-    // Llama al endpoint para obtener los detalles de la room
+    // Obtener detalles de la sala usando roomServices
     const fetchRoomDetails = async () => {
         if (!roomId) {
             setErrorMessage("Room ID is missing");
@@ -52,36 +43,20 @@ export const RoomHome: React.FC = () => {
         }
 
         try {
-            const response = await fetch(
-                `http://localhost:3000/music-room/${roomId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "AUTH_TOKEN"
-                        )}`,
-                    },
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Error al obtener los detalles de la room.");
-            }
-
-            const data: RoomDetails = await response.json();
-            console.log("Detalles de la room:", data);
+            const data = await getRoomDetails(roomId);
             setRoomDetails(data);
         } catch (error: any) {
             console.error(
-                "Error al obtener los detalles de la room:",
+                "Error al obtener los detalles de la sala:",
                 error.message
             );
             setErrorMessage(
-                error.message ||
-                    "No se pudieron cargar los detalles de la room."
+                error.message || "Error al obtener los detalles de la sala."
             );
         }
     };
 
+    // Activar la sala usando roomServices
     const handleActivateRoom = async () => {
         try {
             if (!roomId) {
@@ -93,116 +68,73 @@ export const RoomHome: React.FC = () => {
                 throw new Error("User is not authenticated");
             }
 
-            const token = localStorage.getItem("AUTH_TOKEN");
-            if (!token) {
-                throw new Error("Authorization token is missing");
-            }
-
-            const response = await fetch(
-                `http://localhost:3000/music-room/change-room-state/${roomId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        user_id: user.id, // Pass the user ID to verify ownership
-                    }),
-                }
-            );
-
-            const contentType = response.headers.get("content-type");
-
-            if (!response.ok) {
-                const errorDetails =
-                    contentType && contentType.includes("application/json")
-                        ? await response.json()
-                        : await response.text();
-                console.error("Error del servidor:", errorDetails);
-                throw new Error(
-                    errorDetails.message ||
-                        errorDetails ||
-                        "Failed to activate the room"
-                );
-            }
-
-            const result =
-                contentType && contentType.includes("application/json")
-                    ? await response.json()
-                    : await response.text();
-
-            console.log("Room activated successfully:", result);
-            setSuccessMessage(
-                typeof result === "string"
-                    ? result
-                    : "Room activated successfully!"
-            );
+            await activateRoom(roomId, user.id);
+            setSuccessMessage("Room activated successfully!");
         } catch (error: any) {
-            console.error("Error activating room:", error.message);
-            setErrorMessage(error.message || "Failed to activate the room");
+            console.error("Error al activar la sala:", error.message);
+            setErrorMessage(error.message || "Error al activar la sala.");
         }
     };
 
-    // Llama a fetchRoomDetails cuando el componente se monta
     useEffect(() => {
         fetchRoomDetails();
     }, [roomId]);
 
-    if (isLoading) return <MainSpinner />;
-    if (isInRoom)
+    if (isLoading)
         return (
-            <div className="room-home-container">
-                <div
-                    className="room-home-header"
-                    style={{ backgroundImage: `url(${backgroundImage})` }}
-                >
-                    <div className="room-home-header-overlay">
-                        <h1 className="room-home-title">
-                            Room {roomDetails?.name || roomId}
-                        </h1>
-                        <p className="room-home-description">
-                            {roomDetails?.description ||
-                                "Sin descripción disponible"}
-                        </p>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            className="room-home-file-input"
-                        />
-                    </div>
-                </div>
-                {errorMessage && <p className="text-danger">{errorMessage}</p>}
-                {successMessage && (
-                    <p className="text-success">{successMessage}</p>
-                )}
-                <MainButton
-                    text="Activate Room"
-                    type="button"
-                    onClick={handleActivateRoom}
-                />
-                <Container>
-                    <Tabs
-                        defaultActiveKey="playlist"
-                        id="room-tabs"
-                        className="mb-3"
-                    >
-                        <Tab eventKey="playlist" title="Playlist">
-                            <RoomPlayList songRequests={songRequests} />
-                        </Tab>
-                        <Tab eventKey="users" title="Usuarios">
-                            <RoomUser users={users} />
-                        </Tab>
-                        <Tab eventKey="chat" title="Chat">
-                            <RoomChat roomId={roomId || ""} />
-                        </Tab>
-                    </Tabs>
-                </Container>
+            <div className="spinner-center">
+                <MainSpinner />;
             </div>
         );
     if (!isInRoom) return <AccessDeniedPage />;
-    return <MainSpinner />;
+    return (
+        <div className="room-home-container">
+            <div
+                className="room-home-header"
+                style={{ backgroundImage: `url(${backgroundImage})` }}
+            >
+                <div className="room-home-header-overlay">
+                    <h1 className="room-home-title">
+                        Room {roomDetails?.name || roomId}
+                    </h1>
+                    <p className="room-home-description">
+                        {roomDetails?.description ||
+                            "Sin descripción disponible"}
+                    </p>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="room-home-file-input"
+                    />
+                </div>
+            </div>
+            {errorMessage && <p className="text-danger">{errorMessage}</p>}
+            {successMessage && <p className="text-success">{successMessage}</p>}
+            <MainButton
+                text="Activate Room"
+                type="button"
+                onClick={handleActivateRoom}
+            />
+            <Container>
+                <Tabs
+                    defaultActiveKey="playlist"
+                    id="room-tabs"
+                    className="mb-3"
+                >
+                    <Tab eventKey="playlist" title="Playlist">
+                        <RoomPlayList songRequests={songRequests} />
+                    </Tab>
+                    <Tab eventKey="users" title="Usuarios">
+                        <RoomUser users={users} />
+                    </Tab>
+                    <Tab eventKey="chat" title="Chat">
+                        <RoomChat roomId={roomId || ""} />
+                    </Tab>
+                </Tabs>
+            </Container>
+        </div>
+    );
 };
 
 export default RoomHome;

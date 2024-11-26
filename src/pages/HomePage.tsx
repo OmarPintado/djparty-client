@@ -14,6 +14,7 @@ import RoomPreview from "./RoomPages/RoomPreview";
 import { clientApi } from "../services/api.";
 import { UserContext } from "../context/UserContextProvider";
 import { useNavigate } from "react-router-dom";
+import RoomShortList from "../components/room/RoomShortList";
 
 export const HomePage: React.FC = () => {
     const { user } = useContext(UserContext);
@@ -69,17 +70,7 @@ export const HomePage: React.FC = () => {
             console.log("Estructura de popularRooms:", popularRooms);
         }
     }, [popularRooms]);
-    useEffect(() => {
-        const fecthRoomByUser = async () => {
-            try {
-                const data = await clientApi(`/music-room/rooms/${user?.id}`);
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fecthRoomByUser();
-    }, []);
+
     return (
         <div className="home-container">
             {/* Botón de Crear Room */}
@@ -94,7 +85,7 @@ export const HomePage: React.FC = () => {
                 <Container className="home-section">
                     <h3>My Rooms</h3>
                     {myRooms ? (
-                        <RoomListRow
+                        <RoomShortList
                             rooms={myRooms.map((room) => ({
                                 id: room.id,
                                 image: "/music-art.jpg",
@@ -103,7 +94,8 @@ export const HomePage: React.FC = () => {
                                 options: [],
                                 usercount: room.usercount,
                                 is_private: room.is_private,
-                                onAddClick:()=> navigate(`room-home/${room.id}`),
+                                onAddClick: () =>
+                                    navigate(`room-home/${room.id}`),
                             }))}
                         />
                     ) : (
@@ -115,7 +107,7 @@ export const HomePage: React.FC = () => {
             <Container className="home-section">
                 <h3>Popular Rooms</h3>
                 {popularRooms ? (
-                    <RoomListRow
+                    <RoomShortList
                         rooms={popularRooms.map((room) => ({
                             id: room.id,
                             image: "/music-art.jpg",
