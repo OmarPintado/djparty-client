@@ -57,8 +57,6 @@ export const initializeSocket = (roomId: string, token: string): Socket => {
             query: { music_room_id: roomId },
             extraHeaders: { Authorization: `Bearer ${token}` },
         });
-
-        console.log(`Socket conectado a ${SOCKET_URL}`);
     }
     return socket;
 };
@@ -118,6 +116,5 @@ export const disconnectSocket = (): void => {
     if (socket) {
         socket.disconnect();
         socket = null;
-        console.log("Socket desconectado.");
     }
 };

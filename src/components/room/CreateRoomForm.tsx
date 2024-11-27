@@ -103,10 +103,8 @@ const CreateRoomForm = () => {
             is_private: isPrivate,
             password: data.password,
         };
-        console.log(roomData);
         try {
             const room = await createMusicRoom(roomData);
-            console.log("Room Created:", room);
             navigate(`/room-home/${room.id}`);
         } catch (error) {
             if (isAxiosError(error) && error.response) {

@@ -28,7 +28,7 @@ export const openGoogleAuthPopup = async(): Promise<GoogleAuthResponse>  => {
         "Google Auth",
        `width=${width},height=${height},top=${top},left=${left}`
     );
-    const data:GoogleAuthResponse  = await new Promise((resolve) => {
+    const data: GoogleAuthResponse  = await new Promise((resolve) => {
         const receiveMessage = (event: MessageEvent) => {
             resolve(event.data);
             window.removeEventListener("message", receiveMessage);

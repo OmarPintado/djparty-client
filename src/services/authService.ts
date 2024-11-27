@@ -34,9 +34,9 @@ export const googleAuth = async(googleData:GoogleUser) : Promise<User>=>{
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.message);
-    }
-    throw new Error("Error desconocido");
+            throw new Error(error.response.data.message);
+        }
+        throw new Error("Error desconocido");
     }
 }
 

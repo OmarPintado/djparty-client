@@ -7,7 +7,6 @@ import { UserContext } from "../../context/UserContextProvider";
 import { Navigate, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../../components/common/buttons/GoogleAuthButton";
 import { openGoogleAuthPopup, useGoogleAuth } from "../../hooks/useAuth";
-import { GoogleUser } from "../../types";
 import { Spinner } from "react-bootstrap";
 
 const Login = () => {
@@ -20,27 +19,23 @@ const Login = () => {
     const { mutate, isPending } = useGoogleAuth();
     const navigate = useNavigate();
 
-    const onSubmit = (data: GoogleUser) => {
-        mutate(data, {
-            onSuccess: (data) => {
-                login(data);
-                navigate("/");
-            },
-            onError: (error) => {
-                setToastProps({
-                    message: `${error.message}`,
-                    class: "error",
-                });
-            },
-        });
-    };
     const openGoogleAuth = async () => {
         try {
-            const { user } = await openGoogleAuthPopup();
-            console.log(user.email);
-            onSubmit(user);
+            const { user: userGoogle } = await openGoogleAuthPopup();
+            if (userGoogle)
+                mutate(userGoogle, {
+                    onSuccess: (data) => {
+                        login(data);
+                        navigate("/");
+                    },
+                    onError: (error) => {
+                        setToastProps({
+                            message: `${error.message}`,
+                            class: "error",
+                        });
+                    },
+                });
         } catch (error) {
-            console.log(error);
         }
     };
 

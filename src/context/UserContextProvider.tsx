@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { ToastPropsType, User } from "../types";
-import {  RoomPreview } from "../components/room/RoomListRow";
+import { RoomPreview } from "../components/room/RoomListRow";
 
 export interface UserContextType {
     user: User | undefined;
@@ -11,7 +11,7 @@ export interface UserContextType {
     showToast: boolean;
     roomPreview: RoomPreview | null;
     setToastProps: (data: ToastPropsType) => void;
-    setRoomPreview: (room: RoomPreview|null) => void;
+    setRoomPreview: (room: RoomPreview | null) => void;
 }
 
 const initialState: UserContextType = {
@@ -64,6 +64,12 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem("AUTH_TOKEN");
         setUser(undefined);
     };
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("AUTH_TOKEN", user.token);
+        }
+    }, [user]);
     const state = {
         user,
         login,

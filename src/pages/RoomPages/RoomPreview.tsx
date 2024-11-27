@@ -72,8 +72,7 @@ const RoomPreview = () => {
                 music_room_id: roomId,
             },
             {
-                onSuccess: (data) => {
-                    console.log(data);
+                onSuccess: () => {
                     setRoomPreview(null);
                     setToastProps({
                         message: "¡Te has unido exitosamente a la sala!",
