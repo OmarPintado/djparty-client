@@ -1,5 +1,4 @@
 import { useContext } from "react";
-//import Menu from "../menu/Menu";
 import "./css/MainLayout.css";
 import { Navigate, Outlet } from "react-router-dom";
 import { UserContext } from "../../context/UserContextProvider";

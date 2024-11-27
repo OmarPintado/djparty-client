@@ -47,13 +47,6 @@ const Header = () => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <div className="searchContainer">
-                                {/*location.pathname === "/" && (
-                                    <SearchInput
-                                        onSearch={(value) =>
-                                            setSearchQuery(value)
-                                        }
-                                    />
-                                )*/}
                                 <Nav className="">
                                     <Nav.Link href="/" className="text-white">
                                         Home

@@ -1,5 +1,4 @@
 .main-button-container {
-    /* padding: 0.125rem !important; */
     outline: none !important;
     overflow: hidden;
     border: none;
@@ -31,7 +30,6 @@
     font-size: 0.875rem !important;
     font-weight: 600 !important;
     color: white;
-    /* border-radius: 1rem; */
     background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
     transition: background 0.5s ease;
     cursor: pointer;

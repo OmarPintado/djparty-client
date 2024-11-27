@@ -33,7 +33,6 @@ export const RoomHome: React.FC = () => {
             setBackgroundImage(imageUrl);
         }
     };
-    // Obtener detalles de la sala usando roomServices
     const fetchRoomDetails = async () => {
         if (!roomId) {
             setErrorMessage("Room ID is missing");
@@ -54,7 +53,6 @@ export const RoomHome: React.FC = () => {
         }
     };
 
-    // Activar la sala usando roomServices
     const handleActivateRoom = async () => {
         try {
             if (!roomId) {

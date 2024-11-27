@@ -12,7 +12,7 @@ const SearchInput = ({ placeholder = "Search...", onSearch }: SearchInputProps) 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setQuery(value);
-        onSearch(value); // Ejecuta la función de búsqueda en tiempo real
+        onSearch(value); 
     };
 
     return (
@@ -24,7 +24,7 @@ const SearchInput = ({ placeholder = "Search...", onSearch }: SearchInputProps) 
                 onChange={handleInputChange}
                 style={{
                     width: '100%',
-                    padding: '10px 40px 10px 15px', // Espacio para el ícono a la derecha
+                    padding: '10px 40px 10px 15px', 
                     borderRadius: '25px',
                     border: '1px solid #ccc',
                     outline: 'none',
@@ -36,7 +36,7 @@ const SearchInput = ({ placeholder = "Search...", onSearch }: SearchInputProps) 
             <IoSearchSharp 
                 style={{
                     position: 'absolute',
-                    right: '15px', // Mueve el ícono al lado derecho
+                    right: '15px', 
                     color: 'white',
                     fontSize: '20px',
                 }}
