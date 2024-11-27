@@ -55,19 +55,9 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         };
     }, [roomId, token]);
 
-    // Debugging: Observa los cambios en songRequests
-    useEffect(() => {
-        console.log("Estado songRequests actualizado:", songRequests);
-    }, [songRequests]);
-
-    // Debugging: Observa los cambios en users
-    useEffect(() => {
-        console.log("Estado users actualizado:", users);
-    }, [users]);
 
     const sendMessage = (data:MessageData) => {
-        sendMessageToRoom(data, (response) => {
-            console.log("Mensaje enviado a la sala:", response);
+        sendMessageToRoom(data, () => {
         });
     };
 
@@ -77,7 +67,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     const selectSong = (songRequestId: string, onResponse: (response: any) => void) => {
         selectSongRequest(songRequestId, (response) => {
-            console.log("Respuesta recibida del servidor para SELECTEDSONGREQUEST:", response);
             onResponse(response); 
         });
     };

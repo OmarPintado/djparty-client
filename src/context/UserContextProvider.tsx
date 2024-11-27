@@ -43,7 +43,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     );
     const login = async (data: User) => {
         setUser(data);
-        console.log(data);
         localStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("AUTH_TOKEN", data.token);
     };

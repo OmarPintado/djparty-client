@@ -23,28 +23,9 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
             email: user?.email,
         },
     });
-    const { setToastProps } = useContext(UserContext);
     const onSubmit: SubmitHandler<UpdateProfileFormInputs> = async (
         updateUserDataDto
     ) => {
-        try {
-            const { data } = await clientApi.patch(
-                `/user/${user?.id}`,
-                updateUserDataDto
-            );
-            console.log("Respuesta del servidor:", data);
-            /*  setToastProps({
-                class: "success",
-                message: "Imagen actualizada con éxito.",
-            });*/
-        } catch (error) {
-            if (isAxiosError(error)) {
-                setToastProps({
-                    class: "error",
-                    message: error?.response?.data.message,
-                });
-            }
-        }
     };
 
     return (

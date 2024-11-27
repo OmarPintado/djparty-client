@@ -26,7 +26,6 @@ export const authenticateUser = async (formData: LoginData): Promise<User> => {
 };
 export const googleAuth = async(googleData:GoogleUser) : Promise<User>=>{
     try {
-        console.log(googleData)
         const { data } = await clientApi.post<User>("/auth/google-auth", {
             email: googleData.email,
             fullName: googleData.firstName + " " + googleData.lastName,
@@ -37,7 +36,6 @@ export const googleAuth = async(googleData:GoogleUser) : Promise<User>=>{
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message);
         }
-        console.log(error)
         throw new Error("Error desconocido");
     }
 }

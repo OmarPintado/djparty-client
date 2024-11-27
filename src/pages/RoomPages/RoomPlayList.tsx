@@ -80,8 +80,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                 user_id: userId,
                 music_room_id: roomId,
             };
-            console.log("PAYLOAD ", payload);
-
             getSongRequests((data: SongRequest[]) => {
                 setSongRequests(data);
             });
@@ -120,7 +118,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             setErrorMessage("roomId no está definido.");
             return;
         }
-        console.log("SONGID", songId);
         voteSongRequest(songId, (response) => {
             const responseSongId = response?.song_request_id;
             if (responseSongId === songId) {
@@ -133,11 +130,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             }
         });
     };
-
-    //ver el estado de las solicitudes de canciones
-    useEffect(() => {
-        console.log("Estado de la cancion solicitada:", currentPlayingSong);
-    }, [currentPlayingSong]);
 
     return (
         <div>

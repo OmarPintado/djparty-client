@@ -50,13 +50,11 @@ const PerfilComponent = () => {
             );
 
             setUser({ ...user, ...data });
-            console.log(data);
             setToastProps({
                 class: "success",
                 message: "Imagen actualizada con éxito.",
             });
         } catch (error) {
-            console.log(error);
             if (isAxiosError(error)) {
                 setToastProps({
                     class: "error",
