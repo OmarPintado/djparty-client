@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import RoomList from "../../components/room/RoomList";
 import { useSocket } from "../../context/SocketContextProvider";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
 import "./css/RoomPlayList.css";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
 import { UserContext } from "../../context/UserContextProvider";
+import { clientApi } from "../../services/api.";
 
 interface RoomPlayListProps {
     songRequests: SongRequest[];
@@ -25,7 +26,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [, setIsSubmittingById] = useState<Record<string, boolean>>({});
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(
         null
     );
@@ -36,18 +36,15 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             setSearchResults([]);
             return;
         }
-
         setIsSearching(true);
-        setErrorMessage(null);
         try {
             const results = await searchSongs(searchQuery);
             setSearchResults(results || []);
         } catch (error: any) {
-            console.error("Error al buscar canciones:", error.message);
-            setErrorMessage(
-                error.message ||
-                    "Error al buscar canciones. Intenta nuevamente."
-            );
+            setToastProps({
+                message: "Error al buscar canciones. Intenta nuevamente.",
+                class: "error",
+            });
         } finally {
             setIsSearching(false);
         }
@@ -56,7 +53,10 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     // Envía solicitud para agregar una canción a la sala
     const handleAddSongRequest = async (song: any) => {
         if (!roomId) {
-            setErrorMessage("roomId no está definido.");
+            setToastProps({
+                message: "Room desconocido.",
+                class: "error",
+            });
             return;
         }
 
@@ -71,7 +71,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             if (!userId) {
                 throw new Error("Faltan datos requeridos (user_id).");
             }
-
             const payload = {
                 spotify_track_id: song.spotify_track_id,
                 name: song.name,
@@ -80,14 +79,19 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                 user_id: userId,
                 music_room_id: roomId,
             };
+            const { data } = await clientApi.post(
+                `/song/send-song-request`,
+                payload
+            );
+            setToastProps({ message: data.message, class: "success" });
             getSongRequests((data: SongRequest[]) => {
                 setSongRequests(data);
             });
         } catch (error: any) {
-            console.error("Error al agregar canción:", error.message);
-            setErrorMessage(
-                error.message || "Error al agregar canción. Intenta nuevamente."
-            );
+            setToastProps({
+                message: "No se pudo agregar la canción. Intenta nuevamente..",
+                class: "error",
+            });
         } finally {
             setIsSubmittingById((prev) => ({
                 ...prev,
@@ -99,23 +103,30 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     // Maneja la selección de una canción y la reproduce
     const handleSelectSong = (songId: string) => {
         if (!roomId) {
-            setErrorMessage("roomId no está definido.");
+            setToastProps({
+                message: "Room no está definido.",
+                class: "error",
+            });
             return;
         }
         selectSong(songId, (response) => {
             if (response && response.spotify_url) {
                 setCurrentPlayingSong(response.spotify_url);
             } else {
-                setErrorMessage(
-                    "No se pudo reproducir la canción. URL no válida."
-                );
+                setToastProps({
+                    message: "No se pudo reproducir la canción. URL no válida.",
+                    class: "error",
+                });
             }
         });
     };
 
     const handleVoteSong = (songId: string) => {
         if (!roomId) {
-            setErrorMessage("roomId no está definido.");
+            setToastProps({
+                message: "Room desconocido.",
+                class: "error",
+            });
             return;
         }
         voteSongRequest(songId, (response) => {
@@ -126,7 +137,10 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                     class: "success",
                 });
             } else {
-                setErrorMessage("Error al registrar el voto.");
+                setToastProps({
+                    message: "No se pudo registrar el voto.",
+                    class: "error",
+                });
             }
         });
     };
@@ -140,8 +154,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                     handleSearchSongs();
                 }}
             />
-            {errorMessage && <p className="text-danger">{errorMessage}</p>}
-
             {isSearching ? (
                 <div className="m-auto">
                     <MainSpinner />

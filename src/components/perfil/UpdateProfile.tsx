@@ -1,9 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "../../types";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserContextProvider";
-import { clientApi } from "../../services/api.";
-import { isAxiosError } from "axios";
 
 type UpdateProfileProps = {
     user: User | undefined;
