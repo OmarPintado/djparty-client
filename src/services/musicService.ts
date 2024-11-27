@@ -1,7 +1,6 @@
 import { clientApi } from "./api.";
 import { isAxiosError } from "axios";
 
-// Servicio para ejecutar la seed de géneros
 export const executeGenreSeed = async () => {
     try {
         const { data } = await clientApi.get("/spotify/executeGenreSeed");
@@ -13,7 +12,6 @@ export const executeGenreSeed = async () => {
     }
 };
 
-// Servicio para crear una solicitud de canción
 export const songRequest = async (userId: string, musicRoomId: string, songId: string) => {
     try {
         const { data } = await clientApi.post("/spotify/songRequest", {
@@ -29,7 +27,6 @@ export const songRequest = async (userId: string, musicRoomId: string, songId: s
     }
 };
 
-// Servicio para buscar canciones
 export const searchSongs = async (query: string): Promise<any[]> => {
     try {
         const { data } = await clientApi.get(`/spotify/search?q=${encodeURIComponent(query)}`);

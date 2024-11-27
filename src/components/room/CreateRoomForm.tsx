@@ -54,7 +54,6 @@ const inputConfigs: InputConfig[] = [
             validate: (value: string) => {
                 const [year, month, day] = value.split("-").map(Number);
                 const selectedDate = new Date(year, month - 1, day);
-                //const selectedDate = new Date(value);
                 const currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
                 if (selectedDate < currentDate) {

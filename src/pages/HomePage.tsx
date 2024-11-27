@@ -19,7 +19,6 @@ export const HomePage: React.FC = () => {
     const { handleCreateRoomClick } = useHomePage();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState<string>("");
-    // Consulta para obtener las rooms populares
     const { data: popularRooms} = useQuery<
         MusicRoom[],
         Error
@@ -37,9 +36,8 @@ export const HomePage: React.FC = () => {
         queryFn: () => RoomServices.getMyRooms(user?.id!),
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
-        enabled: !!user?.id, // Solo ejecuta la consulta si user.id existe
+        enabled: !!user?.id, 
     });
-    // Consulta para buscar rooms por nombre
     const { data: searchResults } = useQuery<
         MusicRoom[],
         Error

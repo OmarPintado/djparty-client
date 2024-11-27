@@ -2,7 +2,6 @@ import  { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./css/perfil.css";
 
-// Definimos la interfaz para los datos del formulario
 interface ChangePasswordFormInputs {
     currentPassword: string;
     newPassword: string;
@@ -18,7 +17,6 @@ const ChangePassword = () => {
     } = useForm<ChangePasswordFormInputs>();
     const [message, setMessage] = useState<string>("");
 
-    // Definimos el tipo de datos esperado para el manejador de envío
     const onSubmit: SubmitHandler<ChangePasswordFormInputs> = (data) => {
         if (data.newPassword !== data.confirmPassword) {
             setMessage("Las contraseñas no coinciden.");
@@ -32,7 +30,6 @@ const ChangePassword = () => {
     return (
         <div className="change-password-container">
             <form onSubmit={handleSubmit(onSubmit)} className="form-change-password">
-                {/* Contraseña Actual */}
                 <div className="form-change-camp">
                     <label className="fw-normal text-white fs-5">
                         Contraseña Actual
@@ -51,7 +48,6 @@ const ChangePassword = () => {
                     )}
                 </div>
 
-                {/* Nueva Contraseña */}
                 <div className="form-change-camp">
                     <label className="fw-normal text-white fs-5">
                         Nueva Contraseña
@@ -74,7 +70,6 @@ const ChangePassword = () => {
                     )}
                 </div>
 
-                {/* Confirmar Nueva Contraseña */}
                 <div className="form-change-camp">
                     <label className="fw-normal text-white fs-5">
                         Confirmar Nueva Contraseña

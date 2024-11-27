@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import MainInput from "../../components/common/inputs/MainInput";
 import MainButton from "../../components/common/buttons/MainButton";
-import { useSocket } from "../../context/SocketContextProvider"; // Importa el contexto del socket
+import { useSocket } from "../../context/SocketContextProvider"; 
 import "./css/RoomChat.css";
 import { UserContext } from "../../context/UserContextProvider";
 import { getCurrentTime, MessageData } from "../../services/socketService";
@@ -20,7 +20,6 @@ const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
     const { register, handleSubmit, reset } = useForm<ChatForm>();
     const { socket, sendMessage } = useSocket();
     const { user } = useContext(UserContext);
-    // Escucha los mensajes recibidos a través del socket
     useEffect(() => {
         const handleReceiveMessage = (message: MessageData) => {
             setMessages((prevMessages) => [...prevMessages, message]);

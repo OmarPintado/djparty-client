@@ -30,7 +30,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         null
     );
 
-    // Realiza la búsqueda de canciones
     const handleSearchSongs = async () => {
         if (!searchQuery.trim()) {
             setSearchResults([]);
@@ -50,7 +49,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         }
     };
 
-    // Envía solicitud para agregar una canción a la sala
     const handleAddSongRequest = async (song: any) => {
         if (!roomId) {
             setToastProps({
@@ -108,7 +106,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         }
     };
 
-    // Maneja la selección de una canción y la reproduce
     const handleSelectSong = (songId: string) => {
         if (!roomId) {
             setToastProps({

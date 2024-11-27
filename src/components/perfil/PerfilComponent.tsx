@@ -36,9 +36,8 @@ const PerfilComponent = () => {
         try {
             if (!file) return;
 
-            // Crear el objeto FormData
             const formData = new FormData();
-            formData.append("file", file); // El nombre debe coincidir con el definido en el backend
+            formData.append("file", file); 
 
             const { data } = await clientApi.patch(
                 `/user/${user?.id}`,
