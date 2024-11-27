@@ -88,6 +88,14 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                 setSongRequests(data);
             });
         } catch (error: any) {
+            console.log(error);
+            if (error.response.data.message) {
+                setToastProps({
+                    message: error.response.data.message,
+                    class: "error",
+                });
+                return;
+            }
             setToastProps({
                 message: "No se pudo agregar la canción. Intenta nuevamente..",
                 class: "error",

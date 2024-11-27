@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { User } from "../../types";
 
 type UpdateProfileProps = {
@@ -11,7 +11,6 @@ type UpdateProfileFormInputs = {
 const UpdateProfile = ({ user }: UpdateProfileProps) => {
     const {
         register,
-        handleSubmit,
         formState: { errors },
     } = useForm<UpdateProfileFormInputs>({
         defaultValues: {
@@ -19,17 +18,10 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
             email: user?.email,
         },
     });
-    const onSubmit: SubmitHandler<UpdateProfileFormInputs> = async (
-        updateUserDataDto
-    ) => {
-    };
 
     return (
         <div className="update-profile">
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="form-update-profile"
-            >
+            <form className="form-update-profile">
                 <div className="form-change-camp">
                     <label className="fw-normal text-white fs-5">
                         Full Name
@@ -39,6 +31,7 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
                         {...register("fullName", {
                             required: "El nombre completo es obligatorio",
                         })}
+                        readOnly
                         className="form-input"
                     />
                     {errors.fullName && (
@@ -59,6 +52,7 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
                                 message: "El formato del correo es inválido",
                             },
                         })}
+                        readOnly
                         className="form-input"
                     />
                     {errors.email && (
@@ -67,10 +61,6 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
                         </p>
                     )}
                 </div>
-
-                <button className="btn-save-change mt-3" type="submit">
-                    Actualizar Perfil
-                </button>
             </form>
         </div>
     );

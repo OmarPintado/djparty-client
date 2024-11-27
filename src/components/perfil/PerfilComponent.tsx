@@ -1,5 +1,4 @@
 import { useState, ChangeEvent, useContext, FormEvent } from "react";
-import ChangePassword from "./ChangePassword";
 import UpdateProfile from "./UpdateProfile";
 import "./css/perfil.css";
 import { UserContext } from "../../context/UserContextProvider";
@@ -106,8 +105,6 @@ const PerfilComponent = () => {
                 </div>
                 <h2 className="profile-heading">Información Personal</h2>
                 <UpdateProfile user={user} />
-                <h2 className="profile-heading">Cambiar Contraseña</h2>
-                <ChangePassword />
             </div>
         </div>
     );
