@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RoomList from "../../components/room/RoomList";
 import { useSocket } from "../../context/SocketContextProvider";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import {
 } from "../../services/socketService";
 import "./css/RoomPlayList.css";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
+import { UserContext } from "../../context/UserContextProvider";
 
 interface RoomPlayListProps {
     songRequests: SongRequest[];
@@ -19,12 +20,11 @@ interface RoomPlayListProps {
 const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     const { roomId } = useParams<{ roomId: string }>();
     const { songRequests, setSongRequests, selectSong } = useSocket();
+    const { setToastProps } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [, setIsSubmittingById] = useState<
-        Record<string, boolean>
-    >({});
+    const [, setIsSubmittingById] = useState<Record<string, boolean>>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(
         null
@@ -72,14 +72,15 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                 throw new Error("Faltan datos requeridos (user_id).");
             }
 
-            /*const payload = {
+            const payload = {
                 spotify_track_id: song.spotify_track_id,
                 name: song.name,
                 album: song.album,
                 artists: song.artists,
                 user_id: userId,
                 music_room_id: roomId,
-            };*/
+            };
+            console.log("PAYLOAD ", payload);
 
             getSongRequests((data: SongRequest[]) => {
                 setSongRequests(data);
@@ -119,11 +120,14 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             setErrorMessage("roomId no está definido.");
             return;
         }
+        console.log("SONGID", songId);
         voteSongRequest(songId, (response) => {
             const responseSongId = response?.song_request_id;
-
             if (responseSongId === songId) {
-                console.log("El voto se registró correctamente.");
+                setToastProps({
+                    message: "El voto se registró correctamente.",
+                    class: "success",
+                });
             } else {
                 setErrorMessage("Error al registrar el voto.");
             }

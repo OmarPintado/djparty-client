@@ -1,60 +1,68 @@
-import { useState, ChangeEvent, MouseEvent, useContext } from "react";
+import { useState, ChangeEvent, useContext, FormEvent } from "react";
 import ChangePassword from "./ChangePassword";
 import UpdateProfile from "./UpdateProfile";
 import "./css/perfil.css";
 import { UserContext } from "../../context/UserContextProvider";
 import { clientApi } from "../../services/api.";
+import { isAxiosError } from "axios";
 
 const PerfilComponent = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, setToastProps, setUser } = useContext(UserContext);
 
-    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [file, setImageFile] = useState<File | null>(null);
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            const maxSize = 4 * 1024 * 1024;
+            if (file.size > maxSize) {
+                setToastProps({
+                    class: "error",
+                    message: "El tamaño del archivo excede el límite de 4MB.",
+                });
+                return;
+            }
+
             setImageFile(file);
             const reader = new FileReader();
             reader.onload = () => {
-                const data = {
-                    fullName: user?.fullName || "",
-                    email: user?.email || "",
-                    token: user?.token || "",
-                    id: user?.id || "",
-                    url_profile: reader.result as string,
-                };
-                console.log(reader.result as string);
-                setUser(data);
+                setUser({ ...user!, url_profile: reader.result as string });
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleImageUpload = async (e: MouseEvent<HTMLButtonElement>) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (!imageFile) return;
-
-        const formData = new FormData();
-        formData.append("file", imageFile); // Asegúrate de que "file" sea el nombre correcto del campo
-
-        console.log(formData);
-
         try {
-            // Cambia la solicitud para enviar formData en lugar de un objeto normal
+            if (!file) return;
+
+            // Crear el objeto FormData
+            const formData = new FormData();
+            formData.append("file", file); // El nombre debe coincidir con el definido en el backend
+
             const { data } = await clientApi.patch(
                 `/user/${user?.id}`,
-                { file: formData },
+                formData,
                 {
-                    headers: {
-                        "Content-Type": "multipart/form-data", // Especifica que el contenido es de tipo "multipart/form-data"
-                    },
+                    headers: { "Content-Type": "multipart/form-data" },
                 }
             );
+
+            setUser({ ...user, ...data });
             console.log(data);
+            setToastProps({
+                class: "success",
+                message: "Imagen actualizada con éxito.",
+            });
         } catch (error) {
-            console.error("Error:", error);
-            alert("No se pudo conectar con el servidor");
+            console.log(error);
+            if (isAxiosError(error)) {
+                setToastProps({
+                    class: "error",
+                    message: "No se pudo cargar la imagen",
+                });
+            }
         }
     };
 
@@ -68,7 +76,7 @@ const PerfilComponent = () => {
                                 <img
                                     src={
                                         user?.url_profile ||
-                                        "https://cdn.vectorstock.com/i/500p/33/47/no-photo-available-icon-default-image-symbol-vector-40343347.jpg"
+                                        "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1732677740~exp=1732681340~hmac=0569628e1294ee5ba641581e0e3bc8facdde3430ba3453e1e55ab28dbedaeab2&w=740"
                                     }
                                     alt="Imagen de perfil"
                                     className="profile-image"
@@ -76,10 +84,13 @@ const PerfilComponent = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="change-container">
+                    <form
+                        onSubmit={(e) => onSubmit(e)}
+                        className="change-container"
+                    >
                         <input
                             type="file"
-                            accept="image/*"
+                            accept=".jpg,.jpeg,.png,.gif"
                             onChange={handleImageChange}
                             id="upload-button"
                             style={{ display: "none" }}
@@ -90,13 +101,10 @@ const PerfilComponent = () => {
                         >
                             Cambiar Imagen
                         </label>
-                        <button
-                            className="btn-save-change"
-                            onClick={handleImageUpload}
-                        >
+                        <button className="btn-save-change" type="submit">
                             Guardar Cambio
                         </button>
-                    </div>
+                    </form>
                 </div>
                 <h2 className="profile-heading">Información Personal</h2>
                 <UpdateProfile user={user} />

@@ -11,26 +11,6 @@ import { IoSettingsSharp } from "react-icons/io5";
 
 const Header = () => {
     const [expand] = useState("md");
-    /*const [searchQuery, setSearchQuery] = useState<string>("");
-    const location = useLocation();
-    const { data, isError, isLoading } = useQuery<MusicRoom[], Error>({
-        queryKey: ["searchByName", searchQuery],
-        queryFn: () => RoomService.searchByName(searchQuery),
-        retry: 1,
-        enabled: searchQuery.length > 0,
-        staleTime: 1000 * 60 * 5,
-
-        refetchOnWindowFocus: false,
-    });
-
-    useEffect(() => {
-        if (data) {
-            console.log("Resultados de la búsqueda:", data);
-        }
-        if (isError) {
-            console.error("Error al buscar salas de música.");
-        }
-    }, [data, isError]);*/
     const { logOut, user } = useContext(UserContext);
     return (
         <header className="header">
@@ -97,17 +77,6 @@ const Header = () => {
                     </Navbar.Offcanvas>
                 </Container>
             </Navbar>
-            {/* <nav className="nav">
-                <Link to={"/"} className="logo">
-                    <img src="/djparty.svg" alt="Logo" />
-                </Link>
-                <SearchInput
-                    onSearch={(value) => {
-                        console.log(value);
-                    }}
-                />
-                <UserMenu />
-            </nav>*/}
         </header>
     );
 };

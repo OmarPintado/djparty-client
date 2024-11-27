@@ -1,8 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "../../types";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContextProvider";
+import { clientApi } from "../../services/api.";
+import { isAxiosError } from "axios";
 
 type UpdateProfileProps = {
-    user: User|undefined;
+    user: User | undefined;
 };
 type UpdateProfileFormInputs = {
     fullName: string;
@@ -19,9 +23,28 @@ const UpdateProfile = ({ user }: UpdateProfileProps) => {
             email: user?.email,
         },
     });
-
-    const onSubmit: SubmitHandler<UpdateProfileFormInputs> = (data) => {
-        console.log("Datos enviados:", data);
+    const { setToastProps } = useContext(UserContext);
+    const onSubmit: SubmitHandler<UpdateProfileFormInputs> = async (
+        updateUserDataDto
+    ) => {
+        try {
+            const { data } = await clientApi.patch(
+                `/user/${user?.id}`,
+                updateUserDataDto
+            );
+            console.log("Respuesta del servidor:", data);
+            /*  setToastProps({
+                class: "success",
+                message: "Imagen actualizada con éxito.",
+            });*/
+        } catch (error) {
+            if (isAxiosError(error)) {
+                setToastProps({
+                    class: "error",
+                    message: error?.response?.data.message,
+                });
+            }
+        }
     };
 
     return (

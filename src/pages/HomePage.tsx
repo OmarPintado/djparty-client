@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import MainButton from "../components/common/buttons/MainButton";
 import SearchBar from "../components/common/search/SearchBar";
 import useHomePage from "./hook/useHomePage";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { MusicRoom } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import * as RoomService from "../services/roomService";
@@ -20,7 +20,7 @@ export const HomePage: React.FC = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState<string>("");
     // Consulta para obtener las rooms populares
-    const { data: popularRooms, isError: popularRoomsError } = useQuery<
+    const { data: popularRooms} = useQuery<
         MusicRoom[],
         Error
     >({
@@ -40,7 +40,7 @@ export const HomePage: React.FC = () => {
         enabled: !!user?.id, // Solo ejecuta la consulta si user.id existe
     });
     // Consulta para buscar rooms por nombre
-    const { data: searchResults, isError: searchError } = useQuery<
+    const { data: searchResults } = useQuery<
         MusicRoom[],
         Error
     >({
@@ -50,24 +50,6 @@ export const HomePage: React.FC = () => {
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-
-    useEffect(() => {
-        if (searchResults) {
-            console.log("Resultados de la búsqueda:", searchResults);
-        }
-        if (searchError) {
-            console.error("Error al buscar salas de música.");
-        }
-        if (popularRoomsError) {
-            console.error("Error al cargar salas populares.");
-        }
-    }, [searchResults, searchError, popularRoomsError]);
-
-    useEffect(() => {
-        if (popularRooms) {
-            console.log("Estructura de popularRooms:", popularRooms);
-        }
-    }, [popularRooms]);
 
     return (
         <div className="home-container">

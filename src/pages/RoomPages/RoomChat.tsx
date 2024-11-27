@@ -43,9 +43,6 @@ const RoomChat: React.FC<RoomChatProps> = ({ roomId }) => {
             reset();
         }
     };
-    useEffect(() => {
-        console.log(messages);
-    }, [messages]);
     return (
         <div>
             <h3>Chat</h3>
