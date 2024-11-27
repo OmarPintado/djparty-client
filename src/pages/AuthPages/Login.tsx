@@ -21,10 +21,9 @@ const Login = () => {
 
     const openGoogleAuth = async () => {
         try {
-            const { user } = await openGoogleAuthPopup();
-            console.log("USEr LOGIN",user)
-            if (user)
-                mutate(user, {
+            const { user: userGoogle } = await openGoogleAuthPopup();
+            if (userGoogle)
+                mutate(userGoogle, {
                     onSuccess: (data) => {
                         login(data);
                         navigate("/");
@@ -37,7 +36,6 @@ const Login = () => {
                     },
                 });
         } catch (error) {
-            console.error(error);
         }
     };
 
