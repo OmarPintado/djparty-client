@@ -15,6 +15,14 @@
     border-top-right-radius: 15px;
     overflow: hidden;
 }
+.room-home-title{
+    font-size: 1.6rem!important;
+    text-align: center;
+}
+.room-home-description{
+    color: #e6e3e3;
+    font-size: 1.4rem!important;
+}
 
 .room-home-header-overlay {
     position: absolute;
@@ -52,4 +60,12 @@
 .room-home-container .container {
     margin-top: 20px;
     padding: 0;
+}
+@media screen and (min-width: 728px) {
+    .room-home-title{
+        font-size:2rem!important;
+    }
+    .room-home-description{
+        font-size: 1.8rem!important;
+    } 
 }

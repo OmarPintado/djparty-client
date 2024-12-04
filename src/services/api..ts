@@ -16,7 +16,6 @@ clientApi.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.error('Interceptor Error:', error);
         return Promise.reject(error);
     }
 );

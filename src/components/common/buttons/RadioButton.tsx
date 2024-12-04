@@ -7,7 +7,7 @@ type RadioButtonProps = {
     checked: boolean;
     value: boolean;
     fnOnChange: () => void;
-    register: UseFormRegister<any>;
+    register?: UseFormRegister<any>;
 };
 
 const RadioButton = ({
@@ -19,11 +19,14 @@ const RadioButton = ({
     checked,
 }: RadioButtonProps) => {
     return (
-        <div className="radio-button-container cursor-pointer"  onClick={() => fnOnChange()}>
+        <div
+            className="radio-button-container cursor-pointer"
+            onClick={() => fnOnChange()}
+        >
             <div className={`radio-button-circle ${checked ? "checked" : ""}`}>
                 <div className="radio-button-inner-circle">
                     <input
-                        {...register(name)}
+                        {...(register ? register(name) : {})}
                         type="radio"
                         id={id}
                         value={value.toString()}

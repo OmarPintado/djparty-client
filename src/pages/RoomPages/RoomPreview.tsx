@@ -81,7 +81,6 @@ const RoomPreview = () => {
                     navigate(`room-home/${roomId}`);
                 },
                 onError: (error) => {
-                    console.error(error);
                     setToastProps({
                         message: `Error al unirte a la sala: ${error.message}`,
                         class: "error",

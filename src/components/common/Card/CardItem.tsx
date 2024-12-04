@@ -9,6 +9,7 @@ interface CardItemProps {
     options?: { label: string; action: () => void }[];
     number?: number;
     is_private?: boolean;
+    usercount?: number | undefined;
     showAddButton?: boolean;
     onAddClick?: () => void;
 }
@@ -19,6 +20,7 @@ const CardItem: React.FC<CardItemProps> = ({
     subtitle,
     options = [],
     number,
+    usercount,
     is_private,
     showAddButton = false,
     onAddClick,
@@ -45,13 +47,18 @@ const CardItem: React.FC<CardItemProps> = ({
                     </Card.Text>
                 </Card.Body>
             </div>
-            <div
-                className={`${
-                    is_private ? "text-bg-danger" : "text-bg-primary"
-                } badge d-none d-md-block mx-3`}
-            >
-                {is_private ? "Privado" : "Publico"}
-            </div>
+            {is_private != undefined && (
+                <div
+                    className={`${
+                        is_private ? "text-bg-danger" : "text-bg-primary"
+                    } badge d-none d-md-block mx-3`}
+                >
+                    {is_private ? "Privado" : "Publico"}
+                </div>
+            )}
+            {usercount != undefined && (
+                <div className="d-none d-md-block mx-3">Votos: {usercount}</div>
+            )}
             <div className="card-item-actions">
                 {showAddButton && onAddClick && (
                     <Button
@@ -66,9 +73,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 )}
                 {options && options.length > 0 && (
                     <Dropdown>
-                        <Dropdown.Toggle className="dropdown-toggle-button">
-                            ...
-                        </Dropdown.Toggle>
+                        <Dropdown.Toggle className="dropdown-toggle-button px-2 py-0"></Dropdown.Toggle>
                         <Dropdown.Menu>
                             {options.map((option, index) => (
                                 <Dropdown.Item

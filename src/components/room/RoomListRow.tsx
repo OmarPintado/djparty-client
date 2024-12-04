@@ -7,8 +7,8 @@ export interface RoomPreview {
     image: string;
     title: string;
     subtitle: string;
-    is_private: boolean;
-    usercount: number | undefined;
+    is_private?: boolean|undefined;
+    usercount?: number | undefined;
     options?: { label: string; action: () => void }[];
     number?: number;
     showAddButton?: boolean;
