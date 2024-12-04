@@ -184,8 +184,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                                     showAddButton: true,
                                     onAddClick: () =>
                                         handleAddSongRequest(song),
-                                    is_private: false,
-                                    usercount: 1,
                                 }))}
                             />
                         </div>
@@ -209,14 +207,9 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                                 label: "Votar",
                                 action: () => handleVoteSong(songRequest.id),
                             },
-                            {
-                                label: "Seleccionar",
-                                action: () => handleSelectSong(songRequest.id),
-                            },
                         ],
                         number: index + 1,
                         showAddButton: false,
-                        is_private: false,
                         usercount: 1,
                     }))}
                 />

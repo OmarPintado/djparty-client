@@ -105,22 +105,6 @@ export const HomePage: React.FC = () => {
                             image: "/music-art.jpg",
                             title: room.name,
                             subtitle: room.description,
-                            options: [
-                                {
-                                    label: "Eliminar",
-                                    action: () =>
-                                        alert(`Eliminar ${room.name}`),
-                                },
-                                {
-                                    label: "Compartir",
-                                    action: () =>
-                                        alert(`Compartir ${room.name}`),
-                                },
-                                {
-                                    label: "Editar",
-                                    action: () => alert(`Editar ${room.name}`),
-                                },
-                            ],
                             is_private: room.is_private,
                             usercount: room.usercount,
                             number: index + 1,
