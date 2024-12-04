@@ -16,32 +16,25 @@ import RoomShortList from "../components/room/RoomShortList";
 
 export const HomePage: React.FC = () => {
     const { user } = useContext(UserContext);
+    const { setRoomPreview } = useContext(UserContext);
+
     const { handleCreateRoomClick } = useHomePage();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState<string>("");
-    const { data: popularRooms} = useQuery<
-        MusicRoom[],
-        Error
-    >({
+    const { data: popularRooms } = useQuery<MusicRoom[], Error>({
         queryKey: ["popularRooms"],
         queryFn: RoomServices.getPopularRooms,
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-    const { data: myRooms } = useQuery<
-        MusicRoom[],
-        Error
-    >({
+    const { data: myRooms } = useQuery<MusicRoom[], Error>({
         queryKey: ["myRooms", user?.id!],
         queryFn: () => RoomServices.getMyRooms(user?.id!),
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
-        enabled: !!user?.id, 
+        enabled: !!user?.id,
     });
-    const { data: searchResults } = useQuery<
-        MusicRoom[],
-        Error
-    >({
+    const { data: searchResults } = useQuery<MusicRoom[], Error>({
         queryKey: ["searchByName", searchQuery],
         queryFn: () => RoomService.searchByName(searchQuery),
         enabled: searchQuery.length > 0,
@@ -104,7 +97,8 @@ export const HomePage: React.FC = () => {
                 <SearchBar onSearch={(query) => setSearchQuery(query)} />
                 {searchResults ? (
                     <RoomList
-                        rooms={searchResults.map((room) => ({
+                        rooms={searchResults.map((room, index) => ({
+                            index,
                             id: room.id,
                             image: "/music-art.jpg",
                             title: room.name,
@@ -127,10 +121,17 @@ export const HomePage: React.FC = () => {
                             ],
                             is_private: room.is_private,
                             usercount: room.usercount,
-                            number: 1,
+                            number: index + 1,
                             showAddButton: true,
                             onAddClick: () =>
-                                alert(`Agregar ${room.name} a la lista`),
+                                setRoomPreview({
+                                    id: room.id,
+                                    is_private: room.is_private,
+                                    subtitle: room.description,
+                                    title: room.name,
+                                    usercount: room.usercount,
+                                    image: "/music-art.jpg",
+                                }),
                         }))}
                     />
                 ) : (
