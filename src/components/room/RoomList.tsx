@@ -18,6 +18,7 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
                     subtitle={room.subtitle}
                     options={room.options}
                     number={room.number}
+                    is_private={room.is_private}
                     showAddButton={room.showAddButton}
                     onAddClick={room.onAddClick}
                 />

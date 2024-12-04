@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import MainButton from "../components/common/buttons/MainButton";
 import SearchBar from "../components/common/search/SearchBar";
 import useHomePage from "./hook/useHomePage";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MusicRoom } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import * as RoomService from "../services/roomService";
@@ -41,7 +41,9 @@ export const HomePage: React.FC = () => {
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-
+    useEffect(() => {
+        console.log(searchResults);
+    }, [searchResults]);
     return (
         <div className="home-container">
             <div className="home-create-room">
