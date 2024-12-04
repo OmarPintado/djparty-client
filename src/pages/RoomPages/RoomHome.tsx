@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomPlayList from "./RoomPlayList";
-import RoomUser from "./RoomUsers";
 import RoomChat from "./RoomChat";
 import "./css/RoomHome.css";
 import { useSocket } from "../../context/SocketContextProvider";
@@ -20,7 +19,7 @@ export const RoomHome: React.FC = () => {
         enabled: !!roomId,
     });
     const { user, setToastProps } = useContext(UserContext);
-    const { songRequests, users } = useSocket();
+    const { songRequests } = useSocket();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<MusicRoom | null>(null);
