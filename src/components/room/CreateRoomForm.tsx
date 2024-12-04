@@ -8,6 +8,7 @@ import { createMusicRoom } from "../../services/roomServices";
 import { useNavigate } from "react-router-dom";
 import RadioButton from "../common/buttons/RadioButton";
 import { isAxiosError } from "axios";
+import { Spinner } from "react-bootstrap";
 
 type InputConfig = {
     name: string;
@@ -93,6 +94,7 @@ const inputConfigs: InputConfig[] = [
 
 const CreateRoomForm = () => {
     const [isPrivate, setIsPrivate] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false); 
     const {
         register,
         handleSubmit,
@@ -103,9 +105,10 @@ const CreateRoomForm = () => {
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         if (!user || !user.id) {
-            console.error("User is not logged in");
             return;
         }
+
+        setIsLoading(true); 
 
         const startDateFormat = new Date(data.start_date)
             .toISOString()
@@ -116,22 +119,21 @@ const CreateRoomForm = () => {
         formData.append("name", data.name);
         formData.append("description", data.description);
         formData.append("start_date", startDateFormat);
-        formData.append("is_private", isPrivate.toString()); 
-        console.log(isPrivate.toString())
+        formData.append("is_private", isPrivate.toString());
         if (data.file[0]) {
-            formData.append("file", data.file[0]); // Add file
+            formData.append("file", data.file[0]); 
         }
         if (isPrivate && data.password) {
             formData.append("password", data.password);
         }
 
         try {
-            const room = await createMusicRoom(formData); // Enviar FormData directamente
+            const room = await createMusicRoom(formData); 
+            setIsLoading(false); 
             navigate(`/room-home/${room.id}`);
         } catch (error) {
-            console.log(error)
+            setIsLoading(false);
             if (isAxiosError(error) && error.response) {
-                console.error("Failed to create room:", error.response.data.message);
                 setToastProps({
                     message: error.response.data.message,
                     class: "error",
@@ -160,12 +162,15 @@ const CreateRoomForm = () => {
                         placeholder={inputConfig.placeholder}
                         name={inputConfig.name}
                         register={register}
-                        classError={inputConfig.type === "file" ? " mt-2 " : " "}
+                        classError={
+                            inputConfig.type === "file" ? " mt-2 " : " "
+                        }
                         validation={inputConfig.validation}
                         error={errors[inputConfig.name]?.message as string}
                     />
                 </div>
             ))}
+
             <div className="form-fields">
                 <label
                     className="text-white fw-semibold"
@@ -192,6 +197,7 @@ const CreateRoomForm = () => {
                     />
                 </div>
             </div>
+
             {isPrivate && (
                 <div className="form-fields">
                     <label
@@ -222,7 +228,16 @@ const CreateRoomForm = () => {
                     />
                 </div>
             )}
+
             <MainButton text="Create Room" type="submit" />
+
+            {isLoading && (
+                <div className="spinner-container">
+                    <Spinner animation="border" variant="primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+            )}
         </form>
     );
 };

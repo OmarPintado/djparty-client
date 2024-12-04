@@ -36,7 +36,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const [socket,setSocket] = useState<Socket>();
     useEffect(() => {
         if (!token || !roomId) {
-            console.error("No se puede inicializar el socket. Faltan datos requeridos.");
             return;
         }
 

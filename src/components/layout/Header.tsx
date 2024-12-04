@@ -26,11 +26,8 @@ const Header = () => {
                             <img src="/djparty.svg" alt="Logo" />
                         </Link>
                     </Navbar.Brand>
-                    <Navbar.Brand className="text-custom fs-2 fw-semibold ">
-                        Hello{" "}
-                        <span className="text-capitalize">
-                            {user?.fullName} !
-                        </span>
+                    <Navbar.Brand className="text-custom text-center  text-custom text-capitalize fs-2 fw-semibold ">
+                        Hello {user?.fullName} !
                     </Navbar.Brand>
 
                     <Navbar.Toggle
@@ -52,11 +49,22 @@ const Header = () => {
                         <Offcanvas.Body>
                             <div className="searchContainer">
                                 <Nav className="gap-4">
-                                    <Link to="/" className="text-white text-decoration-none">
+                                    <Link
+                                        to="/"
+                                        className="text-white text-decoration-none"
+                                    >
                                         Home
                                     </Link>
-                                    <Link to={"/perfil"} className="text-decoration-none text-white">Perfil</Link>
-                                    <button onClick={logOut} className="btn btn-danger">
+                                    <Link
+                                        to={"/perfil"}
+                                        className="text-decoration-none text-white"
+                                    >
+                                        Perfil
+                                    </Link>
+                                    <button
+                                        onClick={logOut}
+                                        className="btn btn-danger"
+                                    >
                                         Cerrar sesión
                                     </button>
                                 </Nav>

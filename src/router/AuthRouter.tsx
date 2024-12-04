@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import  Login  from "../pages/AuthPages/Login.tsx";
+import Login from "../pages/AuthPages/Login.tsx";
 import AuthLayout from "../components/layout/AuthLayout.tsx";
 import MainLayout from "../components/layout/MainLayout.tsx";
 import SignUp from "../pages/AuthPages/SignUp.tsx";
@@ -7,8 +7,8 @@ import CreateRoom from "../pages/CreateRoom.tsx";
 import Perfil from "../pages/Perfil.tsx";
 import { HomePage } from "../pages/HomePage.tsx";
 import RoomHome from "../pages/RoomPages/RoomHome.tsx";
-import RoomUsers from "../pages/RoomPages/RoomUsers.tsx";
 import { SocketProvider } from "../context/SocketContextProvider.tsx";
+import UpdateRoom from "../pages/UpdateRoom.tsx";
 
 export const AuthRouter = () => {
     return (
@@ -17,10 +17,23 @@ export const AuthRouter = () => {
                 <Route index element={<HomePage />} />
                 <Route path="create-room" element={<CreateRoom />} />
                 <Route path="perfil" element={<Perfil />} />
-            
-                <Route path="room-home/:roomId" element={<SocketProvider><RoomHome /></SocketProvider>} />
-                <Route path="room-home/:roomId/users" element={<SocketProvider><RoomUsers /></SocketProvider>} />
-            
+
+                <Route
+                    path="room-home/:roomId"
+                    element={
+                        <SocketProvider>
+                            <RoomHome />
+                        </SocketProvider>
+                    }
+                />
+                <Route
+                    path="room-home/:roomId/edit"
+                    element={
+                        <SocketProvider>
+                            <UpdateRoom />
+                        </SocketProvider>
+                    }
+                />
             </Route>
 
             <Route path="auth" element={<AuthLayout />}>

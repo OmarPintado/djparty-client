@@ -16,6 +16,22 @@ export const createMusicRoom = async (
         throw new Error("Error desconocido");
     }
 };
+export const updateMusicRoom = async (
+    id:string,
+    roomData: FormData 
+): Promise<MusicRoom> => {
+    try {
+        const { data } = await clientApi.patch<MusicRoom>(`/music-room/${id}`, roomData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.message);
+        }
+        throw new Error("Error desconocido");
+    }
+};
 
 export const getPopularRooms = async (): Promise<MusicRoom[]> => {
     try {
@@ -23,10 +39,8 @@ export const getPopularRooms = async (): Promise<MusicRoom[]> => {
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
-            console.error("Error de respuesta:", error.response.data);
             throw new Error(error.response.data.error);
         }
-        console.error("Error desconocido:", error);
         throw new Error("Error desconocido");
     }
 };
@@ -37,10 +51,8 @@ export const getMyRooms = async (id_user:string): Promise<MusicRoom[]> => {
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
-            console.error("Error de respuesta:", error.response.data);
             throw new Error(error.response.data.error);
         }
-        console.error("Error desconocido:", error);
         throw new Error("Error desconocido");
     }
 };

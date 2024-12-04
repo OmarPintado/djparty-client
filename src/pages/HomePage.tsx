@@ -1,5 +1,4 @@
 import "./css/HomePage.css";
-import { Container } from "react-bootstrap";
 import MainButton from "../components/common/buttons/MainButton";
 import SearchBar from "../components/common/search/SearchBar";
 import useHomePage from "./hook/useHomePage";
@@ -41,9 +40,7 @@ export const HomePage: React.FC = () => {
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
     });
-    useEffect(() => {
-        console.log(searchResults);
-    }, [searchResults]);
+    useEffect(() => {}, [searchResults]);
     return (
         <div className="home-container">
             <div className="home-create-room">
@@ -54,13 +51,15 @@ export const HomePage: React.FC = () => {
                 />
             </div>
             {myRooms && myRooms.length > 0 && (
-                <Container className="home-section">
+                <div className="home-section">
                     <h3>My Rooms</h3>
                     {myRooms ? (
                         <RoomShortList
                             rooms={myRooms.map((room) => ({
                                 id: room.id,
-                                image: "/music-art.jpg",
+                                image: room.image_url
+                                    ? room.image_url
+                                    : "/music-art.jpg",
                                 title: room.name,
                                 subtitle: room.description,
                                 options: [],
@@ -73,15 +72,17 @@ export const HomePage: React.FC = () => {
                     ) : (
                         <p>Cargando salas populares...</p>
                     )}
-                </Container>
+                </div>
             )}
-            <Container className="home-section">
+            <div className="home-section">
                 <h3>Popular Rooms</h3>
                 {popularRooms ? (
                     <RoomShortList
                         rooms={popularRooms.map((room) => ({
                             id: room.id,
-                            image: "/music-art.jpg",
+                            image: room.image_url
+                            ? room.image_url
+                            : "/music-art.jpg",
                             title: room.name,
                             subtitle: room.description,
                             options: [],
@@ -92,9 +93,9 @@ export const HomePage: React.FC = () => {
                 ) : (
                     <p>Cargando salas populares...</p>
                 )}
-            </Container>
+            </div>
 
-            <Container>
+            <div>
                 <h3>Rooms List</h3>
                 <SearchBar onSearch={(query) => setSearchQuery(query)} />
                 {searchResults ? (
@@ -102,7 +103,9 @@ export const HomePage: React.FC = () => {
                         rooms={searchResults.map((room, index) => ({
                             index,
                             id: room.id,
-                            image: "/music-art.jpg",
+                            image: room.image_url
+                            ? room.image_url
+                            : "/music-art.jpg",
                             title: room.name,
                             subtitle: room.description,
                             is_private: room.is_private,
@@ -123,7 +126,7 @@ export const HomePage: React.FC = () => {
                 ) : (
                     <p>Escriba algo para buscar salas de música...</p>
                 )}
-            </Container>
+            </div>
             {<RoomPreview />}
         </div>
     );

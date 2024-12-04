@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RoomPlayList from "./RoomPlayList";
 import RoomUser from "./RoomUsers";
 import RoomChat from "./RoomChat";
@@ -21,12 +21,13 @@ export const RoomHome: React.FC = () => {
     });
     const { user, setToastProps } = useContext(UserContext);
     const { songRequests, users } = useSocket();
-
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<MusicRoom | null>(null);
-    const [backgroundImage, setBackgroundImage] = useState<string | null>(
-        roomDetails?.image_url || ""
-    );
+    const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+    const [backgroundImageLoading, setBackgroundImageLoading] =
+        useState<boolean>(true);
+
     const fetchRoomDetails = async () => {
         if (!roomId) {
             setErrorMessage("Room ID is missing");
@@ -36,16 +37,15 @@ export const RoomHome: React.FC = () => {
         try {
             const data = await getRoomDetails(roomId);
             setRoomDetails(data);
-            console.log(data);
         } catch (error: any) {
-            console.error(
-                "Error al obtener los detalles de la sala:",
-                error.message
-            );
             setErrorMessage(
                 error.message || "Error al obtener los detalles de la sala."
             );
         }
+    };
+
+    const handleEditRoom = () => {
+        navigate(`edit`);
     };
 
     const handleActivateRoom = async () => {
@@ -78,13 +78,29 @@ export const RoomHome: React.FC = () => {
     useEffect(() => {
         fetchRoomDetails();
     }, [roomId]);
+
     useEffect(() => {
         if (roomDetails?.image_url) {
-            setBackgroundImage(roomDetails?.image_url!);
+            setBackgroundImageLoading(true);
+            const img = new Image();
+            img.src = roomDetails.image_url!;
+            img.onload = () => {
+                setBackgroundImage(roomDetails.image_url!);
+                setBackgroundImageLoading(false);
+            };
+            img.onerror = () => {
+                setBackgroundImage("/music-art.jpg");
+                setBackgroundImageLoading(false);
+            };
+        } else {
+            setBackgroundImage("/music-art.jpg");
+            setBackgroundImageLoading(false);
         }
     }, [roomDetails]);
-    if (isLoading) return <MainSpinner />;
-    if (isInRoom && !isLoading)
+
+    if (isLoading || backgroundImageLoading) return <MainSpinner />;
+
+    if (isInRoom && !isLoading) {
         return (
             <div className="room-home-container">
                 <div
@@ -92,26 +108,30 @@ export const RoomHome: React.FC = () => {
                     style={{ backgroundImage: `url(${backgroundImage})` }}
                 >
                     <div className="room-home-header-overlay">
-                        <h1 className="room-home-title">
-                            {roomDetails?.name || roomId}
-                        </h1>
+                        <h1 className="room-home-title">{roomDetails?.name}</h1>
                         <p className="room-home-description">
-                            {roomDetails?.description ||
-                                "Sin descripción disponible"}
+                            {roomDetails?.description}
                         </p>
                     </div>
                 </div>
                 {errorMessage && <p className="text-danger">{errorMessage}</p>}
                 {roomDetails?.created_by === user!.id && (
-                    <MainButton
-                        text={
-                            roomDetails.is_open
-                                ? "Desactivate Room"
-                                : "Activate Room"
-                        }
-                        type="button"
-                        onClick={handleActivateRoom}
-                    />
+                    <div className="d-flex w-100 justify-content-between align-content-between">
+                        <MainButton
+                            text={
+                                roomDetails.is_open
+                                    ? "Desactivate Room"
+                                    : "Activate Room"
+                            }
+                            type="button"
+                            onClick={handleActivateRoom}
+                        />
+                        <MainButton
+                            text={"Editar Room"}
+                            type="button"
+                            onClick={handleEditRoom}
+                        />
+                    </div>
                 )}
                 <div className="mt-4">
                     <Tabs
@@ -132,7 +152,10 @@ export const RoomHome: React.FC = () => {
                 </div>
             </div>
         );
+    }
+
     if (!isInRoom && !isLoading) return <AccessDeniedPage />;
+
     return <MainSpinner />;
 };
 

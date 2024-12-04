@@ -7,13 +7,17 @@
 }
 .text-custom {
     background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
-    background-clip:text;
+    background-clip: text;
     color: transparent;
 }
-.text-custom:hover{
+.text-custom:hover {
     background: linear-gradient(to bottom right, #0278ff, #a535b2, #f4158c);
-    background-clip:text;
-    color: transparent; 
+    background-clip: text;
+    color: transparent;
+}
+.text-custom {
+    word-wrap: break-word;
+    white-space: normal;
 }
 .header .nav {
     width: 100%;
