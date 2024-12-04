@@ -4,11 +4,7 @@ import { useSocket } from "../../context/SocketContextProvider";
 import { useParams } from "react-router-dom";
 import SearchBar from "../../components/common/search/SearchBar";
 import { searchSongs } from "../../services/musicService";
-import {
-    getSongRequests,
-    SongRequest,
-    voteSongRequest,
-} from "../../services/socketService";
+import { getSongRequests, SongRequest } from "../../services/socketService";
 import "./css/RoomPlayList.css";
 import MainSpinner from "../../components/common/spinner/MainSpinner";
 import { UserContext } from "../../context/UserContextProvider";
@@ -56,7 +52,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             });
             return;
         }
-        console.log(song);
         setIsSubmittingById((prev) => ({
             ...prev,
             [song.spotify_track_id]: true,
@@ -132,39 +127,49 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
             });
             return;
         }
-        voteSongRequest(song.id, (response) => {
-            console.log(response);
-            const responseSongId = response?.song_request_id;
-            if (responseSongId == song.id) {
+        try {
+            const { data } = await clientApi.post("/song/vote", {
+                song_id: song.song_id,
+                user_id: user?.id,
+                music_room_id: roomId,
+            });
+            console.log(data);
+            setToastProps({
+                message: data.message,
+                class: "success",
+            });
+            getSongRequests((data: SongRequest[]) => {
+                const groupedSongs = data.reduce<{
+                    [key: string]: SongRequest & { votes: number };
+                }>((acc, songRequest) => {
+                    if (acc[songRequest.song_id]) {
+                        acc[songRequest.song_id].votes += 1;
+                    } else {
+                        acc[songRequest.song_id] = {
+                            ...songRequest,
+                            votes: 1,
+                        };
+                    }
+                    return acc;
+                }, {});
+                const uniqueSongs = Object.values(groupedSongs);
+                uniqueSongs.sort((a, b) => b.votes - a.votes);
+                setSongRequests(uniqueSongs);
+            });
+        } catch (error: any) {
+            if (error.response.data.message) {
                 setToastProps({
-                    message: "El voto se registró correctamente.",
-                    class: "success",
-                });
-                getSongRequests((data: SongRequest[]) => {
-                    const groupedSongs = data.reduce<{
-                        [key: string]: SongRequest & { votes: number };
-                    }>((acc, songRequest) => {
-                        if (acc[songRequest.song_id]) {
-                            acc[songRequest.song_id].votes += 1;
-                        } else {
-                            acc[songRequest.song_id] = {
-                                ...songRequest,
-                                votes: 1,
-                            };
-                        }
-                        return acc;
-                    }, {});
-                    const uniqueSongs = Object.values(groupedSongs);
-                    uniqueSongs.sort((a, b) => b.votes - a.votes);
-                    setSongRequests(uniqueSongs);
-                });
-            } else {
-                setToastProps({
-                    message: "No se pudo registrar el voto.",
+                    message: error.response.data.message,
                     class: "error",
                 });
+                return;
             }
-        });
+            setToastProps({
+                message:
+                    "No se pudo votar por la canción. Intenta nuevamente..",
+                class: "error",
+            });
+        }
     };
     useEffect(() => {
         if (roomId && user?.id) {
