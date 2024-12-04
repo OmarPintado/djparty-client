@@ -12,6 +12,7 @@ interface CardItemProps {
     usercount?: number | undefined;
     showAddButton?: boolean;
     onAddClick?: () => void;
+    votes?: number;
 }
 
 const CardItem: React.FC<CardItemProps> = ({
@@ -56,7 +57,7 @@ const CardItem: React.FC<CardItemProps> = ({
                     {is_private ? "Privado" : "Publico"}
                 </div>
             )}
-            {usercount != undefined && (
+            {usercount != undefined && usercount > 0 && (
                 <div className="d-none d-md-block mx-3">Votos: {usercount}</div>
             )}
             <div className="card-item-actions">

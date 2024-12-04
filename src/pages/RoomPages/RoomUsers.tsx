@@ -19,8 +19,6 @@ const RoomUser: React.FC<RoomUserProps> = () => {
             options: [], 
             number: index + 1, 
             showAddButton: false,
-            is_private: false,
-            usercount: 1, 
           }))}
         />
       ) : (

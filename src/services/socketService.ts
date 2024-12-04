@@ -1,7 +1,9 @@
 import { io, Socket } from "socket.io-client";
 
 export interface SongRequest {
+    votes?: number;
     id: string;
+    song_id:string;
     image: string;
     title: string;
     artists:  Artist[]
