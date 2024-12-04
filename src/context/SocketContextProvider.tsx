@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     initializeSocket,
     getSongRequests,
@@ -30,8 +30,7 @@ const SocketContext = createContext<SocketContextType | undefined>(undefined);
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [songRequests, setSongRequests] = useState<SongRequest[]>([]);
     const [users, setUsers] = useState<User[]>([]);
-    const location = useLocation();
-    const roomId = location.pathname.split("/")[2];
+    const {roomId} = useParams();
     const token = localStorage.getItem("AUTH_TOKEN");
     const [socket,setSocket] = useState<Socket>();
     useEffect(() => {

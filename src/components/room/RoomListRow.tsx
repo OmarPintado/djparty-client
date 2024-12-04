@@ -11,6 +11,7 @@ export interface RoomPreview {
     usercount?: number | undefined;
     options?: { label: string; action: () => void }[];
     number?: number;
+    votes?:number;
     showAddButton?: boolean;
     onAddClick?: () => void;
 }
@@ -28,6 +29,7 @@ const RoomListRow: React.FC<RoomListRowProps> = ({ rooms }) => {
                     image={room.image}
                     title={room.title}
                     subtitle={room.subtitle}
+                    votes={room.votes}
                     options={room.options}
                     showAddButton={false}
                     number={undefined}
