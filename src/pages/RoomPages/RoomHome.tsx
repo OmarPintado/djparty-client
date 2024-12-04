@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Tabs, Tab } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import RoomPlayList from "./RoomPlayList";
@@ -12,12 +12,14 @@ import MainSpinner from "../../components/common/spinner/MainSpinner";
 import AccessDeniedPage from "../AuthPages/AccessDeniedPage";
 import { getRoomDetails, activateRoom } from "../../services/roomServices";
 import { MusicRoom } from "../../types";
+import { UserContext } from "../../context/UserContextProvider";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams<{ roomId: string }>();
     const { data: isInRoom, isLoading } = useIsInRoom(roomId, {
         enabled: !!roomId,
     });
+    const { user } = useContext(UserContext);
     const { songRequests, users } = useSocket();
     const [backgroundImage, setBackgroundImage] = useState<string | null>(
         "/maracumango.jpg"
@@ -103,11 +105,13 @@ export const RoomHome: React.FC = () => {
                 {successMessage && (
                     <p className="text-success">{successMessage}</p>
                 )}
-                <MainButton
-                    text="Activate Room"
-                    type="button"
-                    onClick={handleActivateRoom}
-                />
+                {roomDetails?.created_by === user!.id && (
+                    <MainButton
+                        text="Activate Room"
+                        type="button"
+                        onClick={handleActivateRoom}
+                    />
+                )}
                 <Container>
                     <Tabs
                         defaultActiveKey="playlist"
@@ -127,7 +131,7 @@ export const RoomHome: React.FC = () => {
                 </Container>
             </div>
         );
-    if (!isInRoom&&!isLoading) return <AccessDeniedPage />;
+    if (!isInRoom && !isLoading) return <AccessDeniedPage />;
     return <MainSpinner />;
 };
 

@@ -154,6 +154,7 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         <div>
             <h3>Buscar y agregar canciones</h3>
             <SearchBar
+                placeholder="Search music..."
                 onSearch={(query) => {
                     setSearchQuery(query);
                     handleSearchSongs();

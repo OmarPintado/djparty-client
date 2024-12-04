@@ -19,14 +19,20 @@ const Header = () => {
                 expand={expand}
                 className="bg-body-tertiary nav w-100"
             >
-                <Container fluid className="align-items-center justify-content-center">
+                <Container
+                    fluid
+                    className="align-items-center justify-content-around"
+                >
                     <Navbar.Brand className="m-0">
                         <Link to={"/"} className="logo m-0 me-md-1">
                             <img src="/djparty.svg" alt="Logo" />
                         </Link>
                     </Navbar.Brand>
                     <Navbar.Brand className="text-custom fs-2 fw-semibold ">
-                        Hello <span className="text-capitalize">{user?.fullName} !</span>
+                        Hello{" "}
+                        <span className="text-capitalize">
+                            {user?.fullName} !
+                        </span>
                     </Navbar.Brand>
 
                     <Navbar.Toggle
@@ -47,23 +53,14 @@ const Header = () => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <div className="searchContainer">
-                                <Nav className="">
-                                    <Nav.Link href="/" className="text-white">
+                                <Nav className="gap-4">
+                                    <Link to="/" className="text-white text-decoration-none">
                                         Home
-                                    </Nav.Link>
-                                    <NavDropdown
-                                        title={
-                                            <IoSettingsSharp className="home-icon fs-3" />
-                                        }
-                                        className="menu-options"
-                                        id={`offcanvasNavbarDropdown-expand-${expand}`}
-                                    >
-                                        <Link to={"/perfil"}>Perfil</Link>
-                                        <NavDropdown.Divider />
-                                        <button onClick={logOut}>
-                                            Cerrar sesión
-                                        </button>
-                                    </NavDropdown>
+                                    </Link>
+                                    <Link to={"/perfil"} className="text-decoration-none text-white">Perfil</Link>
+                                    <button onClick={logOut} className="btn btn-danger">
+                                        Cerrar sesión
+                                    </button>
                                 </Nav>
                             </div>
                         </Offcanvas.Body>
