@@ -1,16 +1,13 @@
 import { isAxiosError } from "axios";
 import { MusicRoom } from "../types";
 import { clientApi } from "./api.";
-
-export const createMusicRoom = async (roomData: {
-    created_by: string;
-    name: string;
-    description: string;
-    start_date:string;
-    is_private:boolean
-}): Promise<MusicRoom> => {
+export const createMusicRoom = async (
+    roomData: FormData 
+): Promise<MusicRoom> => {
     try {
-        const { data } = await clientApi.post<MusicRoom>('/music-room/create', roomData);
+        const { data } = await clientApi.post<MusicRoom>("/music-room/create", roomData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

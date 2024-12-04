@@ -21,19 +21,12 @@ export const RoomHome: React.FC = () => {
     });
     const { user, setToastProps } = useContext(UserContext);
     const { songRequests, users } = useSocket();
-    const [backgroundImage, setBackgroundImage] = useState<string | null>(
-        "/maracumango.jpg"
-    );
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<MusicRoom | null>(null);
-
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setBackgroundImage(imageUrl);
-        }
-    };
+    const [backgroundImage, setBackgroundImage] = useState<string | null>(
+        roomDetails?.image_url || ""
+    );
     const fetchRoomDetails = async () => {
         if (!roomId) {
             setErrorMessage("Room ID is missing");
@@ -85,6 +78,11 @@ export const RoomHome: React.FC = () => {
     useEffect(() => {
         fetchRoomDetails();
     }, [roomId]);
+    useEffect(() => {
+        if (roomDetails?.image_url) {
+            setBackgroundImage(roomDetails?.image_url!);
+        }
+    }, [roomDetails]);
     if (isLoading) return <MainSpinner />;
     if (isInRoom && !isLoading)
         return (
@@ -101,12 +99,6 @@ export const RoomHome: React.FC = () => {
                             {roomDetails?.description ||
                                 "Sin descripción disponible"}
                         </p>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            className="room-home-file-input"
-                        />
                     </div>
                 </div>
                 {errorMessage && <p className="text-danger">{errorMessage}</p>}

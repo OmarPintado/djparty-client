@@ -8,6 +8,7 @@ type MainInputProps = {
     register: UseFormRegister<any>;
     validation?: object;
     className?: string;
+    classError?: string;
     error?: string;
 };
 
@@ -18,6 +19,7 @@ const MainInput = ({
     register,
     validation,
     className = "",
+    classError = "",
     error,
 }: MainInputProps) => {
     return (
@@ -29,7 +31,7 @@ const MainInput = ({
                 className={`transparent-input ${error ? "input-error" : ""}`}
                 {...register(name, validation)}
             />
-            {error && <p className="error-message">{error}</p>}
+            {error && <p className={`error-message ${classError}`}>{error}</p>}
         </div>
     );
 };

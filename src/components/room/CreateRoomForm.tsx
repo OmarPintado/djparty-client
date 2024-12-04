@@ -45,6 +45,33 @@ const inputConfigs: InputConfig[] = [
         },
     },
     {
+        name: "file",
+        label: "Imagen",
+        type: "file",
+        placeholder: "Enter an image",
+        validation: {
+            required: "Image is required",
+            validate: (value: FileList | null) => {
+                if (!value || value.length === 0) {
+                    return "An image file is required.";
+                }
+                const fileType = value[0]?.type;
+                if (
+                    fileType &&
+                    !["image/jpeg", "image/png", "image/gif"].includes(fileType)
+                ) {
+                    return "Only image files (jpg, png, gif) are allowed.";
+                }
+                const fileSize = value[0]?.size;
+                if (fileSize && fileSize > 4000000) {
+                    return "Image size should not exceed 4MB.";
+                }
+
+                return true;
+            },
+        },
+    },
+    {
         label: "Start Date",
         name: "start_date",
         type: "date",
@@ -52,8 +79,7 @@ const inputConfigs: InputConfig[] = [
         validation: {
             required: "Start date is required",
             validate: (value: string) => {
-                const [year, month, day] = value.split("-").map(Number);
-                const selectedDate = new Date(year, month - 1, day);
+                const selectedDate = new Date(value);
                 const currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
                 if (selectedDate < currentDate) {
@@ -71,11 +97,7 @@ const CreateRoomForm = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FieldValues>({
-        defaultValues: {
-            is_private: isPrivate,
-        },
-    });
+    } = useForm<FieldValues>();
     const { user, setToastProps } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -84,35 +106,42 @@ const CreateRoomForm = () => {
             console.error("User is not logged in");
             return;
         }
-        const startDate = new Date(data.start_date);
-        if (isNaN(startDate.getTime())) {
-            console.error("Invalid date provided");
-            return;
-        }
 
         const startDateFormat = new Date(data.start_date)
             .toISOString()
             .split("T")[0];
 
-        const roomData = {
-            created_by: user.id,
-            name: data.name,
-            description: data.description,
-            start_date: startDateFormat,
-            is_private: isPrivate,
-            password: data.password,
-        };
+        const formData = new FormData();
+        formData.append("created_by", user.id);
+        formData.append("name", data.name);
+        formData.append("description", data.description);
+        formData.append("start_date", startDateFormat);
+        formData.append("is_private", isPrivate.toString()); 
+        console.log(isPrivate.toString())
+        if (data.file[0]) {
+            formData.append("file", data.file[0]); // Add file
+        }
+        if (isPrivate && data.password) {
+            formData.append("password", data.password);
+        }
+
         try {
-            const room = await createMusicRoom(roomData);
+            const room = await createMusicRoom(formData); // Enviar FormData directamente
             navigate(`/room-home/${room.id}`);
         } catch (error) {
+            console.log(error)
             if (isAxiosError(error) && error.response) {
-                console.error("Failed to create room:", error);
+                console.error("Failed to create room:", error.response.data.message);
+                setToastProps({
+                    message: error.response.data.message,
+                    class: "error",
+                });
+            } else {
+                setToastProps({
+                    message: "An unknown error occurred",
+                    class: "error",
+                });
             }
-            setToastProps({
-                message: `${error}`,
-                class: "error",
-            });
         }
     };
 
@@ -131,12 +160,12 @@ const CreateRoomForm = () => {
                         placeholder={inputConfig.placeholder}
                         name={inputConfig.name}
                         register={register}
+                        classError={inputConfig.type === "file" ? " mt-2 " : " "}
                         validation={inputConfig.validation}
                         error={errors[inputConfig.name]?.message as string}
                     />
                 </div>
             ))}
-
             <div className="form-fields">
                 <label
                     className="text-white fw-semibold"

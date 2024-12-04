@@ -63,6 +63,7 @@ export type MusicRoom = {
     is_private: boolean;
     user:User;
     usercount:number;
+    image_url?:string;
     is_open?:boolean;
     userMusicRooms: UserMusicRoom[];
 }
