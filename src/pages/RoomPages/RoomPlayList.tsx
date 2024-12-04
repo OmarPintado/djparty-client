@@ -106,26 +106,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         }
     };
 
-    const handleSelectSong = (songId: string) => {
-        if (!roomId) {
-            setToastProps({
-                message: "Room no está definido.",
-                class: "error",
-            });
-            return;
-        }
-        selectSong(songId, (response) => {
-            if (response && response.spotify_url) {
-                setCurrentPlayingSong(response.spotify_url);
-            } else {
-                setToastProps({
-                    message: "No se pudo reproducir la canción. URL no válida.",
-                    class: "error",
-                });
-            }
-        });
-    };
-
     const handleVoteSong = (songId: string) => {
         if (!roomId) {
             setToastProps({
