@@ -20,13 +20,13 @@ interface RoomPlayListProps {
 
 const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     const { roomId } = useParams<{ roomId: string }>();
-    const { songRequests, setSongRequests, selectSong } = useSocket();
+    const { songRequests, setSongRequests } = useSocket();
     const { setToastProps } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [, setIsSubmittingById] = useState<Record<string, boolean>>({});
-    const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(
+    const [currentPlayingSong,] = useState<string | null>(
         null
     );
 
