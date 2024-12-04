@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Tabs, Tab } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import RoomPlayList from "./RoomPlayList";
 import RoomUser from "./RoomUsers";
@@ -12,18 +12,19 @@ import MainSpinner from "../../components/common/spinner/MainSpinner";
 import AccessDeniedPage from "../AuthPages/AccessDeniedPage";
 import { getRoomDetails, activateRoom } from "../../services/roomServices";
 import { MusicRoom } from "../../types";
+import { UserContext } from "../../context/UserContextProvider";
 
 export const RoomHome: React.FC = () => {
     const { roomId } = useParams<{ roomId: string }>();
     const { data: isInRoom, isLoading } = useIsInRoom(roomId, {
         enabled: !!roomId,
     });
+    const { user, setToastProps } = useContext(UserContext);
     const { songRequests, users } = useSocket();
     const [backgroundImage, setBackgroundImage] = useState<string | null>(
         "/maracumango.jpg"
     );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<MusicRoom | null>(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +43,7 @@ export const RoomHome: React.FC = () => {
         try {
             const data = await getRoomDetails(roomId);
             setRoomDetails(data);
+            console.log(data);
         } catch (error: any) {
             console.error(
                 "Error al obtener los detalles de la sala:",
@@ -64,11 +66,19 @@ export const RoomHome: React.FC = () => {
                 throw new Error("User is not authenticated");
             }
 
-            await activateRoom(roomId, user.id);
-            setSuccessMessage("Room activated successfully!");
+            const data = await activateRoom(roomId, user.id);
+            if (roomDetails) {
+                setRoomDetails({
+                    ...roomDetails,
+                    is_open: !roomDetails?.is_open,
+                });
+            }
+            setToastProps({ class: "success", message: data });
         } catch (error: any) {
-            console.error("Error al activar la sala:", error.message);
-            setErrorMessage(error.message || "Error al activar la sala.");
+            setToastProps({
+                class: "error",
+                message: "Error al activar la sala.",
+            });
         }
     };
 
@@ -80,12 +90,12 @@ export const RoomHome: React.FC = () => {
         return (
             <div className="room-home-container">
                 <div
-                    className="room-home-header"
+                    className="room-home-header mb-3"
                     style={{ backgroundImage: `url(${backgroundImage})` }}
                 >
                     <div className="room-home-header-overlay">
                         <h1 className="room-home-title">
-                            Room {roomDetails?.name || roomId}
+                            {roomDetails?.name || roomId}
                         </h1>
                         <p className="room-home-description">
                             {roomDetails?.description ||
@@ -100,15 +110,18 @@ export const RoomHome: React.FC = () => {
                     </div>
                 </div>
                 {errorMessage && <p className="text-danger">{errorMessage}</p>}
-                {successMessage && (
-                    <p className="text-success">{successMessage}</p>
+                {roomDetails?.created_by === user!.id && (
+                    <MainButton
+                        text={
+                            roomDetails.is_open
+                                ? "Desactivate Room"
+                                : "Activate Room"
+                        }
+                        type="button"
+                        onClick={handleActivateRoom}
+                    />
                 )}
-                <MainButton
-                    text="Activate Room"
-                    type="button"
-                    onClick={handleActivateRoom}
-                />
-                <Container>
+                <div className="mt-4">
                     <Tabs
                         defaultActiveKey="playlist"
                         id="room-tabs"
@@ -124,10 +137,10 @@ export const RoomHome: React.FC = () => {
                             <RoomChat roomId={roomId || ""} />
                         </Tab>
                     </Tabs>
-                </Container>
+                </div>
             </div>
         );
-    if (!isInRoom&&!isLoading) return <AccessDeniedPage />;
+    if (!isInRoom && !isLoading) return <AccessDeniedPage />;
     return <MainSpinner />;
 };
 

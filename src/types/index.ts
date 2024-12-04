@@ -63,6 +63,7 @@ export type MusicRoom = {
     is_private: boolean;
     user:User;
     usercount:number;
+    is_open?:boolean;
     userMusicRooms: UserMusicRoom[];
 }
 export type ToastPropsType = {

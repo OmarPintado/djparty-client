@@ -5,16 +5,17 @@ import "./css/SearchBar.css";
 
 type SearchBarProps = {
     onSearch: (query: string) => void;
+    placeholder?: string;
 };
 
-const SearchBar = ({ onSearch }: SearchBarProps) => {
+const SearchBar = ({ onSearch, placeholder }: SearchBarProps) => {
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         onSearch(e.target.value);
     };
     return (
         <div className={`search-bar`}>
             <SearchInput
-                placeholder={"Search Rooms..."}
+                placeholder={placeholder ? placeholder : "Search Rooms..."}
                 onChange={handleInputChange}
             />
             <SearchButton />
