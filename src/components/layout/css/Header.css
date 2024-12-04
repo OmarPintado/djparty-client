@@ -37,7 +37,7 @@
 .dropdown-menu {
     left: unset !important;
     right: 0 !important;
-    top: 110% !important;
+    top: 10% !important;
 }
 .dropdown-toggle.nav-link:hover {
     background: #090c11 !important;

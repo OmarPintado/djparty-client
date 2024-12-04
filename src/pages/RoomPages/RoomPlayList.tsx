@@ -20,13 +20,13 @@ interface RoomPlayListProps {
 
 const RoomPlayList: React.FC<RoomPlayListProps> = () => {
     const { roomId } = useParams<{ roomId: string }>();
-    const { songRequests, setSongRequests, selectSong } = useSocket();
+    const { songRequests, setSongRequests } = useSocket();
     const { setToastProps } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [, setIsSubmittingById] = useState<Record<string, boolean>>({});
-    const [currentPlayingSong, setCurrentPlayingSong] = useState<string | null>(
+    const [currentPlayingSong,] = useState<string | null>(
         null
     );
 
@@ -106,26 +106,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
         }
     };
 
-    const handleSelectSong = (songId: string) => {
-        if (!roomId) {
-            setToastProps({
-                message: "Room no está definido.",
-                class: "error",
-            });
-            return;
-        }
-        selectSong(songId, (response) => {
-            if (response && response.spotify_url) {
-                setCurrentPlayingSong(response.spotify_url);
-            } else {
-                setToastProps({
-                    message: "No se pudo reproducir la canción. URL no válida.",
-                    class: "error",
-                });
-            }
-        });
-    };
-
     const handleVoteSong = (songId: string) => {
         if (!roomId) {
             setToastProps({
@@ -184,8 +164,6 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                                     showAddButton: true,
                                     onAddClick: () =>
                                         handleAddSongRequest(song),
-                                    is_private: false,
-                                    usercount: 1,
                                 }))}
                             />
                         </div>
@@ -209,14 +187,9 @@ const RoomPlayList: React.FC<RoomPlayListProps> = () => {
                                 label: "Votar",
                                 action: () => handleVoteSong(songRequest.id),
                             },
-                            {
-                                label: "Seleccionar",
-                                action: () => handleSelectSong(songRequest.id),
-                            },
                         ],
                         number: index + 1,
                         showAddButton: false,
-                        is_private: false,
                         usercount: 1,
                     }))}
                 />

@@ -8,6 +8,7 @@ interface RoomListProps {
 }
 
 export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
+    console.log(rooms)
     return (
         <div style={{marginTop:"20p", display: "flex", flexDirection: "column", gap: "15px" }}>
             {rooms.map((room, index) => (
@@ -18,6 +19,7 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms = [] }) => {
                     subtitle={room.subtitle}
                     options={room.options}
                     number={room.number}
+                    usercount = {room.usercount}
                     is_private={room.is_private}
                     showAddButton={room.showAddButton}
                     onAddClick={room.onAddClick}
