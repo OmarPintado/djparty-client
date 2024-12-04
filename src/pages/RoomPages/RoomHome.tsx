@@ -142,9 +142,9 @@ export const RoomHome: React.FC = () => {
                         <Tab eventKey="playlist" title="Playlist">
                             <RoomPlayList songRequests={songRequests} />
                         </Tab>
-                        <Tab eventKey="users" title="Usuarios">
+                        {/*<Tab eventKey="users" title="Usuarios">
                             <RoomUser users={users} />
-                        </Tab>
+                        </Tab>*/}
                         <Tab eventKey="chat" title="Chat">
                             <RoomChat roomId={roomId || ""} />
                         </Tab>
